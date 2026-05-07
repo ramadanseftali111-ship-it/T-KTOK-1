@@ -1,0 +1,444 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Pixel Ayarları</title>
+    <script src="site-config.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%); 
+            min-height: 100vh; 
+            color: #fff; 
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        .header { text-align: center; padding: 30px 0; }
+        .header h1 {
+            font-size: 36px;
+            background: linear-gradient(135deg, #1877F2 0%, #42B72A 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .back-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #1877F2 0%, #42B72A 100%);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(24, 119, 242, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .card h2 { color: #1877F2; margin-bottom: 20px; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; color: #888; margin-bottom: 8px; font-size: 14px; }
+        .input-group textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border: 2px solid rgba(24, 119, 242, 0.3);
+            border-radius: 10px;
+            background: rgba(0,0,0,0.3);
+            color: #0f0;
+            font-size: 12px;
+            font-family: monospace;
+            resize: vertical;
+        }
+        .input-group textarea:focus { outline: none; border-color: #1877F2; }
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(24, 119, 242, 0.3);
+            border-radius: 10px;
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            font-size: 18px;
+            font-family: monospace;
+        }
+        .input-group input:focus { outline: none; border-color: #1877F2; }
+        .save-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #1877F2 0%, #42B72A 100%);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .save-btn:hover { opacity: 0.9; transform: scale(1.02); }
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+        }
+        .status.success { display: block; background: rgba(46, 213, 115, 0.2); border: 1px solid #2ed573; color: #2ed573; }
+        .status.error { display: block; background: rgba(255, 71, 87, 0.2); border: 1px solid #ff4757; color: #ff4757; }
+        .current-pixel {
+            background: rgba(46, 213, 115, 0.1);
+            border: 2px solid rgba(46, 213, 115, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .current-pixel.empty { border-color: rgba(255, 71, 87, 0.3); background: rgba(255, 71, 87, 0.1); }
+        .current-pixel h3 { color: #2ed573; margin-bottom: 10px; }
+        .current-pixel.empty h3 { color: #ff4757; }
+        .pixel-id { font-size: 24px; font-weight: bold; color: #fff; font-family: monospace; }
+        .info-box {
+            background: rgba(24, 119, 242, 0.1);
+            border: 1px solid rgba(24, 119, 242, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .info-box h3 { color: #1877F2; margin-bottom: 10px; }
+        .info-box p { color: #ccc; line-height: 1.6; }
+        .info-box a { color: #1877F2; }
+        .help-link {
+            display: block;
+            text-align: center;
+            color: #1877F2;
+            margin-top: 15px;
+        }
+        .warning-box {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .warning-box a { color: #ff4757; font-weight: bold; }
+    </style>
+</head>
+<body>
+<script>
+//  GÜVENLİK KONTROLÜ
+(function() {
+  var token = localStorage.getItem('__ACCESS_TOKEN__');
+  var now = Date.now();
+  
+  if (!token || parseInt(token) < now) {
+    alert(' ERİŞİM ENGELLENDİ!\n\nBu sayfaya sadece ana sayfadan giriş yapabilirsiniz.\n\nAna sayfaya yönlendiriliyorsunuz...');
+    window.location.href = 'admin-giriş.html';
+  }
+})();
+</script>
+
+    <div class="container">
+        <a href="ana-sayfa.html" class="back-btn">← Ana Sayfa</a>
+        
+        <div class="header">
+            <h1>📘 Meta Pixel Ayarları</h1>
+            <p style="color:#888">Facebook/Instagram reklam takibi</p>
+        </div>
+
+        <div id="firebaseWarning" class="warning-box" style="display:none;">
+            ⚠️ Firebase ayarlanmamış!<br>
+            Önce <a href="domain-bagla.html">Domain Bağla</a> sayfasından Firebase ayarlarını yapın.
+        </div>
+
+        <!-- DOMAIN DOĞRULAMA BÖLÜMÜ -->
+        <div class="card" style="border-color: rgba(255, 193, 7, 0.5); background: rgba(255, 193, 7, 0.05);">
+            <h2 style="color: #ffc107;">🔐 1. ADIM: Domain Doğrulama</h2>
+            <p style="color: #ccc; margin-bottom: 20px;">Meta reklamları kullanmak için önce domain'inizi doğrulamanız gerekiyor.</p>
+            
+            <div class="info-box" style="border-color: rgba(255, 193, 7, 0.3); background: rgba(255, 193, 7, 0.1);">
+                <h3 style="color: #ffc107;">📋 Nasıl Yapılır?</h3>
+                <p>
+                    1. <a href="https://business.facebook.com/settings/owned-domains" target="_blank" style="color: #ffc107;">Meta Business → Domains</a> sayfasına git<br>
+                    2. "Bir domain oluşturun" tıkla<br>
+                    3. Domain adını gir (örn: siteniz.com)<br>
+                    4. "Bir Meta etiketi ekleyin" seç<br>
+                    5. Verilen kodu aşağıya yapıştır
+                </p>
+            </div>
+
+            <div class="input-group">
+                <label style="color: #ffc107;">📝 Meta Doğrulama Kodunu Yapıştır:</label>
+                <input type="text" id="metaVerifyCode" placeholder='<meta name="facebook-domain-verification" content="xxxxx" />' style="border-color: rgba(255, 193, 7, 0.5);">
+            </div>
+
+            <button class="save-btn" style="background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%); color: #000;" onclick="generateVerifyCode()">📋 Kodu Oluştur</button>
+
+            <div id="verifyResult" style="display: none; margin-top: 20px; padding: 20px; background: rgba(0,0,0,0.5); border-radius: 10px;">
+                <p style="color: #ffc107; margin-bottom: 15px; font-weight: bold;">✅ Aşağıdaki kodu kopyala ve GitHub'daki index.html dosyasına ekle:</p>
+                <div style="background: #1a1a2e; padding: 15px; border-radius: 8px; border: 1px solid #ffc107; margin-bottom: 15px;">
+                    <code id="verifyCodeOutput" style="color: #0f0; font-size: 12px; word-break: break-all;"></code>
+                </div>
+                <button onclick="copyVerifyCode()" style="background: #ffc107; color: #000; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%;">📋 Kopyala</button>
+                
+                <div style="margin-top: 20px; padding: 15px; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border: 1px solid rgba(255, 193, 7, 0.3);">
+                    <p style="color: #ccc; font-size: 13px; line-height: 1.8;">
+                        <strong style="color: #ffc107;">📍 Nereye Eklenecek?</strong><br>
+                        1. GitHub'da <strong>index.html</strong> dosyasını aç<br>
+                        2. <code style="background: #333; padding: 2px 6px; border-radius: 4px;">&lt;head&gt;</code> etiketinden hemen sonra yapıştır<br>
+                        3. Commit et ve bekle (Vercel otomatik deploy edecek)<br>
+                        4. Meta'da "Domaini Doğrula" butonuna bas
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="currentPixel" class="current-pixel empty">
+            <h3>⏳ Yükleniyor...</h3>
+            <div class="pixel-id" id="displayPixelId">-</div>
+        </div>
+
+        <div class="card">
+            <h2>🔧 2. ADIM: Meta Pixel ID Gir</h2>
+            
+            <div class="input-group">
+                <label>� Meta Pixel ID (sadece rakamlar):</label>
+                <input type="text" id="pixelId" placeholder="Örnek: 814781014839630">
+            </div>
+
+            <button class="save-btn" onclick="savePixel()">💾 Kaydet</button>
+            <div id="status" class="status"></div>
+            
+            <a href="https://business.facebook.com/events_manager" target="_blank" class="help-link">
+                📋 Pixel ID'yi Meta Events Manager'dan alın
+            </a>
+        </div>
+
+        <div class="info-box">
+            <h3>ℹ️ Nasıl Kullanılır?</h3>
+            <p>1. <a href="https://business.facebook.com/events_manager" target="_blank">Meta Events Manager</a>'a git<br>
+            2. Pixel'ini seç veya yeni oluştur<br>
+            3. Pixel ID'yi kopyala (sadece rakamlar)<br>
+            4. Yukarıya yapıştır ve Kaydet'e bas</p>
+        </div>
+
+        <div class="card">
+            <h2>📋 Takip Edilen Olaylar</h2>
+            <p style="color:#ccc;line-height:2">
+                ✅ PageView - Sayfa görüntüleme<br>
+                ✅ ViewContent - Ürün görüntüleme<br>
+                ✅ Lead - Form gönderme<br>
+                ✅ Purchase - Satın alma
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let db = null;
+
+        // Site ID için key oluştur
+        function getSiteKey(key) {
+            var siteId = localStorage.getItem('__SITE_ID__');
+            if (!siteId) {
+                var hostname = window.location.hostname;
+                if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1' && hostname !== '') {
+                    siteId = hostname.replace(/\./g, '_').replace(/[^a-zA-Z0-9_]/g, '');
+                } else {
+                    siteId = 'default';
+                }
+                localStorage.setItem('__SITE_ID__', siteId);
+            }
+            return siteId + '_' + key;
+        }
+
+        // Kullanıcının Firebase ayarlarını al
+        function getUserFirebaseConfig() {
+            var saved = localStorage.getItem(getSiteKey('account_settings'));
+            if (saved) {
+                try {
+                    var s = JSON.parse(saved);
+                    if (s.firebaseApiKey && s.firebaseProjectId && s.firebaseDatabaseUrl) {
+                        return {
+                            apiKey: s.firebaseApiKey,
+                            authDomain: s.firebaseProjectId + ".firebaseapp.com",
+                            databaseURL: s.firebaseDatabaseUrl,
+                            projectId: s.firebaseProjectId,
+                            storageBucket: s.firebaseProjectId + ".appspot.com"
+                        };
+                    }
+                } catch(e) {}
+            }
+            return null;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            waitForFirebase();
+        });
+
+        function waitForFirebase() {
+            if (typeof firebase === 'undefined') {
+                setTimeout(waitForFirebase, 100);
+                return;
+            }
+            initPixelFirebase();
+        }
+
+        function initPixelFirebase() {
+            var config = getUserFirebaseConfig();
+            
+            if (!config) {
+                document.getElementById('firebaseWarning').style.display = 'block';
+                updateDisplay(null);
+                return;
+            }
+
+            try {
+                var app;
+                try { app = firebase.app('metaPixelPage'); } 
+                catch(e) { app = firebase.initializeApp(config, 'metaPixelPage'); }
+                
+                db = app.database();
+                console.log('✅ Firebase bağlandı');
+                loadPixel();
+            } catch (error) {
+                console.error('Firebase hatası:', error);
+                showStatus('Firebase bağlantı hatası: ' + error.message, 'error');
+                updateDisplay(null);
+            }
+        }
+
+        function loadPixel() {
+            if (!db) {
+                updateDisplay(null);
+                return;
+            }
+
+            db.ref('pixels/meta').on('value', function(snapshot) {
+                var pixelId = snapshot.val();
+                updateDisplay(pixelId);
+                if (pixelId) {
+                    document.getElementById('pixelId').value = pixelId;
+                }
+            });
+        }
+
+        function updateDisplay(pixelId) {
+            var container = document.getElementById('currentPixel');
+            var display = document.getElementById('displayPixelId');
+            
+            if (pixelId) {
+                container.className = 'current-pixel';
+                container.querySelector('h3').textContent = '✅ Aktif Pixel ID';
+                container.querySelector('h3').style.color = '#2ed573';
+                display.textContent = pixelId;
+            } else {
+                container.className = 'current-pixel empty';
+                container.querySelector('h3').textContent = '❌ Pixel Ayarlanmamış';
+                container.querySelector('h3').style.color = '#ff4757';
+                display.textContent = 'Henüz girilmedi';
+            }
+        }
+
+        function savePixel() {
+            var pixelId = document.getElementById('pixelId').value.trim();
+            
+            if (!pixelId) {
+                showStatus('Pixel ID boş olamaz!', 'error');
+                return;
+            }
+
+            if (!/^\d+$/.test(pixelId)) {
+                showStatus('Pixel ID sadece rakamlardan oluşmalı!', 'error');
+                return;
+            }
+
+            if (!db) {
+                showStatus('Firebase bağlantısı yok! Önce domain-bagla.html\'den Firebase ayarlayın.', 'error');
+                return;
+            }
+
+            db.ref('pixels/meta').set(pixelId)
+                .then(function() {
+                    showStatus('✅ Meta Pixel kaydedildi! Tüm sayfalarda aktif olacak.', 'success');
+                })
+                .catch(function(error) {
+                    showStatus('Kaydetme hatası: ' + error.message, 'error');
+                });
+        }
+
+        function showStatus(message, type) {
+            var status = document.getElementById('status');
+            status.textContent = message;
+            status.className = 'status ' + type;
+            if (type === 'success') {
+                setTimeout(function() { status.className = 'status'; }, 5000);
+            }
+        }
+
+        // Domain doğrulama kodu oluştur
+        function generateVerifyCode() {
+            var input = document.getElementById('metaVerifyCode').value.trim();
+            var resultDiv = document.getElementById('verifyResult');
+            var outputCode = document.getElementById('verifyCodeOutput');
+            
+            if (!input) {
+                alert('Lütfen Meta doğrulama kodunu yapıştırın!');
+                return;
+            }
+            
+            // Eğer tam meta etiketi yapıştırıldıysa
+            if (input.includes('meta name="facebook-domain-verification"')) {
+                outputCode.textContent = input;
+            } 
+            // Sadece content değeri yapıştırıldıysa
+            else if (input.match(/^[a-z0-9]+$/i)) {
+                outputCode.textContent = '<meta name="facebook-domain-verification" content="' + input + '" />';
+            }
+            // Başka bir format
+            else {
+                // content="xxx" kısmını bulmaya çalış
+                var match = input.match(/content="([^"]+)"/);
+                if (match) {
+                    outputCode.textContent = '<meta name="facebook-domain-verification" content="' + match[1] + '" />';
+                } else {
+                    outputCode.textContent = '<meta name="facebook-domain-verification" content="' + input + '" />';
+                }
+            }
+            
+            resultDiv.style.display = 'block';
+            
+            // Başarı sesi
+            if (typeof basariSesCal === 'function') basariSesCal();
+        }
+        
+        // Kodu kopyala
+        function copyVerifyCode() {
+            var code = document.getElementById('verifyCodeOutput').textContent;
+            navigator.clipboard.writeText(code).then(function() {
+                alert('✅ Kod kopyalandı! Şimdi GitHub\'daki index.html dosyasına yapıştır.');
+                if (typeof basariSesCal === 'function') basariSesCal();
+            }).catch(function() {
+                // Fallback
+                var textarea = document.createElement('textarea');
+                textarea.value = code;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('✅ Kod kopyalandı! Şimdi GitHub\'daki index.html dosyasına yapıştır.');
+            });
+        }
+    </script>
+
+<!-- 🔔 SİPARİŞ SES SİSTEMİ - Her sayfada çalışır -->
+<script src="ramco-beyin.js"></script>
+<script src="ramco-widget.js"></script>
+</body>
+</html>

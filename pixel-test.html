@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meta Pixel Test</title>
+
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '960336256818177');
+fbq('track', 'PageView');
+console.log('✅ Meta Pixel yüklendi - ID: 960336256818177');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=960336256818177&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
+
+</head>
+<body style="font-family: Arial; padding: 50px; text-align: center;">
+<h1>🔍 Meta Pixel Test Sayfası</h1>
+<p>Pixel ID: <strong>960336256818177</strong></p>
+<p>Bu sayfa yüklendiğinde PageView eventi gönderilmelidir.</p>
+<p>F12 ile konsolu açın ve "Meta Pixel yüklendi" mesajını görmelisiniz.</p>
+
+<hr style="margin: 40px 0;">
+
+<button onclick="testAddToCart()" style="padding: 15px 30px; font-size: 16px; cursor: pointer; background: #4267B2; color: white; border: none; border-radius: 5px;">
+    🛒 AddToCart Event Test
+</button>
+
+<button onclick="testPurchase()" style="padding: 15px 30px; font-size: 16px; cursor: pointer; background: #00C851; color: white; border: none; border-radius: 5px; margin-left: 10px;">
+    💰 Purchase Event Test
+</button>
+
+<div id="result" style="margin-top: 30px; padding: 20px; background: #f0f0f0; border-radius: 5px; display: none;"></div>
+
+<script>
+function testAddToCart() {
+    if (typeof fbq !== 'undefined') {
+        fbq('track', 'AddToCart', {
+            content_name: 'Test Ürün',
+            content_ids: ['test-123'],
+            content_type: 'product',
+            value: 100,
+            currency: 'TRY'
+        });
+        showResult('✅ AddToCart eventi gönderildi!', 'green');
+        console.log('✅ AddToCart eventi gönderildi');
+    } else {
+        showResult('❌ fbq fonksiyonu bulunamadı!', 'red');
+        console.error('❌ fbq fonksiyonu bulunamadı');
+    }
+}
+
+function testPurchase() {
+    if (typeof fbq !== 'undefined') {
+        fbq('track', 'Purchase', {
+            value: 250,
+            currency: 'TRY'
+        });
+        showResult('✅ Purchase eventi gönderildi!', 'green');
+        console.log('✅ Purchase eventi gönderildi');
+    } else {
+        showResult('❌ fbq fonksiyonu bulunamadı!', 'red');
+        console.error('❌ fbq fonksiyonu bulunamadı');
+    }
+}
+
+function showResult(message, color) {
+    var resultDiv = document.getElementById('result');
+    resultDiv.style.display = 'block';
+    resultDiv.style.color = color;
+    resultDiv.innerHTML = '<h2>' + message + '</h2><p>Facebook Events Manager\'da kontrol edin.</p>';
+}
+
+// Sayfa yüklendiğinde kontrol
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        if (typeof fbq !== 'undefined') {
+            console.log('✅ fbq fonksiyonu hazır');
+            console.log('✅ Pixel çalışıyor!');
+        } else {
+            console.error('❌ fbq fonksiyonu yüklenemedi!');
+        }
+    }, 2000);
+});
+</script>
+
+</body>
+</html>

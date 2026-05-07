@@ -1,0 +1,362 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🤖 GARİBAN - AI Asistan</title>
+<link rel="stylesheet" href="ramco.css">
+</head>
+<body>
+<script>
+//  GÜVENLİK KONTROLÜ
+(function() {
+  var token = localStorage.getItem('__ACCESS_TOKEN__');
+  var now = Date.now();
+  
+  if (!token || parseInt(token) < now) {
+    alert(' ERİŞİM ENGELLENDİ!\n\nBu sayfaya sadece ana sayfadan giriş yapabilirsiniz.\n\nAna sayfaya yönlendiriliyorsunuz...');
+    window.location.href = 'admin-giriş.html';
+  }
+})();
+</script>
+
+
+<div class="ramco-container">
+  
+  <!-- HEADER -->
+  <div class="ramco-header">
+    <h1>🤖 GARİBAN - AI Asistan</h1>
+    <button class="geri-btn" onclick="location.href='ana-sayfa.html'">← ANA SAYFA</button>
+  </div>
+  
+  <!-- SEVİYE VE ROZET -->
+  <div class="ramco-level-bar">
+    <div class="level-container">
+      <div class="level-icon" id="levelIcon">🌱</div>
+      <div class="level-info">
+        <div class="level-title">SEVİYE</div>
+        <div class="level-name" id="levelName">Çırak</div>
+        <div class="level-progress-container">
+          <div class="level-progress-text">
+            <span id="levelXP">0 / 100 XP</span>
+          </div>
+          <div class="level-progress-bar">
+            <div class="level-progress-fill" id="levelProgress" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="level-badges" id="badgesContainer"></div>
+    </div>
+  </div>
+  
+  <!-- GARİBAN YÜZ -->
+  <div class="ramco-face-area">
+    <div class="ramco-face happy">
+      <div class="ramco-glow"></div>
+      <div class="ramco-eyebrows">
+        <div class="ramco-eyebrow"></div>
+        <div class="ramco-eyebrow"></div>
+      </div>
+      <div class="ramco-eyes">
+        <div class="ramco-eye"></div>
+        <div class="ramco-eye"></div>
+      </div>
+      <div class="ramco-mouth"></div>
+    </div>
+  </div>
+  
+  <div class="ramco-name">
+    <h2>GARİBAN</h2>
+    <p>Senin E-Ticaret Arkadaşın</p>
+    <div class="ramco-mood">
+      <div class="mood-dot"></div>
+      <span style="color:#28a745;font-size:12px;">Çevrimiçi</span>
+    </div>
+  </div>
+
+  <!-- DURUM KARTLARI -->
+  <div class="ramco-status-cards">
+    <div class="status-card">
+      <div class="icon">📦</div>
+      <div class="value" id="kartToplamSiparis">0</div>
+      <div class="label">Toplam Sipariş</div>
+    </div>
+    <div class="status-card">
+      <div class="icon">🚚</div>
+      <div class="value" id="kartBekleyenKargo">0</div>
+      <div class="label">Bekleyen Kargo</div>
+    </div>
+    <div class="status-card">
+      <div class="icon">🧾</div>
+      <div class="value" id="kartBekleyenFatura">0</div>
+      <div class="label">Bekleyen Fatura</div>
+    </div>
+    <div class="status-card success">
+      <div class="icon">💰</div>
+      <div class="value" id="kartBugunKazanc">0₺</div>
+      <div class="label">Bugün Kazanç</div>
+    </div>
+  </div>
+
+  <!-- STOK PANELİ -->
+  <div class="ramco-stok-panel">
+    <div class="stok-header">
+      <span>📊 STOK DURUMU</span>
+      <button class="stok-yenile-btn" onclick="stokYukle()">🔄</button>
+    </div>
+    <div class="stok-grid" id="ramcoStokGrid">
+      <!-- Stoklar buraya yüklenecek -->
+    </div>
+  </div>
+
+  <!-- HEDEF TAKİP -->
+  <div class="ramco-goals">
+    <div class="goals-container">
+      <div class="goals-header">
+        <div class="goals-title">🎯 HEDEF TAKİP</div>
+      </div>
+      <div class="goal-item">
+        <div class="goal-header">
+          <span class="goal-name">📅 Günlük Hedef</span>
+          <span class="goal-value" id="gunlukHedefText">0 / 5</span>
+        </div>
+        <div class="goal-bar">
+          <div class="goal-fill green" id="gunlukHedefFill" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="goal-item">
+        <div class="goal-header">
+          <span class="goal-name">📆 Haftalık Hedef</span>
+          <span class="goal-value" id="haftalikHedefText">0 / 30</span>
+        </div>
+        <div class="goal-bar">
+          <div class="goal-fill orange" id="haftalikHedefFill" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="goal-item">
+        <div class="goal-header">
+          <span class="goal-name">📊 Aylık Hedef</span>
+          <span class="goal-value" id="aylikHedefText">0 / 100</span>
+        </div>
+        <div class="goal-bar">
+          <div class="goal-fill pink" id="aylikHedefFill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAHMİN PANELİ -->
+  <div class="ramco-predictions">
+    <div class="prediction-container">
+      <div class="prediction-title">🔮 SATIŞ TAHMİNİ</div>
+      <div class="prediction-cards">
+        <div class="prediction-card">
+          <div class="icon">📅</div>
+          <div class="label">Yarın Tahmini</div>
+          <div class="value" id="tahminYarin">0 sipariş</div>
+        </div>
+        <div class="prediction-card">
+          <div class="icon">📆</div>
+          <div class="label">Hafta Tahmini</div>
+          <div class="value" id="tahminHafta">0 sipariş</div>
+        </div>
+        <div class="prediction-card">
+          <div class="icon">💰</div>
+          <div class="label">Ay Ciro Tahmini</div>
+          <div class="value" id="tahminAy">0₺</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GÜNLÜK GÖREVLER -->
+  <div class="ramco-daily-tasks">
+    <div class="tasks-container">
+      <div class="tasks-title">📋 GÜNLÜK GÖREVLER</div>
+      <div id="gorevlerContainer"></div>
+    </div>
+  </div>
+
+  <!-- HIZLI BUTONLAR -->
+  <div class="ramco-quick-btns">
+    <button class="quick-btn" onclick="hizliSistemAnalizi()">📊 Analiz</button>
+    <button class="quick-btn" onclick="hizliGunlukOzet()">📅 Özet</button>
+    <button class="quick-btn" onclick="hizliBekleyenler()">⏳ Bekleyen</button>
+    <button class="quick-btn" onclick="hizliMotivasyonVer()">💪 Moral</button>
+    <button class="quick-btn" onclick="hizliTavsiyeVer()">💡 Tavsiye</button>
+    <button class="quick-btn" onclick="hizliBeyin()">🧠 Beyin</button>
+    <button class="quick-btn" onclick="hizliOyun()">🎮 Oyun</button>
+    <button class="quick-btn" onclick="hizliNotlar()">📝 Notlar</button>
+    <button class="quick-btn" onclick="hizliSablonlar()">💬 Şablon</button>
+    <button class="quick-btn" onclick="hizliKisilik()">🎭 Kişilik</button>
+    <button class="quick-btn" onclick="hizliTema()">🎨 Tema</button>
+    <button class="quick-btn" onclick="hizliYardim()">❓ Yardım</button>
+  </div>
+
+  <!-- SOHBET ALANI -->
+  <div class="ramco-chat-area">
+    <div class="ramco-chat-box" id="ramcoChatBox">
+      <!-- Mesajlar buraya gelecek -->
+    </div>
+    
+    <div class="ramco-input-area">
+      <input type="text" class="ramco-input" id="ramcoInput" placeholder="GARİBAN'a bir şey yaz...">
+      <button class="voice-btn" id="voiceBtn" onclick="sesKomutBaslat()">🎤</button>
+      <button class="ramco-send-btn" onclick="mesajGonder()">➤</button>
+    </div>
+  </div>
+
+  <!-- BİLDİRİMLER -->
+  <div class="ramco-notifications">
+    <div style="font-size:14px;font-weight:bold;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+      🔔 BİLDİRİMLER
+    </div>
+    <div class="notif-container" id="bildirimlerContainer">
+      <div class="notif-item">
+        <span class="notif-icon">ℹ️</span>
+        <span class="notif-text">GARİBAN hazır!</span>
+        <span class="notif-time">Şimdi</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SES TOGGLE BUTONU -->
+<button class="sound-toggle" id="soundToggle" onclick="sesToggle()">🔊</button>
+
+<!-- AI AYARLARI BUTONU -->
+<button class="ai-ayar-btn" onclick="aiAyarPaneliAc()">🧠 AI</button>
+
+<!-- AI AYARLARI PANELİ -->
+<div id="aiAyarOverlay" onclick="aiAyarPaneliKapat()"></div>
+<div id="aiAyarPanel">
+  <div class="ai-panel-header">
+    <h3>🧠 AI Ayarları</h3>
+    <button onclick="aiAyarPaneliKapat()">✕</button>
+  </div>
+  <div class="ai-panel-icerik">
+    <div class="ai-ayar-grup">
+      <label>🏢 AI Sağlayıcı:</label>
+      <select id="aiSaglayici" onchange="aiModelleriniGuncelle()">
+        <option value="groq">Groq (Ücretsiz - Hızlı)</option>
+        <option value="openai">OpenAI (Ücretli - GPT)</option>
+        <option value="gemini">Google Gemini</option>
+      </select>
+    </div>
+    
+    <div class="ai-ayar-grup">
+      <label>🔑 API Key:</label>
+      <div class="ai-key-input">
+        <input type="password" id="aiApiKey" placeholder="API Key'ini buraya yapıştır...">
+        <button onclick="aiKeyGosterGizle()">👁️</button>
+      </div>
+    </div>
+    
+    <div class="ai-ayar-grup">
+      <label>🤖 Model:</label>
+      <select id="aiModel"></select>
+    </div>
+    
+    <button class="ai-kaydet-btn" onclick="aiAyarlariKaydet()">💾 Kaydet</button>
+    <button class="ai-test-btn" onclick="aiTestEt()">🧪 Test Et</button>
+    
+    <div id="aiDurum" class="ai-durum"></div>
+    
+    <div class="ai-bilgi">
+      <p>📌 <strong>Groq:</strong> <a href="https://console.groq.com/keys" target="_blank">API Key Al</a></p>
+      <p>📌 <strong>OpenAI:</strong> <a href="https://platform.openai.com/api-keys" target="_blank">API Key Al</a></p>
+      <p>📌 <strong>Gemini:</strong> <a href="https://aistudio.google.com/app/apikey" target="_blank">API Key Al</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ADMİN ÇEKMECESİ BUTONU -->
+<button class="admin-cekmece-btn" onclick="adminCekmeceAc()">⚙️ Admin</button>
+
+<!-- ADMİN OVERLAY -->
+<div id="adminOverlay" onclick="adminCekmeceKapat()"></div>
+
+<!-- ADMİN ÇEKMECESİ -->
+<div id="adminCekmece">
+  <div class="admin-cekmece-header">
+    <h3>⚙️ Admin Paneli</h3>
+    <button class="admin-cekmece-kapat" onclick="adminCekmeceKapat()">✕</button>
+  </div>
+  <div class="admin-cekmece-icerik">
+    <a href="siparis-takibi.html" class="admin-menu-item">
+      <div class="icon">📦</div>
+      <div class="text">
+        <strong>Sipariş Takibi</strong>
+        <span>Tüm siparişleri görüntüle</span>
+      </div>
+    </a>
+    <a href="kargo-gonder.html" class="admin-menu-item">
+      <div class="icon">🚚</div>
+      <div class="text">
+        <strong>Kargo Gönder</strong>
+        <span>Bekleyen kargoları gönder</span>
+      </div>
+    </a>
+    <a href="fatura-kes.html" class="admin-menu-item">
+      <div class="icon">🧾</div>
+      <div class="text">
+        <strong>Fatura Kes</strong>
+        <span>Bekleyen faturaları kes</span>
+      </div>
+    </a>
+    <a href="muhasebeci.html" class="admin-menu-item">
+      <div class="icon">📊</div>
+      <div class="text">
+        <strong>Muhasebe</strong>
+        <span>Gelir-gider takibi</span>
+      </div>
+    </a>
+    <a href="otomasyon.html" class="admin-menu-item">
+      <div class="icon">🤖</div>
+      <div class="text">
+        <strong>Otomasyon</strong>
+        <span>Otomatik işlemler</span>
+      </div>
+    </a>
+    <a href="ana-sayfa.html" class="admin-menu-item">
+      <div class="icon">🏠</div>
+      <div class="text">
+        <strong>Ana Sayfa</strong>
+        <span>Kontrol paneline dön</span>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- Firebase -->
+<script src="site-config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+
+<!-- GARİBAN Beyni -->
+<script src="ramco-beyin.js"></script>
+<script src="ramco.js"></script>
+<script src="ramco-widget.js"></script>
+
+<script>
+window.onload = function() {
+  // Beyin sistemini başlat
+  if (typeof ramcoBeyniniBaslat === 'function') {
+    ramcoBeyniniBaslat();
+  }
+  ramcoBaslat();
+  
+  // Öğrenme durumunu göster
+  setTimeout(function() {
+    if (typeof ramcoIstatistik === 'function') {
+      var istat = ramcoIstatistik();
+      console.log('🧠 GARİBAN Beyin: ' + istat.ogrenilen + ' şey öğrenildi');
+    }
+  }, 1000);
+};
+</script>
+
+</body>
+</html>

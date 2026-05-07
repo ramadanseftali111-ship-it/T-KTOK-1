@@ -1,0 +1,2625 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title id="pageTitle">�r�n Sayfas� 1</title>
+<meta name="description" content="�r�n a��klamas� y�kleniyor..." id="pageDescription">
+
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '960336256818177');
+fbq('track', 'PageView');
+
+// Meta Pixel Event Fonksiyonlar�
+function fireMetaLeadEvent(value) {
+    if (typeof fbq !== 'undefined') {
+        fbq('track', 'Lead', { value: value || 0, currency: 'TRY' });
+        fbq('track', 'Purchase', { value: value || 0, currency: 'TRY' });
+        console.log('? Meta Lead/Purchase event - De�er:', value);
+    }
+}
+
+function fireTikTokSubmitFormEvent(value) {
+    console.log('?? TikTok pixel yok, sadece Meta Pixel aktif');
+}
+
+function fireAddToCart(contentName, contentId, value, quantity) {
+    if (typeof fbq !== 'undefined') {
+        fbq('track', 'AddToCart', {
+            content_name: contentName || '�r�n',
+            content_ids: [contentId || '1'],
+            content_type: 'product',
+            value: value || 0,
+            currency: 'TRY',
+            quantity: quantity || 1
+        });
+        console.log('? Meta AddToCart event');
+    }
+}
+
+function fireInitiateCheckout(value) {
+    if (typeof fbq !== 'undefined') {
+        fbq('track', 'InitiateCheckout', {
+            value: value || 0,
+            currency: 'TRY'
+        });
+        console.log('? Meta InitiateCheckout event');
+    }
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=960336256818177&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
+
+<!-- PRELOAD - �LK G�RSELI SAYFA Y�KLENMEDEN �NCE BA�LAT -->
+<link rel="preload" as="image" href="" id="preloadImage1" fetchpriority="highest">
+
+<!-- D�NAM�K SEO - SAYFA Y�KLENMEDEN �NCE -->
+<script>
+// Site ID i�in yard�mc� fonksiyon
+function getAdminKey(key) {
+    var SITE_ID = 'www_kargonburada_online';
+    localStorage.setItem('__SITE_ID__', SITE_ID);
+    return SITE_ID + '_admin1_' + key;
+}
+
+// SEO'yu hemen g�ncelle (Google bot i�in)
+(function() {
+    // Firebase'den h�zl�ca �ek
+    var urunAdi = localStorage.getItem(getAdminKey('genel_urun_adi')) || '�r�n';
+    var seoAciklama = localStorage.getItem(getAdminKey('seo_aciklamasi')) || '�r�n a��klamas�';
+    
+    // Title'� hemen de�i�tir
+    if (urunAdi && urunAdi !== '�r�n') {
+        document.title = urunAdi + ' - H�zl� Kargo | kargonburada.online';
+    }
+    
+    // Meta description'� hemen de�i�tir
+    setTimeout(function() {
+        var metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc && seoAciklama && seoAciklama !== '�r�n a��klamas�') {
+            metaDesc.content = seoAciklama;
+        }
+    }, 100);
+})();
+</script>
+
+<!-- Posta Kodlar� -->
+<script src="posta-kodlari-yeni.js"></script>
+
+<!-- TEMEL FONKS�YONLAR - SAYFA Y�KLENMEDEN �NCE -->
+<script>
+// Site ID i�in yard�mc� fonksiyon
+function getAdminKey(key) {
+    var SITE_ID = 'www_kargonburada_online';
+    localStorage.setItem('__SITE_ID__', SITE_ID);
+    return SITE_ID + '_admin1_' + key; // ADM�N-1'DEN VER� OKU
+}
+
+// updateBorder fonksiyonu - hemen kullan�labilir olsun
+function updateBorder(selectedId) {
+    // Remove active border from all options
+    for (let i = 1; i <= 8; i++) {
+        const element = document.getElementById('secim' + i);
+        if (element) {
+            const container = element.closest('div[style*="border: 2px solid"]');
+            if (container) {
+                container.style.border = '2px solid #ddd';
+                container.style.backgroundColor = 'white';
+            }
+        }
+    }
+    
+    // Add active border to selected option
+    const selectedElement = document.getElementById('secim' + selectedId);
+    if (selectedElement) {
+        const container = selectedElement.closest('div[style*="border: 2px solid"]');
+        if (container) {
+            container.style.border = '2px solid #000';
+            container.style.backgroundColor = '#f8fff8';
+        }
+    }
+    
+    // Show color and size options for selected item
+    if (typeof toggleOptions === 'function') {
+        toggleOptions(selectedId);
+    }
+}
+</script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#fff;min-height:100vh;overflow-x:hidden}
+html{overflow-x:hidden}
+#politikaScrollDiv::-webkit-scrollbar{display:none}
+/* Sayfa Kapal� Ekran� */
+#sayfaKapaliModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);z-index:99999;justify-content:center;align-items:center;flex-direction:column}
+#sayfaKapaliModal.show{display:flex}
+.kapaliBox{text-align:center;color:#fff;padding:40px}
+.kapaliIcon{font-size:80px;margin-bottom:20px}
+.kapaliTitle{font-size:28px;font-weight:bold;margin-bottom:15px}
+.kapaliText{font-size:16px;opacity:0.8}
+.urunPage{background:#fff;min-height:100vh;display:block;padding:0;overflow-y:auto;-webkit-overflow-scrolling:touch;position:relative;z-index:1;scroll-behavior:smooth}
+
+input::placeholder{color:#A0AEC3 !important;opacity:1}
+#fiyat1Input::placeholder,#fiyat2Input::placeholder{color:#000 !important;opacity:1}
+.formWrapper{width:100%;max-width:768px;margin:0 auto;margin-top:0;background:linear-gradient(to right, #fbfbfb 0%, #fbfbfb 20px, #fff 84px, #fff calc(100% - 84px), #fbfbfb calc(100% - 20px), #fbfbfb 100%);padding:0;border-radius:8px;min-height:auto;display:flex;flex-direction:column;justify-content:flex-start;padding-bottom:1px;scroll-margin-top:0;margin-top:auto;position:relative;opacity:1;box-sizing:border-box}
+@keyframes formGoster{0%{opacity:0}100%{opacity:1}}
+.formContent{flex:1;padding-top:20px;padding-bottom:0}
+.formLabel{display:block;font-weight:900;margin-bottom:6px;color:#000;font-size:15px;margin-top:5px}
+.formInput{width:100%;margin-left:0;padding:14px;border:2px solid #ddd;border-radius:15px;font-size:16px;background:#fff;margin-bottom:6px;color:#000;font-weight:600;box-sizing:border-box}
+.formInput:focus{outline:none;border-color:#000}
+.formInput.error{border-color:#dc3545 !important}
+.formInput::placeholder{color:#A0AEC3;font-weight:600}
+.formTextarea{width:100%;margin-left:0;padding:14px;border:2px solid #ddd;border-radius:15px;font-size:16px;background:#fff;margin-bottom:0;min-height:100px;resize:vertical;color:#000;font-weight:600;box-sizing:border-box}
+.formTextarea:focus{outline:none;border-color:#000}
+.formTextarea.error{border-color:#dc3545 !important}
+.formTextarea::placeholder{color:#A0AEC3;font-weight:600}
+.formSelect{width:100%;margin-left:0;padding:14px;border:2px solid #ddd;border-radius:15px;font-size:16px;background:#fff;margin-bottom:6px;cursor:pointer;color:#000;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;font-weight:600;box-sizing:border-box}
+.formSelect:focus{outline:none;border-color:#000}
+.formSelect.error{border-color:#dc3545 !important}
+.siparisBtn{width:100%;background:#28a745 !important;color:#fff !important;border:none;padding:16px;border-radius:8px;font-size:18px;font-weight:bold;cursor:pointer;margin-bottom:1px;margin-left:0;margin-right:0;margin-top:20px;display:block;box-sizing:border-box}
+.siparisBtn:hover{background:#dc3545 !important;color:#fff !important;border:none !important}
+.radioBox{width:100%;background:#fff;border:2px solid #000;border-radius:8px;padding:15px;margin-bottom:6px;margin-left:0;margin-right:0;box-sizing:border-box}
+.radioOption{display:flex;align-items:center;padding:12px;margin-bottom:6px;flex-wrap:wrap}
+.radioOption:last-child{margin-bottom:0}
+.radioOption input[type="radio"]{width:24px;height:24px;min-width:24px;margin-right:12px;margin-bottom:23px;cursor:pointer;accent-color:#000}
+.radioOption input[name="odeme"]{margin-bottom:0}
+.radioOption span{flex:1;color:#000;font-size:22px;font-weight:700;line-height:1.4}
+.badge{background:#4CAF50;color:#fff !important;padding:4px 10px;border-radius:8px;font-size:20px;font-weight:bold;margin-left:10px;margin-right:15px;animation:slideLeftRight 2s ease-in-out infinite;display:inline-block}
+@keyframes slideLeftRight{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+@media(max-width:480px){.radioOption{padding:10px;}.radioOption span{font-size:16px;}.badge{font-size:14px;padding:3px 8px;margin-left:5px;margin-right:5px;}.radioOption input[type="radio"]{width:20px;height:20px;min-width:20px;margin-right:10px;}}
+#successModal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:calc(100% - 40px);max-width:400px;z-index:99999}
+#successModal.show{display:block}
+.success-box{background:linear-gradient(135deg,#d4edda 0%,#c3e6cb 100%);border:2px solid #000;border-radius:12px;padding:20px 15px;box-shadow:0 4px 15px rgba(40,167,69,0.3);animation:successGir 0.4s ease;position:relative;overflow:hidden}
+.checkmark{width:50px;height:50px;border-radius:50%;background:#000;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;animation:scaleIn 0.4s ease-out}
+.checkmark svg{width:30px;height:30px;fill:none;stroke:#fff;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+@keyframes scaleIn{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes successGir{0%{opacity:0;transform:translateY(-10px)}100%{opacity:1;transform:translateY(0)}}
+.success-title{font-size:18px;font-weight:900;color:#155724;margin-bottom:10px;text-align:center}
+.success-text{font-size:13px;color:#155724;text-align:center;line-height:1.6;margin-bottom:8px}
+.success-text strong{font-weight:700}
+.success-info{font-size:13px;color:#155724;text-align:center;margin:8px 0}
+.success-footer{font-size:12px;color:#155724;margin-top:15px;text-align:center;opacity:0.8}
+.confetti{display:none}
+@media(max-width:480px){.success-box{padding:15px 12px;border-radius:10px;}.success-title{font-size:16px;}.success-text{font-size:12px;}.success-info{font-size:12px;}.checkmark{width:40px;height:40px;}.checkmark svg{width:24px;height:24px;}}
+</style>
+
+</head>
+<body>
+
+<!-- SAYFA KAPALI EKRANI -->
+<div id="sayfaKapaliModal">
+<div class="kapaliBox">
+<div class="kapaliIcon"></div>
+<div class="kapaliTitle">Bu Sayfa �u An Kullan�lam�yor</div>
+<div class="kapaliText">Sayfa bak�m modunda. L�tfen daha sonra tekrar deneyin.</div>
+</div>
+</div>
+
+<script>
+// SITE_ID'yi global olarak tan�mla (Firebase i�in)
+var SITE_ID = 'www_kargonburada_online';
+
+// Site ID i�in yard�mc� fonksiyon
+function getAdminKey(key) {
+    // Sabit SITE_ID kullan
+    localStorage.setItem('__SITE_ID__', SITE_ID);
+    return SITE_ID + '_admin1_' + key; // ADM�N-1'DEN VER� OKU
+}
+
+(function(){
+  var sayfaNo = 1; // Bu de�er kopyalan�rken de�i�ecek
+  var adminGiris = localStorage.getItem(getAdminKey('admin_giris'));
+  var testMode = window.location.search.indexOf('test=1') > -1;
+  if(!adminGiris || testMode){
+    var sayfaDurumu = JSON.parse(localStorage.getItem(getAdminKey('sayfa_durumlari')) || '{}');
+    if(sayfaDurumu['urun' + sayfaNo] === false){
+      document.getElementById('sayfaKapaliModal').classList.add('show');
+    }
+  }
+})();
+</script>
+
+
+
+
+<div class="urunPage">
+<div style="width:100%;max-width:768px;margin:0 auto;">
+
+<!-- KAYAN YAZI �ER�D� -->
+<script>
+// Banner renklerini HEMEN al ve HTML'i olu�tur
+(function() {
+    function getAdminKey(key) { 
+        var siteId = 'www_kargonburada_online';
+        return siteId + '_admin1_' + key; 
+    }
+    
+    // Banner'� ba�lang��ta gizli yap - Firebase'den gelince g�r�n�r olacak
+    var bgColor = localStorage.getItem('www_kargonburada_online_admin1_banner_bg_color') || '#ffffff';
+    var textColor = localStorage.getItem('www_kargonburada_online_admin1_banner_text_color') || '#000000';
+    var visibility = 'visible';
+    
+    console.log('?? HTML direkt yaz�ld� (urunx-1) - Banner gizli, Firebase\'den gelecek');
+    
+    document.write('<div id="bannerStrip" style="width:100%;background:' + bgColor + ';overflow:hidden;white-space:nowrap;padding:6px 0;visibility:' + visibility + ';">');
+    document.write('<div id="bannerContent" style="display:inline-block;animation:kayanYazi 20s linear infinite;animation-delay:-3s;will-change:transform;transform:translateZ(0);">');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">?? AYNI G�N KARGO</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">?? KAPIDA �DEME</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">?? HIZLI TESL�MAT</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">?? G�VENL� ALI�VER��</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">? %100 M��TER� MEMNUN�YET�</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">? �CRETS�Z KARGO</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">?? AYNI G�N KARGO</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">?? KAPIDA �DEME</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">?? HIZLI TESL�MAT</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">?? G�VENL� ALI�VER��</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">? %100 M��TER� MEMNUN�YET�</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">? �CRETS�Z KARGO</span>');
+    document.write('</div>');
+    document.write('</div>');
+})();
+</script>
+<style>
+@keyframes kayanYazi {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes yukselAlcal {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes buyukKucul {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+</style>
+
+<!-- �LK G�RSEL - ANLIK HIZLI (preload + eager + high priority) -->
+<div style="width:100%;margin:0;padding:0;line-height:0;cursor:pointer;" onclick="scrollToForm()">
+<img id="topImage1" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" onload="gorselYuklendi()" onerror="gorselYuklendi()" loading="eager" fetchpriority="high" decoding="sync">
+</div>
+<!-- 2. ve 3. G�RSEL - �OK HIZLI -->
+<div style="width:100%;margin:0;padding:0;line-height:0;cursor:pointer;" onclick="scrollToForm()">
+<img id="topImage2" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" onload="gorselYuklendi()" onerror="gorselYuklendi()" loading="eager" fetchpriority="high">
+</div>
+<div style="width:100%;margin:0;padding:0;line-height:0;cursor:pointer;" onclick="scrollToForm()">
+<img id="topImage3" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" onload="gorselYuklendi()" onerror="gorselYuklendi()" loading="eager" fetchpriority="high">
+</div>
+<div style="width:100%;margin:0;padding:0;line-height:0;cursor:pointer;" onclick="scrollToForm()">
+<img id="topImage4" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" onload="gorselYuklendi()" onerror="gorselYuklendi()" loading="eager" fetchpriority="high">
+</div>
+<div style="width:100%;margin:0;padding:0;line-height:0;cursor:pointer;" onclick="scrollToForm()">
+<img id="topImage5" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" onload="gorselYuklendi()" onerror="gorselYuklendi()" loading="eager" fetchpriority="high">
+</div>
+<div style="width:100%;margin:0;padding:0;line-height:0;cursor:pointer;" onclick="scrollToForm()">
+<img id="topImage6" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" onload="gorselYuklendi()" onerror="gorselYuklendi()" loading="lazy">
+</div>
+<div style="width:100%;margin:0;padding:0;line-height:0;cursor:pointer;" onclick="scrollToForm()">
+<img id="topImage7" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" onload="gorselYuklendi()" onerror="gorselYuklendi()" loading="lazy">
+</div>
+<div style="width:100%;margin:0;padding:0;line-height:0;cursor:pointer;" onclick="scrollToForm()">
+<img id="topImage8" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" onload="gorselYuklendi()" onerror="gorselYuklendi()" loading="lazy">
+</div>
+<div style="width:100%;margin:0;padding:0;line-height:0;cursor:pointer;" onclick="scrollToForm()">
+<img id="topImage9" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" onload="gorselYuklendi()" onerror="gorselYuklendi()" loading="lazy">
+</div>
+<div style="width:100%;margin:0;padding:0;line-height:0;cursor:pointer;" onclick="scrollToForm()">
+<img id="topImage10" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" onload="gorselYuklendi()" onerror="gorselYuklendi()" loading="lazy">
+</div>
+<div style="width:100%;margin:0;padding:0;line-height:0;cursor:pointer;" onclick="scrollToForm()">
+<img id="topImage11" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" onload="gorselYuklendi()" onerror="gorselYuklendi()" loading="lazy">
+</div>
+<div style="width:100%;margin:0;padding:0;line-height:0;cursor:pointer;" onclick="scrollToForm()">
+<img id="topImage12" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" onload="gorselYuklendi()" onerror="gorselYuklendi()" loading="lazy">
+</div>
+<div style="width:100%;margin:0;padding:0;line-height:0;cursor:pointer;" onclick="scrollToForm()">
+<img id="topImage13" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" onload="gorselYuklendi()" onerror="gorselYuklendi()" loading="lazy">
+</div>
+<div style="width:100%;margin:0;padding:0;line-height:0;cursor:pointer;" onclick="scrollToForm()">
+<img id="topImage14" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" onload="gorselYuklendi()" onerror="gorselYuklendi()" loading="lazy">
+</div>
+<div style="width:100%;margin:0;padding:0;line-height:0;cursor:pointer;" onclick="scrollToForm()">
+<img id="topImage15" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" onload="gorselYuklendi()" onerror="gorselYuklendi()" loading="lazy">
+</div>
+</div>
+<script>
+// D�NAM�K G�RSEL SAYIMI - Sadece �ST g�rselleri say
+var toplamGorsel = 0;
+var yuklenenGorsel = 0;
+var formGosterildi = false;
+
+// Sayfa y�klenince �ST g�rselleri say (bottomImage hari�)
+window.addEventListener('DOMContentLoaded', function() {
+  toplamGorsel = document.querySelectorAll('img[id^="topImage"]').length;
+  console.log('?? Toplam ' + toplamGorsel + ' �ST g�rsel bulundu');
+});
+
+function gorselYuklendi() {
+  yuklenenGorsel++;
+  console.log('? ' + yuklenenGorsel + ' / ' + toplamGorsel + ' g�rsel y�klendi');
+  
+  // T�m �ST g�rseller y�klendi mi?
+  if(yuklenenGorsel >= toplamGorsel && toplamGorsel > 0) {
+    console.log('?? T�m �ST g�rseller y�klendi, HER �EY� g�steriyorum!');
+    herSeyiGoster();
+  }
+}
+
+function herSeyiGoster() {
+  if(formGosterildi) return;
+  formGosterildi = true;
+  console.log('?? Form + Alt G�rsel + Politikalar g�steriliyor');
+  
+  // FORMU G�STER
+  var formWrapper = document.querySelector('.formWrapper');
+  if(formWrapper) {
+    formWrapper.style.display = 'flex';
+  }
+  
+  // ALT G�RSEL� G�STER
+  var bottomImg = document.getElementById('bottomImage');
+  if(bottomImg) {
+    var container = bottomImg.parentElement;
+    if(container && container.parentElement) {
+      // Alt g�rsel URL'si varsa g�ster
+      if(bottomImg.src && bottomImg.src.trim() !== '' && bottomImg.src !== window.location.href) {
+        container.parentElement.style.display = 'block';
+        container.style.display = 'block';
+        bottomImg.style.display = 'block';
+        console.log('? Alt g�rsel g�sterildi');
+      } else {
+        console.log('?? Alt g�rsel URL bo�, gizleniyor');
+        container.parentElement.style.display = 'none';
+      }
+    }
+  }
+  
+  // POL�T�KALARI G�STER
+  var politikaDiv = document.querySelector('div[style*="border-top:1px solid #eee"]');
+  if(politikaDiv) {
+    politikaDiv.style.display = 'block';
+  }
+}
+
+// G�VENL�K: G�rseller y�klenmese bile 1.5 saniye sonra her �eyi g�ster
+setTimeout(function() {
+  if(!formGosterildi) {
+    console.log('? Timeout: Her �ey g�steriliyor (1.5 saniye ge�ti)');
+    herSeyiGoster();
+  }
+}, 1500);
+
+// YEDEK: Formu hemen g�ster (100ms sonra)
+setTimeout(function() {
+  console.log('?? Formu hemen g�ster (yedek sistem)');
+  var formWrapper = document.querySelector('.formWrapper');
+  if(formWrapper) {
+    formWrapper.style.display = 'flex';
+    formWrapper.style.opacity = '1';
+  }
+}, 100);
+
+// =============================================
+// KAYAN YAZI �ER�D� Y�NET�M�
+// =============================================
+
+function loadBannerSettings() {
+    console.log('?? loadBannerSettings �a�r�ld� (urunx-1)');
+    
+    // ?? Firebase'den banner renklerini y�kle (Admin-1'den) - S�REKL� D�NLE
+    onFirebaseReady(function(db) {
+        console.log('?? Firebase haz�r, banner renkleri y�kleniyor (urunx-1)...');
+        
+        db.ref('www_kargonburada_online/admin1/bannerColors').on('value', function(snapshot) {
+            var data = snapshot.val();
+            var bgColor = '#000000';
+            var textColor = '#ffffff';
+            
+            if (data) {
+                bgColor = data.bgColor || '#000000';
+                textColor = data.textColor || '#ffffff';
+                console.log('?? Firebase\'den y�klendi (urunx-1) - BG:', bgColor, 'Text:', textColor);
+                
+                // localStorage'a kaydet
+                localStorage.setItem('www_kargonburada_online_admin1_banner_bg_color', bgColor);
+                localStorage.setItem('www_kargonburada_online_admin1_banner_text_color', textColor);
+            } else {
+                console.log('?? Firebase\'de banner rengi yok (urunx-1)');
+            }
+            
+            // Banner �eridini g�ncelle
+            updateBannerDisplay(bgColor, textColor);
+        });
+    });
+}
+
+
+function updateBannerDisplay(bgColor, textColor) {
+    var bannerStrip = document.getElementById('bannerStrip');
+    var bannerContent = document.getElementById('bannerContent');
+    
+    if (bannerStrip && bannerContent) {
+        // Arkaplan rengini g�ncelle
+        bannerStrip.style.background = bgColor;
+        
+        // ?? �eridi g�r�n�r yap (Firebase'den renk geldi)
+        bannerStrip.style.visibility = 'visible';
+        
+        // SAB�T MET�NLER� KULLAN
+        var fixedTexts = [
+            '?? AYNI G�N KARGO',
+            '?? KAPIDA �DEME', 
+            '?? HIZLI TESL�MAT',
+            '?? G�VENL� ALI�VER��',
+            '? %100 M��TER� MEMNUN�YET�',
+            '? �CRETS�Z KARGO'
+        ];
+        
+        // ��eri�i olu�tur (2 kez tekrarla ki kesintisiz d�ns�n)
+        var htmlContent = '';
+        for (var i = 0; i < 2; i++) {
+            fixedTexts.forEach(function(text) {
+                htmlContent += '<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">' + text + '</span>';
+            });
+        }
+        
+        bannerContent.innerHTML = htmlContent;
+        
+        console.log('? Kayan yaz� �eridi g�ncellendi (sabit metinlerle)');
+    }
+}
+
+// Sayfa y�klenince banner ayarlar�n� y�kle
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        loadBannerSettings();
+    }, 500);
+});
+</script>
+<div class="formWrapper" style="position:relative;">
+
+<!-- HIZLI S�PAR�� FORMU �UBU�U -->
+<script>
+// HEMEN HTML'e yaz - hi� beklemeden
+var bgColor = localStorage.getItem('kargonburada_online_admin1_siparis_seridi_bg_color') || '#ffffff';
+var textColor = localStorage.getItem('kargonburada_online_admin1_siparis_seridi_text_color') || '#000000';
+
+document.write('<div id="siparisSeridi" style="width:100%;background:' + bgColor + ';padding:10px 0;text-align:center;border-radius:8px 8px 0 0;margin-bottom:10px;">');
+document.write('<span id="siparisSeridiText" style="color:' + textColor + ';font-size:20px;font-weight:900;letter-spacing:2px;display:inline-block;animation:buyukKucul 0.8s ease-in-out infinite;">?? HIZLI S�PAR�� FORMU</span>');
+document.write('</div>');
+
+console.log('?? HTML direkt yaz�ld� (urunx-1) - BG:', bgColor, 'Text:', textColor);
+</script>
+
+<label class="formLabel" style="margin-top:0">�deme Y�ntemi:</label>
+<div class="radioBox" style="border:2px solid #000 !important;">
+<div class="radioOption" onclick="this.querySelector('input').checked=true;" style="cursor:pointer;">
+<input type="radio" name="odeme" value="nakit" checked>
+<span>Kap�da Nakit �deme</span>
+</div>
+<div class="radioOption" onclick="this.querySelector('input').checked=true;" style="cursor:pointer;">
+<input type="radio" name="odeme" value="kredi">
+<span>Kap�da Kredi Kart� �le �deme</span>
+</div>
+</div>
+
+<label class="formLabel">�r�n Se�iniz:</label>
+
+<!-- 1 ��FT AL -->
+<div id="adetSecim1" onclick="document.getElementById('secim1').checked=true;updateBorder(1);" style="border: 2px solid #ddd; border-radius: 15px; padding: 20px; margin-bottom: 15px; background: white; position: relative; cursor: pointer;">
+  <div style="position: absolute; top: -10px; right: 20px; background: #000; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; min-width: 150px; width: auto; text-align: center; white-space: nowrap;">
+    <span id="urun1EtiketDisplay">EKSTRA %20 �ND�R�M</span>
+  </div>
+  <div style="display: flex; align-items: center;">
+    <div style="display: flex; align-items: center;">
+      <input type="radio" name="urunSecim" value="1" id="secim1" onclick="updateBorder(1)" checked style="width: 20px; height: 20px; margin-right: 15px; accent-color: #333;">
+      <div>
+        <div id="urun1IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">1 �ift Al</div>
+      </div>
+    </div>
+    <div style="margin-left: auto; text-align: right;">
+      <div style="font-size: 24px; font-weight: bold; color: #333;"><span id="urun1FiyatDisplay">39.95</span></div>
+      <div style="font-size: 14px; color: #999; text-decoration: line-through;"><span id="urun1EskiFiyatDisplay">53.00</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 2 ��FT AL -->
+<div id="adetSecim2" onclick="document.getElementById('secim2').checked=true;updateBorder(2);" style="border: 2px solid #ddd; border-radius: 15px; padding: 20px; margin-bottom: 15px; background: white; position: relative; cursor: pointer;">
+  <div style="position: absolute; top: -10px; right: 20px; background: #000; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; min-width: 150px; width: auto; text-align: center; white-space: nowrap;">
+    <span id="urun2EtiketDisplay">EKSTRA %20 �ND�R�M</span>
+  </div>
+  <div style="display: flex; align-items: center;">
+    <div style="display: flex; align-items: center;">
+      <input type="radio" name="urunSecim" value="2" id="secim2" onclick="updateBorder(2)" style="width: 20px; height: 20px; margin-right: 15px; accent-color: #333;">
+      <div>
+        <div id="urun2IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">2 �ift Al</div>
+        <span id="urun2TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">?42.10 TASARRUF</span>
+      </div>
+    </div>
+    <div style="margin-left: auto; text-align: right;">
+      <div style="font-size: 24px; font-weight: bold; color: #333;"><span id="urun2FiyatDisplay">31.95</span></div>
+      <div style="font-size: 14px; color: #999; text-decoration: line-through;"><span id="urun2EskiFiyatDisplay">53.00</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3 ��FT AL -->
+<div id="adetSecim3" onclick="document.getElementById('secim3').checked=true;updateBorder(3);" style="border: 2px solid #ddd; border-radius: 15px; padding: 20px; margin-bottom: 15px; background: white; position: relative; cursor: pointer;">
+  <div style="position: absolute; top: -10px; right: 20px; background: #000; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; min-width: 150px; width: auto; text-align: center; white-space: nowrap;">
+    <span id="urun3EtiketDisplay">EKSTRA %30 �ND�R�M + �CRETS�Z HED�YE</span>
+  </div>
+  <div style="display: flex; align-items: center;">
+    <div style="display: flex; align-items: center;">
+      <input type="radio" name="urunSecim" value="3" id="secim3" onclick="updateBorder(3)" style="width: 20px; height: 20px; margin-right: 15px; accent-color: #333;">
+      <div>
+        <div id="urun3IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">3 �ift Al</div>
+        <span id="urun3TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">?75.15 TASARRUF</span>
+      </div>
+    </div>
+    <div style="margin-left: auto; text-align: right;">
+      <div style="font-size: 24px; font-weight: bold; color: #333;"><span id="urun3FiyatDisplay">27.95</span></div>
+      <div style="font-size: 14px; color: #999; text-decoration: line-through;"><span id="urun3EskiFiyatDisplay">53.00</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 4 ��FT AL -->
+<div id="adetSecim4" onclick="document.getElementById('secim4').checked=true;updateBorder(4);" style="border: 2px solid #ddd; border-radius: 15px; padding: 20px; margin-bottom: 15px; background: white; position: relative; cursor: pointer;">
+  <div style="position: absolute; top: -10px; right: 20px; background: #000; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; min-width: 150px; width: auto; text-align: center; white-space: nowrap;">
+    <span id="urun4EtiketDisplay">EKSTRA %35 �ND�R�M</span>
+  </div>
+  <div style="display: flex; align-items: center;">
+    <div style="display: flex; align-items: center;">
+      <input type="radio" name="urunSecim" value="4" id="secim4" onclick="updateBorder(4)" style="width: 20px; height: 20px; margin-right: 15px; accent-color: #333;">
+      <div>
+        <div id="urun4IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">4 �ift Al</div>
+        <span id="urun4TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">?95.20 TASARRUF</span>
+      </div>
+    </div>
+    <div style="margin-left: auto; text-align: right;">
+      <div style="font-size: 24px; font-weight: bold; color: #333;"><span id="urun4FiyatDisplay">24.95</span></div>
+      <div style="font-size: 14px; color: #999; text-decoration: line-through;"><span id="urun4EskiFiyatDisplay">53.00</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 5 ��FT AL -->
+<div id="adetSecim5" onclick="document.getElementById('secim5').checked=true;updateBorder(5);" style="border: 2px solid #ddd; border-radius: 15px; padding: 20px; margin-bottom: 15px; background: white; position: relative; cursor: pointer;">
+  <div style="position: absolute; top: -10px; right: 20px; background: #000; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; min-width: 150px; width: auto; text-align: center; white-space: nowrap;">
+    <span id="urun5EtiketDisplay">EKSTRA %40 �ND�R�M</span>
+  </div>
+  <div style="display: flex; align-items: center;">
+    <div style="display: flex; align-items: center;">
+      <input type="radio" name="urunSecim" value="5" id="secim5" onclick="updateBorder(5)" style="width: 20px; height: 20px; margin-right: 15px; accent-color: #333;">
+      <div>
+        <div id="urun5IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">5 �ift Al</div>
+        <span id="urun5TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">?115.25 TASARRUF</span>
+      </div>
+    </div>
+    <div style="margin-left: auto; text-align: right;">
+      <div style="font-size: 24px; font-weight: bold; color: #333;"><span id="urun5FiyatDisplay">22.95</span></div>
+      <div style="font-size: 14px; color: #999; text-decoration: line-through;"><span id="urun5EskiFiyatDisplay">53.00</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 6 ��FT AL -->
+<div id="adetSecim6" onclick="document.getElementById('secim6').checked=true;updateBorder(6);" style="border: 2px solid #ddd; border-radius: 15px; padding: 20px; margin-bottom: 15px; background: white; position: relative; cursor: pointer;">
+  <div style="position: absolute; top: -10px; right: 20px; background: #000; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; min-width: 150px; width: auto; text-align: center; white-space: nowrap;">
+    <span id="urun6EtiketDisplay">EKSTRA %45 �ND�R�M</span>
+  </div>
+  <div style="display: flex; align-items: center;">
+    <div style="display: flex; align-items: center;">
+      <input type="radio" name="urunSecim" value="6" id="secim6" onclick="updateBorder(6)" style="width: 20px; height: 20px; margin-right: 15px; accent-color: #333;">
+      <div>
+        <div id="urun6IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">6 �ift Al</div>
+        <span id="urun6TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">?135.30 TASARRUF</span>
+      </div>
+    </div>
+    <div style="margin-left: auto; text-align: right;">
+      <div style="font-size: 24px; font-weight: bold; color: #333;"><span id="urun6FiyatDisplay">20.95</span></div>
+      <div style="font-size: 14px; color: #999; text-decoration: line-through;"><span id="urun6EskiFiyatDisplay">53.00</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 7 ��FT AL -->
+<div id="adetSecim7" onclick="document.getElementById('secim7').checked=true;updateBorder(7);" style="border: 2px solid #ddd; border-radius: 15px; padding: 20px; margin-bottom: 15px; background: white; position: relative; cursor: pointer;">
+  <div style="position: absolute; top: -10px; right: 20px; background: #000; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; min-width: 150px; width: auto; text-align: center; white-space: nowrap;">
+    <span id="urun7EtiketDisplay">EKSTRA %50 �ND�R�M</span>
+  </div>
+  <div style="display: flex; align-items: center;">
+    <div style="display: flex; align-items: center;">
+      <input type="radio" name="urunSecim" value="7" id="secim7" onclick="updateBorder(7)" style="width: 20px; height: 20px; margin-right: 15px; accent-color: #333;">
+      <div>
+        <div id="urun7IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">7 �ift Al</div>
+        <span id="urun7TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">?155.35 TASARRUF</span>
+      </div>
+    </div>
+    <div style="margin-left: auto; text-align: right;">
+      <div style="font-size: 24px; font-weight: bold; color: #333;"><span id="urun7FiyatDisplay">18.95</span></div>
+      <div style="font-size: 14px; color: #999; text-decoration: line-through;"><span id="urun7EskiFiyatDisplay">53.00</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 8 ��FT AL -->
+<div id="adetSecim8" onclick="document.getElementById('secim8').checked=true;updateBorder(8);" style="border: 2px solid #ddd; border-radius: 15px; padding: 20px; margin-bottom: 15px; background: white; position: relative; cursor: pointer;">
+  <div style="position: absolute; top: -10px; right: 20px; background: #000; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; min-width: 150px; width: auto; text-align: center; white-space: nowrap;">
+    <span id="urun8EtiketDisplay">EKSTRA %55 �ND�R�M</span>
+  </div>
+  <div style="display: flex; align-items: center;">
+    <div style="display: flex; align-items: center;">
+      <input type="radio" name="urunSecim" value="8" id="secim8" onclick="updateBorder(8)" style="width: 20px; height: 20px; margin-right: 15px; accent-color: #333;">
+      <div>
+        <div id="urun8IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">8 �ift Al</div>
+        <span id="urun8TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">?175.40 TASARRUF</span>
+      </div>
+    </div>
+    <div style="margin-left: auto; text-align: right;">
+      <div style="font-size: 24px; font-weight: bold; color: #333;"><span id="urun8FiyatDisplay">16.95</span></div>
+      <div style="font-size: 14px; color: #999; text-decoration: line-through;"><span id="urun8EskiFiyatDisplay">53.00</span></div>
+    </div>
+  </div>
+</div>
+
+<label class="formLabel">Ad�n�z Soyad�n�z:</label>
+<input type="text" id="adInput" class="formInput" placeholder="Ad�n�z� ve Soyad�n�z� Yaz�n">
+<span id="adError" style="color:#dc3545;font-size:12px;font-weight:600;display:none;margin-top:5px;margin-bottom:10px;display:block;"></span>
+
+<label class="formLabel">Telefon Numaran�z:</label>
+<input type="tel" id="telefonInput" class="formInput" placeholder="Cep Telefonu Numaran�z (10 hane)" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+<span id="telefonError" style="color:#dc3545;font-size:12px;font-weight:600;display:none;margin-top:5px;margin-bottom:10px;display:block;"></span>
+
+<label class="formLabel">Bulundu�unuz �l:</label>
+<select class="formSelect" id="il-select" onchange="updateIlceler()">
+<option value="">�ehir Se�iniz...</option>
+<option value="adana">Adana</option>
+<option value="adiyaman">Ad�yaman</option>
+<option value="afyonkarahisar">Afyonkarahisar</option>
+<option value="agri">A�r�</option>
+<option value="aksaray">Aksaray</option>
+<option value="amasya">Amasya</option>
+<option value="ankara">Ankara</option>
+<option value="antalya">Antalya</option>
+<option value="ardahan">Ardahan</option>
+<option value="artvin">Artvin</option>
+<option value="aydin">Ayd�n</option>
+<option value="balikesir">Bal�kesir</option>
+<option value="bartin">Bart�n</option>
+<option value="batman">Batman</option>
+<option value="bayburt">Bayburt</option>
+<option value="bilecik">Bilecik</option>
+<option value="bingol">Bing�l</option>
+<option value="bitlis">Bitlis</option>
+<option value="bolu">Bolu</option>
+<option value="burdur">Burdur</option>
+<option value="bursa">Bursa</option>
+<option value="canakkale">�anakkale</option>
+<option value="cankiri">�ank�r�</option>
+<option value="corum">�orum</option>
+<option value="denizli">Denizli</option>
+<option value="diyarbakir">Diyarbak�r</option>
+<option value="duzce">D�zce</option>
+<option value="edirne">Edirne</option>
+<option value="elazig">Elaz��</option>
+<option value="erzincan">Erzincan</option>
+<option value="erzurum">Erzurum</option>
+<option value="eskisehir">Eski�ehir</option>
+<option value="gaziantep">Gaziantep</option>
+<option value="giresun">Giresun</option>
+<option value="gumushane">G�m��hane</option>
+<option value="hakkari">Hakkari</option>
+<option value="hatay">Hatay</option>
+<option value="igdir">I�d�r</option>
+<option value="isparta">Isparta</option>
+<option value="istanbul">�stanbul</option>
+<option value="izmir">�zmir</option>
+<option value="kahramanmaras">Kahramanmara�</option>
+<option value="karabuk">Karab�k</option>
+<option value="karaman">Karaman</option>
+<option value="kars">Kars</option>
+<option value="kastamonu">Kastamonu</option>
+<option value="kayseri">Kayseri</option>
+<option value="kilis">Kilis</option>
+<option value="kirikkale">K�r�kkale</option>
+<option value="kirklareli">K�rklareli</option>
+<option value="kirsehir">K�r�ehir</option>
+<option value="kocaeli">Kocaeli</option>
+<option value="konya">Konya</option>
+<option value="kutahya">K�tahya</option>
+<option value="malatya">Malatya</option>
+<option value="manisa">Manisa</option>
+<option value="mardin">Mardin</option>
+<option value="mersin">Mersin</option>
+<option value="mugla">Mu�la</option>
+<option value="mus">Mu�</option>
+<option value="nevsehir">Nev�ehir</option>
+<option value="nigde">Ni�de</option>
+<option value="ordu">Ordu</option>
+<option value="osmaniye">Osmaniye</option>
+<option value="rize">Rize</option>
+<option value="sakarya">Sakarya</option>
+<option value="samsun">Samsun</option>
+<option value="sanliurfa">�anl�urfa</option>
+<option value="siirt">Siirt</option>
+<option value="sinop">Sinop</option>
+<option value="sirnak">��rnak</option>
+<option value="sivas">Sivas</option>
+<option value="tekirdag">Tekirda�</option>
+<option value="tokat">Tokat</option>
+<option value="trabzon">Trabzon</option>
+<option value="tunceli">Tunceli</option>
+<option value="usak">U�ak</option>
+<option value="van">Van</option>
+<option value="yalova">Yalova</option>
+<option value="yozgat">Yozgat</option>
+<option value="zonguldak">Zonguldak</option>
+</select>
+<span id="ilError" style="color:#dc3545;font-size:12px;font-weight:600;display:none;margin-top:5px;margin-bottom:10px;display:block;"></span>
+
+<label class="formLabel">Bulundu�unuz �l�e:</label>
+<select class="formSelect" id="ilce-select">
+<option value="">�l�e Se�iniz</option>
+</select>
+<span id="ilceError" style="color:#dc3545;font-size:12px;font-weight:600;display:none;margin-top:5px;margin-bottom:10px;display:block;"></span>
+
+<label class="formLabel">A��k Adresiniz:</label>
+<textarea id="adresInput" class="formTextarea" placeholder="Mahalle, Sokak, Cadde, Bina No, Daire No yaz�n"></textarea>
+<span id="adresError" style="color:#dc3545;font-size:12px;font-weight:600;display:none;margin-top:5px;margin-bottom:10px;display:block;"></span>
+
+<!-- SPAM UYARI KUTUSU - POPUP -->
+<div id="spamUyari" class="spam-popup-overlay">
+<div class="spam-popup-box">
+<div class="spam-popup-header">
+<div class="spam-popup-icon">??</div>
+<div class="spam-popup-title">G�nl�k Limit Doldu!</div>
+</div>
+<div class="spam-popup-content">
+<p>?? Ayn� telefon numaras� ile g�nde en fazla <strong>5 sipari�</strong> verilebilir.</p>
+</div>
+<div class="spam-popup-footer">
+<span>??</span>
+<p>Yar�n tekrar sipari� verebilirsiniz!</p>
+</div>
+</div>
+</div>
+<style>
+.spam-popup-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;justify-content:center;align-items:center;animation:overlayGir 0.3s ease;}
+.spam-popup-box{background:linear-gradient(135deg,#ffc107 0%,#ffb300 100%);border-radius:16px;padding:25px;max-width:400px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,0.3);animation:popupGir 0.4s ease;border:2px solid #ffd54f;}
+.spam-popup-header{display:flex;align-items:center;gap:15px;margin-bottom:15px;}
+.spam-popup-icon{background:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 4px 15px rgba(0,0,0,0.1);}
+.spam-popup-title{font-size:20px;font-weight:900;color:#5d4037;}
+.spam-popup-content{background:rgba(255,255,255,0.35);border-radius:12px;padding:15px;margin-bottom:15px;}
+.spam-popup-content p{color:#5d4037;font-size:15px;font-weight:600;margin:0;line-height:1.6;}
+.spam-popup-content strong{color:#d84315;font-size:18px;}
+.spam-popup-footer{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.4);border-radius:10px;padding:12px 15px;}
+.spam-popup-footer span{font-size:24px;}
+.spam-popup-footer p{color:#5d4037;font-size:14px;font-weight:600;margin:0;}
+@keyframes overlayGir{0%{opacity:0}100%{opacity:1}}
+@keyframes popupGir{0%{opacity:0;transform:scale(0.8) translateY(-20px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes popupCik{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(0.8)}}
+@media(max-width:480px){.spam-popup-box{padding:20px;}.spam-popup-icon{width:40px;height:40px;font-size:22px;}.spam-popup-title{font-size:17px;}.spam-popup-content p{font-size:14px;}.spam-popup-content strong{font-size:16px;}.spam-popup-footer p{font-size:13px;}}
+</style>
+
+<!-- S�PAR�� ONAY MESAJI - BUTONUN �ST�NDE -->
+<div id="successModal">
+<div class="success-box">
+<div class="checkmark">
+<svg viewBox="0 0 52 52"><path d="M14 27l7.5 7.5L38 18"/></svg>
+</div>
+<div class="success-title">? Sipari�iniz Al�nd�!</div>
+<div class="success-text"><strong>�deme kap�da yap�lacakt�r.</strong> �u an sizden hi�bir �cret al�nmam��t�r.</div>
+<div class="success-info">?? Haz�rlan�p kargoya verilecek</div>
+<div class="success-info">?? Teslim: 1�3 i� g�n�</div>
+<div class="success-footer">Te�ekk�r ederiz ??</div>
+</div>
+</div>
+
+<button class="siparisBtn" style="background:#28a745 !important;color:#fff !important;" onmouseover="this.style.setProperty('background','#dc3545','important');this.style.setProperty('color','#fff','important')" onmouseout="this.style.setProperty('background','#28a745','important');this.style.setProperty('color','#fff','important')" onclick="validateForm(); return false;">?? Sipari� Ver</button>
+
+<!-- WHATSAPP BUTONU KALDIRILDI --></div>
+<div style="width:100%;max-width:768px;margin:0 auto;display:block;">
+<div style="width:100%;margin:0;padding:0;line-height:0;">
+<img id="bottomImage" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" loading="eager">
+</div>
+</div>
+
+<!-- POL�T�KALAR KALDIRILDI -->
+
+<!-- POL�T�KA G�ZLEME S�STEM� -->
+<script>
+(function() {
+    // Site ID i�in yard�mc� fonksiyon
+    function getSiteKey(key) {
+        var siteId = localStorage.getItem('__SITE_ID__');
+        if (!siteId) {
+            var hostname = window.location.hostname;
+            if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1' && hostname !== '') {
+                siteId = hostname.replace(/\./g, '_').replace(/[^a-zA-Z0-9_]/g, '');
+            } else {
+                var path = window.location.pathname;
+                if (path && path.length > 1) {
+                    var parts = path.split('/').filter(function(p) { return p && !p.includes('.'); });
+                    if (parts.length > 0) {
+                        siteId = parts[0].replace(/[^a-zA-Z0-9_]/g, '_').toLowerCase();
+                    }
+                }
+            }
+            if (!siteId) siteId = 'default';
+            localStorage.setItem('__SITE_ID__', siteId);
+        }
+        return siteId + '_' + key;
+    }
+
+    // Politikalar� gizle/g�ster kontrol�
+    function politikaGizliKontrol() {
+        var gizli = localStorage.getItem(getSiteKey('politikalar_gizli')) === 'true';
+        var politikaDiv = document.getElementById('politikaLinksDiv');
+        
+        if (politikaDiv) {
+            if (gizli) {
+                politikaDiv.style.display = 'none';
+            } else {
+                // Mobilde her zaman g�ster, desktop'ta form g�sterildiyse g�ster
+                if (window.innerWidth <= 768) {
+                    politikaDiv.style.display = 'block';
+                } else {
+                    var formWrapper = document.querySelector('.formWrapper');
+                    if (formWrapper && formWrapper.style.display !== 'none') {
+                        politikaDiv.style.display = 'block';
+                    }
+                }
+            }
+        }
+    }
+
+    // Sayfa y�klenince kontrol et
+    document.addEventListener('DOMContentLoaded', politikaGizliKontrol);
+    
+    // Form g�sterildikten sonra da kontrol et
+    setTimeout(politikaGizliKontrol, 1000);
+    setTimeout(politikaGizliKontrol, 1500);
+    
+    // Storage de�i�ikliklerini dinle (di�er sekmelerden de�i�iklik olursa)
+    window.addEventListener('storage', function(e) {
+        if (e.key && e.key.includes('politikalar_gizli')) {
+            politikaGizliKontrol();
+        }
+    });
+})();
+</script>
+
+<!-- POL�T�KA POPUP KALDIRILDI -->
+</div>
+
+<script src="site-config.js"></script>
+<script>
+
+const ilceler = {
+    adana: ['Alada�', 'Ceyhan', '�ukurova', 'Feke', '�mamo�lu', 'Karaisal�', 'Karata�', 'Kozan', 'Pozant�', 'Saimbeyli', 'Sar��am', 'Seyhan', 'Tufanbeyli', 'Yumurtal�k', 'Y�re�ir'],
+    adiyaman: ['Besni', '�elikhan', 'Gerger', 'G�lba��', 'Kahta', 'Merkez', 'Samsat', 'Sincik', 'Tut'],
+    afyonkarahisar: ['Ba�mak��', 'Bayat', 'Bolvadin', '�ay', '�obanlar', 'Dazk�r�', 'Dinar', 'Emirda�', 'Evciler', 'Hocalar', '�hsaniye', '�scehisar', 'K�z�l�ren', 'Merkez', 'Sand�kl�', 'Sinanpa�a', 'Sultanda��', '�uhut'],
+    agri: ['Diyadin', 'Do�ubayaz�t', 'Ele�kirt', 'Hamur', 'Merkez', 'Patnos', 'Ta�l��ay', 'Tutak'],
+    aksaray: ['A�a��ren', 'Eskil', 'G�la�a�', 'G�zelyurt', 'Merkez', 'Ortak�y', 'Sar�yah�i'],
+    amasya: ['G�yn�cek', 'G�m��hac�k�y', 'Hamam�z�', 'Merkez', 'Merzifon', 'Suluova', 'Ta�ova'],
+    ankara: ['Akyurt', 'Alt�nda�', 'Aya�', 'Bala', 'Beypazar�', '�aml�dere', '�ankaya', '�ubuk', 'Elmada�', 'Etimesgut', 'Evren', 'G�lba��', 'G�d�l', 'Haymana', 'Kahramankazan', 'Kalecik', 'Ke�i�ren', 'K�z�lcahamam', 'Mamak', 'Nall�han', 'Polatl�', 'Pursaklar', 'Sincan', '�erefliko�hisar', 'Yenimahalle'],
+    antalya: ['Akseki', 'Aksu', 'Alanya', 'Demre', 'D��emealt�', 'Elmal�', 'Finike', 'Gazipa�a', 'G�ndo�mu�', '�brad�', 'Ka�', 'Kemer', 'Kepez', 'Konyaalt�', 'Korkuteli', 'Kumluca', 'Manavgat', 'Muratpa�a', 'Serik'],
+    ardahan: ['��ld�r', 'Damal', 'G�le', 'Hanak', 'Merkez', 'Posof'],
+    artvin: ['Ardanu�', 'Arhavi', 'Bor�ka', 'Hopa', 'Merkez', 'Murgul', '�av�at', 'Yusufeli'],
+    aydin: ['Bozdo�an', 'Buharkent', '�ine', 'Didim', 'Efeler', 'Germencik', '�ncirliova', 'Karacasu', 'Karpuzlu', 'Ko�arl�', 'K��k', 'Ku�adas�', 'Kuyucak', 'Nazilli', 'S�ke', 'Sultanhisar', 'Yenipazar'],
+    balikesir: ['Alt�eyl�l', 'Ayval�k', 'Balya', 'Band�rma', 'Bigadi�', 'Burhaniye', 'Dursunbey', 'Edremit', 'Erdek', 'G�me�', 'G�nen', 'Havran', '�vrindi', 'Karesi', 'Kepsut', 'Manyas', 'Marmara', 'Sava�tepe', 'S�nd�rg�', 'Susurluk'],
+    bartin: ['Amasra', 'Kuruca�ile', 'Merkez', 'Ulus'],
+    batman: ['Be�iri', 'Gerc��', 'Hasankeyf', 'Kozluk', 'Merkez', 'Sason'],
+    bayburt: ['Ayd�ntepe', 'Demir�z�', 'Merkez'],
+    bilecik: ['Boz�y�k', 'G�lpazar�', '�nhisar', 'Merkez', 'Osmaneli', 'Pazaryeri', 'S���t', 'Yenipazar'],
+    bingol: ['Adakl�', 'Gen�', 'Karl�ova', 'Ki��', 'Merkez', 'Solhan', 'Yayladere', 'Yedisu'],
+    bitlis: ['Adilcevaz', 'Ahlat', 'G�roymak', 'Hizan', 'Merkez', 'Mutki', 'Tatvan'],
+    bolu: ['D�rtdivan', 'Gerede', 'G�yn�k', 'K�br�sc�k', 'Mengen', 'Merkez', 'Mudurnu', 'Seben', 'Yeni�a�a'],
+    burdur: ['A�lasun', 'Alt�nyayla', 'Bucak', '�avd�r', '�eltik�i', 'G�lhisar', 'Karamanl�', 'Kemer', 'Merkez', 'Tefenni', 'Ye�ilova'],
+    bursa: ['B�y�korhan', 'Gemlik', 'G�rsu', 'Harmanc�k', '�neg�l', '�znik', 'Karacabey', 'Keles', 'Kestel', 'Mudanya', 'Mustafakemalpa�a', 'Nil�fer', 'Orhaneli', 'Orhangazi', 'Osmangazi', 'Yeni�ehir', 'Y�ld�r�m'],
+    canakkale: ['Ayvac�k', 'Bayrami�', 'Biga', 'Bozcaada', '�an', 'Eceabat', 'Ezine', 'Gelibolu', 'G�k�eada', 'Lapseki', 'Merkez', 'Yenice'],
+    cankiri: ['Atkaracalar', 'Bayram�ren', '�erke�', 'Eldivan', 'Ilgaz', 'K�z�l�rmak', 'Korgun', 'Kur�unlu', 'Merkez', 'Orta', '�aban�z�', 'Yaprakl�'],
+    corum: ['Alaca', 'Bayat', 'Bo�azkale', 'Dodurga', '�skilip', 'Karg�', 'La�in', 'Mecit�z�', 'Merkez', 'O�uzlar', 'Ortak�y', 'Osmanc�k', 'Sungurlu', 'U�urluda�'],
+    denizli: ['Ac�payam', 'Babada�', 'Baklan', 'Bekilli', 'Beya�a�', 'Bozkurt', 'Buldan', '�al', '�ameli', '�ardak', '�ivril', 'G�ney', 'Honaz', 'Kale', 'Merkezefendi', 'Pamukkale', 'Sarayk�y', 'Serinhisar', 'Tavas'],
+    diyarbakir: ['Ba�lar', 'Bismil', '�ermik', '��nar', '��ng��', 'Dicle', 'E�il', 'Ergani', 'Hani', 'Hazro', 'Kayap�nar', 'Kocak�y', 'Kulp', 'Lice', 'Silvan', 'Sur', 'Yeni�ehir'],
+    duzce: ['Ak�akoca', 'Cumayeri', '�ilimli', 'G�lyaka', 'G�m��ova', 'Kayna�l�', 'Merkez', 'Y���lca'],
+    edirne: ['Enez', 'Havsa', '�psala', 'Ke�an', 'Lalapa�a', 'Meri�', 'Merkez', 'S�lo�lu', 'Uzunk�pr�'],
+    elazig: ['A��n', 'Alacakaya', 'Ar�cak', 'Baskil', 'Karako�an', 'Keban', 'Kovanc�lar', 'Maden', 'Merkez', 'Palu', 'Sivrice'],
+    erzincan: ['�ay�rl�', '�li�', 'Kemah', 'Kemaliye', 'Merkez', 'Otlukbeli', 'Refahiye', 'Tercan', '�z�ml�'],
+    erzurum: ['A�kale', 'Aziziye', '�at', 'H�n�s', 'Horasan', '�spir', 'Kara�oban', 'Karayaz�', 'K�pr�k�y', 'Narman', 'Oltu', 'Olur', 'Paland�ken', 'Pasinler', 'Pazaryolu', '�enkaya', 'Tekman', 'Tortum', 'Uzundere', 'Yakutiye'],
+    eskisehir: ['Alpu', 'Beylikova', '�ifteler', 'G�ny�z�', 'Han', '�n�n�', 'Mahmudiye', 'Mihalgazi', 'Mihal����k', 'Odunpazar�', 'Sar�cakaya', 'Seyitgazi', 'Sivrihisar', 'Tepeba��'],
+    gaziantep: ['Araban', '�slahiye', 'Karkam��', 'Nizip', 'Nurda��', 'O�uzeli', '�ahinbey', '�ehitkamil', 'Yavuzeli'],
+    giresun: ['Alucra', 'Bulancak', '�amoluk', '�anak��', 'Dereli', 'Do�ankent', 'Espiye', 'Eynesil', 'G�rele', 'G�ce', 'Ke�ap', 'Merkez', 'Piraziz', '�ebinkarahisar', 'Tirebolu', 'Ya�l�dere'],
+    gumushane: ['Kelkit', 'K�se', 'K�rt�n', 'Merkez', '�iran', 'Torul'],
+    hakkari: ['�ukurca', 'Merkez', '�emdinli', 'Y�ksekova'],
+    hatay: ['Alt�n�z�', 'Antakya', 'Arsuz', 'Belen', 'Defne', 'D�rtyol', 'Erzin', 'Hassa', '�skenderun', 'K�r�khan', 'Kumlu', 'Payas', 'Reyhanl�', 'Samanda�', 'Yaylada��'],
+    igdir: ['Aral�k', 'Karakoyunlu', 'Merkez', 'Tuzluca'],
+    isparta: ['Aksu', 'Atabey', 'E�irdir', 'Gelendost', 'G�nen', 'Ke�iborlu', 'Merkez', 'Senirkent', 'S�t��ler', '�arkikaraa�a�', 'Uluborlu', 'Yalva�', 'Yeni�arbademli'],
+    istanbul: ['Adalar', 'Arnavutk�y', 'Ata�ehir', 'Avc�lar', 'Ba�c�lar', 'Bah�elievler', 'Bak�rk�y', 'Ba�ak�ehir', 'Bayrampa�a', 'Be�ikta�', 'Beykoz', 'Beylikd�z�', 'Beyo�lu', 'B�y�k�ekmece', '�atalca', '�ekmek�y', 'Esenler', 'Esenyurt', 'Ey�psultan', 'Fatih', 'Gaziosmanpa�a', 'G�ng�ren', 'Kad�k�y', 'Ka��thane', 'Kartal', 'K���k�ekmece', 'Maltepe', 'Pendik', 'Sancaktepe', 'Sar�yer', 'Silivri', 'Sultanbeyli', 'Sultangazi', '�ile', '�i�li', 'Tuzla', '�mraniye', '�sk�dar', 'Zeytinburnu'],
+    izmir: ['Alia�a', 'Bal�ova', 'Bay�nd�r', 'Bayrakl�', 'Bergama', 'Beyda�', 'Bornova', 'Buca', '�e�me', '�i�li', 'Dikili', 'Fo�a', 'Gaziemir', 'G�zelbah�e', 'Karaba�lar', 'Karaburun', 'Kar��yaka', 'Kemalpa�a', 'K�n�k', 'Kiraz', 'Konak', 'Menderes', 'Menemen', 'Narl�dere', '�demi�', 'Seferihisar', 'Sel�uk', 'Tire', 'Torbal�', 'Urla'],
+    kahramanmaras: ['Af�in', 'And�r�n', '�a�layancerit', 'Dulkadiro�lu', 'Ekin�z�', 'Elbistan', 'G�ksun', 'Nurhak', 'Oniki�ubat', 'Pazarc�k', 'T�rko�lu'],
+    karabuk: ['Eflani', 'Eskipazar', 'Merkez', 'Ovac�k', 'Safranbolu', 'Yenice'],
+    karaman: ['Ayranc�', 'Ba�yayla', 'Ermenek', 'Kaz�mkarabekir', 'Merkez', 'Sar�veliler'],
+    kars: ['Akyaka', 'Arpa�ay', 'Digor', 'Ka��zman', 'Merkez', 'Sar�kam��', 'Selim', 'Susuz'],
+    kastamonu: ['Abana', 'A�l�', 'Ara�', 'Azdavay', 'Bozkurt', 'Cide', '�atalzeytin', 'Daday', 'Devrekani', 'Do�anyurt', 'Han�n�', '�hsangazi', '�nebolu', 'K�re', 'Merkez', 'P�narba��', 'Seydiler', '�enpazar', 'Ta�k�pr�', 'Tosya'],
+    kayseri: ['Akk��la', 'B�nyan', 'Develi', 'Felahiye', 'Hac�lar', '�ncesu', 'Kocasinan', 'Melikgazi', '�zvatan', 'P�narba��', 'Sar�o�lan', 'Sar�z', 'Talas', 'Tomarza', 'Yahyal�', 'Ye�ilhisar'],
+    kilis: ['Elbeyli', 'Merkez', 'Musabeyli', 'Polateli'],
+    kirikkale: ['Bah��l�', 'Bal��eyh', '�elebi', 'Delice', 'Karake�ili', 'Keskin', 'Merkez', 'Sulakyurt', 'Yah�ihan'],
+    kirklareli: ['Babaeski', 'Demirk�y', 'Kof�az', 'L�leburgaz', 'Merkez', 'Pehlivank�y', 'P�narhisar', 'Vize'],
+    kirsehir: ['Ak�akent', 'Akp�nar', 'Boztepe', '�i�ekda��', 'Kaman', 'Merkez', 'Mucur'],
+    kocaeli: ['Ba�iskele', '�ay�rova', 'Dar�ca', 'Derince', 'Dilovas�', 'Gebze', 'G�lc�k', '�zmit', 'Kand�ra', 'Karam�rsel', 'Kartepe', 'K�rfez'],
+    konya: ['Ah�rl�', 'Ak�ren', 'Ak�ehir', 'Alt�nekin', 'Bey�ehir', 'Bozk�r', 'Cihanbeyli', '�eltik', '�umra', 'Derbent', 'Derebucak', 'Do�anhisar', 'Emirgazi', 'Ere�li', 'G�neys�n�r', 'Hadim', 'Halkap�nar', 'H�y�k', 'Ilg�n', 'Kad�nhan�', 'Karap�nar', 'Karatay', 'Kulu', 'Meram', 'Saray�n�', 'Sel�uklu', 'Seydi�ehir', 'Ta�kent', 'Tuzluk�u', 'Yal�h�y�k', 'Yunak'],
+    kutahya: ['Alt�nta�', 'Aslanapa', '�avdarhisar', 'Domani�', 'Dumlup�nar', 'Emet', 'Gediz', 'Hisarc�k', 'Merkez', 'Pazarlar', 'Simav', '�aphane', 'Tav�anl�'],
+    malatya: ['Ak�ada�', 'Arapgir', 'Arguvan', 'Battalgazi', 'Darende', 'Do�an�ehir', 'Do�anyol', 'Hekimhan', 'Kale', 'Kuluncak', 'P�t�rge', 'Yaz�han', 'Ye�ilyurt'],
+    manisa: ['Ahmetli', 'Akhisar', 'Ala�ehir', 'Demirci', 'G�lmarmara', 'G�rdes', 'K�rka�a�', 'K�pr�ba��', 'Kula', 'Salihli', 'Sar�g�l', 'Saruhanl�', 'Selendi', 'Soma', '�ehzadeler', 'Turgutlu', 'Yunusemre'],
+    mardin: ['Artuklu', 'Darge�it', 'Derik', 'K�z�ltepe', 'Maz�da��', 'Midyat', 'Nusaybin', '�merli', 'Savur', 'Ye�illi'],
+    mersin: ['Akdeniz', 'Anamur', 'Ayd�nc�k', 'Bozyaz�', '�aml�yayla', 'Erdemli', 'G�lnar', 'Mezitli', 'Mut', 'Silifke', 'Tarsus', 'Toroslar', 'Yeni�ehir'],
+    mugla: ['Bodrum', 'Dalaman', 'Dat�a', 'Fethiye', 'Kavakl�dere', 'K�yce�iz', 'Marmaris', 'Mente�e', 'Milas', 'Ortaca', 'Seydikemer', 'Ula', 'Yata�an'],
+    mus: ['Bulan�k', 'Hask�y', 'Korkut', 'Malazgirt', 'Merkez', 'Varto'],
+    nevsehir: ['Ac�g�l', 'Avanos', 'Derinkuyu', 'G�l�ehir', 'Hac�bekta�', 'Kozakl�', 'Merkez', '�rg�p'],
+    nigde: ['Altunhisar', 'Bor', '�amard�', '�iftlik', 'Merkez', 'Uluk��la'],
+    ordu: ['Akku�', 'Alt�nordu', 'Aybast�', '�ama�', '�atalp�nar', '�ayba��', 'Fatsa', 'G�lk�y', 'G�lyal�', 'G�rgentepe', '�kizce', 'Kabad�z', 'Kabata�', 'Korgan', 'Kumru', 'Mesudiye', 'Per�embe', 'Ulubey', '�nye'],
+    osmaniye: ['Bah�e', 'D�zi�i', 'Hasanbeyli', 'Kadirli', 'Merkez', 'Sumbas', 'Toprakkale'],
+    rize: ['Arde�en', '�aml�hem�in', '�ayeli', 'Derepazar�', 'F�nd�kl�', 'G�neysu', 'Hem�in', '�kizdere', '�yidere', 'Kalkandere', 'Merkez', 'Pazar'],
+    sakarya: ['Adapazar�', 'Akyaz�', 'Arifiye', 'Erenler', 'Ferizli', 'Geyve', 'Hendek', 'Karap�r�ek', 'Karasu', 'Kaynarca', 'Kocaali', 'Pamukova', 'Sapanca', 'Serdivan', 'S���tl�', 'Tarakl�'],
+    samsun: ['Ala�am', 'Asarc�k', 'Atakum', 'Ayvac�k', 'Bafra', 'Canik', '�ar�amba', 'Havza', '�lkad�m', 'Kavak', 'Ladik', 'Ondokuzmay�s', 'Sal�pazar�', 'Tekkek�y', 'Terme', 'Vezirk�pr�', 'Yakakent'],
+    sanliurfa: ['Ak�akale', 'Birecik', 'Bozova', 'Ceylanp�nar', 'Eyy�biye', 'Halfeti', 'Haliliye', 'Harran', 'Hilvan', 'Karak�pr�', 'Siverek', 'Suru�', 'Viran�ehir'],
+    siirt: ['Baykan', 'Eruh', 'Kurtalan', 'Merkez', 'Pervari', '�irvan', 'Tillo'],
+    sinop: ['Ayanc�k', 'Boyabat', 'Dikmen', 'Dura�an', 'Erfelek', 'Gerze', 'Merkez', 'Sarayd�z�', 'T�rkeli'],
+    sirnak: ['Beyt���ebap', 'Cizre', 'G��l�konak', '�dil', 'Merkez', 'Silopi', 'Uludere'],
+    sivas: ['Ak�nc�lar', 'Alt�nyayla', 'Divri�i', 'Do�an�ar', 'Gemerek', 'G�lova', 'G�r�n', 'Hafik', '�mranl�', 'Kangal', 'Koyulhisar', 'Merkez', 'Su�ehri', '�ark��la', 'Ula�', 'Y�ld�zeli', 'Zara'],
+    tekirdag: ['�erkezk�y', '�orlu', 'Ergene', 'Hayrabolu', 'Kapakl�', 'Malkara', 'Marmaraere�lisi', 'Muratl�', 'Saray', 'S�leymanpa�a', '�ark�y'],
+    tokat: ['Almus', 'Artova', 'Ba��iftlik', 'Erbaa', 'Merkez', 'Niksar', 'Pazar', 'Re�adiye', 'Sulusaray', 'Turhal', 'Ye�ilyurt', 'Zile'],
+    trabzon: ['Ak�aabat', 'Arakl�', 'Arsin', 'Be�ikd�z�', '�ar��ba��', '�aykara', 'Dernekpazar�', 'D�zk�y', 'Hayrat', 'K�pr�ba��', 'Ma�ka', 'Of', 'Ortahisar', '�alpazar�', 'S�rmene', 'Tonya', 'Vakf�kebir', 'Yomra'],
+    tunceli: ['�emi�gezek', 'Hozat', 'Mazgirt', 'Merkez', 'Naz�miye', 'Ovac�k', 'Pertek', 'P�l�m�r'],
+    usak: ['Banaz', 'E�me', 'Karahall�', 'Merkez', 'Sivasl�', 'Ulubey'],
+    van: ['Bah�esaray', 'Ba�kale', '�ald�ran', '�atak', 'Edremit', 'Erci�', 'Geva�', 'G�rp�nar', '�pekyolu', 'Muradiye', '�zalp', 'Saray', 'Tu�ba'],
+    yalova: ['Alt�nova', 'Armutlu', '��narc�k', '�iftlikk�y', 'Merkez', 'Termal'],
+    yozgat: ['Akda�madeni', 'Ayd�nc�k', 'Bo�azl�yan', '�and�r', '�ay�ralan', '�ekerek', 'Kad��ehri', 'Merkez', 'Saraykent', 'Sar�kaya', 'Sorgun', '�efaatli', 'Yenifak�l�', 'Yerk�y'],
+    zonguldak: ['Alapl�', '�aycuma', 'Devrek', 'Ere�li', 'G�k�ebey', 'Kilimli', 'Kozlu', 'Merkez']
+};
+
+function updateIlceler() {
+    const ilSelect = document.getElementById('il-select');
+    const ilceSelect = document.getElementById('ilce-select');
+    const selectedIl = ilSelect.value;
+    
+    ilceSelect.innerHTML = '<option value="">�l�e Se�iniz</option>';
+    
+    if (selectedIl && ilceler[selectedIl]) {
+        ilceler[selectedIl].forEach(ilce => {
+            const option = document.createElement('option');
+            option.value = ilce.toLowerCase();
+            option.textContent = ilce;
+            ilceSelect.appendChild(option);
+        });
+    }
+}
+
+window.onload = function() {
+    loadSavedImages();
+    loadSavedData();
+    
+    // 1 saniye sonra tekrar y�kle (emin olmak i�in)
+    setTimeout(function() {
+        loadSavedData();
+    }, 1000);
+};
+
+var pageId = getAdminKey('admin_1_sayfa'); // �R�N-1'�N SAYFA VER�LER�
+
+// ?? Migration: Eski format� yeni formata ta�� (bir kez �al���r)
+(function() {
+    var migrationKey = '__migration_v1_done';
+    if (!localStorage.getItem(migrationKey)) {
+        console.log('?? Migration ba�l�yor: Eski veriler yeni formata ta��n�yor...');
+        var siteId = localStorage.getItem('__SITE_ID__') || 'default';
+        
+        // T�m sayfa numaralar� i�in
+        for (var pageNum = 1; pageNum <= 10; pageNum++) {
+            var oldPrefix = 'sayfa' + pageNum;
+            var newPrefix = siteId + '_sayfa' + pageNum;
+            
+            // G�rseller i�in
+            for (var imgNum = 1; imgNum <= 15; imgNum++) {
+                var oldKey = oldPrefix + '_topImg' + imgNum;
+                var oldUrlKey = oldPrefix + '_topImg' + imgNum + '_url';
+                var newKey = newPrefix + '_topImg' + imgNum;
+                var newUrlKey = newPrefix + '_topImg' + imgNum + '_url';
+                
+                // Eski veriyi yeni key'e kopyala (sadece yeni key yoksa)
+                var oldData = localStorage.getItem(oldKey);
+                if (oldData && !localStorage.getItem(newKey)) {
+                    try {
+                        localStorage.setItem(newKey, oldData);
+                        console.log('? Ta��nd�: ' + oldKey + ' � ' + newKey);
+                    } catch(e) {
+                        console.warn('?? Ta��namad�: ' + oldKey);
+                    }
+                }
+                
+                var oldUrlData = localStorage.getItem(oldUrlKey);
+                if (oldUrlData && !localStorage.getItem(newUrlKey)) {
+                    try {
+                        localStorage.setItem(newUrlKey, oldUrlData);
+                        console.log('? Ta��nd�: ' + oldUrlKey + ' � ' + newUrlKey);
+                    } catch(e) {
+                        console.warn('?? Ta��namad�: ' + oldUrlKey);
+                    }
+                }
+            }
+            
+            // Bottom image
+            var oldBottomKey = oldPrefix + '_bottomImg1';
+            var oldBottomUrlKey = oldPrefix + '_bottomImg1_url';
+            var newBottomKey = newPrefix + '_bottomImg1';
+            var newBottomUrlKey = newPrefix + '_bottomImg1_url';
+            
+            var oldBottomData = localStorage.getItem(oldBottomKey);
+            if (oldBottomData && !localStorage.getItem(newBottomKey)) {
+                try {
+                    localStorage.setItem(newBottomKey, oldBottomData);
+                    console.log('? Ta��nd�: ' + oldBottomKey + ' � ' + newBottomKey);
+                } catch(e) {}
+            }
+            
+            var oldBottomUrlData = localStorage.getItem(oldBottomUrlKey);
+            if (oldBottomUrlData && !localStorage.getItem(newBottomUrlKey)) {
+                try {
+                    localStorage.setItem(newBottomUrlKey, oldBottomUrlData);
+                    console.log('? Ta��nd�: ' + oldBottomUrlKey + ' � ' + newBottomUrlKey);
+                } catch(e) {}
+            }
+        }
+        
+        localStorage.setItem(migrationKey, 'true');
+        console.log('? Migration tamamland�!');
+    }
+})();
+
+function loadSavedImages() {
+    console.log('?? URUNX-1: loadSavedImages ba�lad�');
+    console.log('?? PageId: ' + pageId);
+    
+    // localStorage'dan oku (h�zl�)
+    for (var i = 1; i <= 15; i++) {
+        var storageKey = pageId + '_topImg' + i;
+        var urlKey = pageId + '_topImg' + i + '_url';
+        
+        // �nce yeni format (site ID'li) key'i dene
+        var saved = localStorage.getItem(storageKey);
+        
+        // E�er yeni format yoksa, _url key'ini dene
+        if (!saved) {
+            saved = localStorage.getItem(urlKey);
+        }
+        
+        // E�er hala yoksa, eski format (site ID'siz) key'i dene
+        if (!saved) {
+            var oldKey = 'sayfa1_topImg' + i;
+            saved = localStorage.getItem(oldKey);
+            if (!saved) {
+                saved = localStorage.getItem(oldKey + '_url');
+            }
+        }
+        
+        console.log('?? G�rsel ' + i + ': Key=' + storageKey + ', Var m�? ' + (saved ? 'EVET (' + Math.round(saved.length/1024) + ' KB)' : 'HAYIR'));
+        if (saved) {
+            // URL ise cache bypass i�in timestamp ekle
+            if (saved.startsWith('http')) {
+                var separator = saved.indexOf('?') > -1 ? '&' : '?';
+                document.getElementById('topImage' + i).src = saved + separator + 'v=' + Date.now();
+            } else {
+                document.getElementById('topImage' + i).src = saved;
+            }
+            console.log('? G�rsel ' + i + ' y�klendi');
+        }
+    }
+    
+    // Bottom image i�in de ayn� mant�k
+    var bottomSaved = localStorage.getItem(pageId + '_bottomImg1');
+    if (!bottomSaved) {
+        bottomSaved = localStorage.getItem(pageId + '_bottomImg1_url');
+    }
+    // Eski format kontrol�
+    if (!bottomSaved) {
+        bottomSaved = localStorage.getItem('sayfa1_bottomImg1');
+        if (!bottomSaved) {
+            bottomSaved = localStorage.getItem('sayfa1_bottomImg1_url');
+        }
+    }
+    if (bottomSaved) {
+        // URL ise cache bypass i�in timestamp ekle
+        if (bottomSaved.startsWith('http')) {
+            var separator = bottomSaved.indexOf('?') > -1 ? '&' : '?';
+            document.getElementById('bottomImage').src = bottomSaved + separator + 'v=' + Date.now();
+        } else {
+            document.getElementById('bottomImage').src = bottomSaved;
+        }
+        console.log('? Bottom image y�klendi');
+    }
+    
+    // Arka planda Firebase'den de kontrol et (g�ncellemeler i�in)
+    // localStorage'da veri YOKSA veya BO� �SE Firebase'den y�kle
+    if (typeof database !== 'undefined' && database) {
+        database.ref(SITE_ID + '/urunAyarlari/urun1/gorseller').once('value', function(snapshot) {
+            var gorseller = snapshot.val() || {};
+            var updated = false;
+            for (var i = 1; i <= 15; i++) {
+                var saved = localStorage.getItem(pageId + '_topImg' + i);
+                // localStorage'da veri YOKSA veya BO� �SE (0 KB) Firebase'den y�kle
+                if ((!saved || saved.length < 100) && gorseller['topImg' + i]) {
+                    localStorage.setItem(pageId + '_topImg' + i, gorseller['topImg' + i]);
+                    var gorselUrl = gorseller['topImg' + i];
+                    // URL ise cache bypass i�in timestamp ekle
+                    if (gorselUrl.startsWith('http')) {
+                        var separator = gorselUrl.indexOf('?') > -1 ? '&' : '?';
+                        document.getElementById('topImage' + i).src = gorselUrl + separator + 'v=' + Date.now();
+                    } else {
+                        document.getElementById('topImage' + i).src = gorselUrl;
+                    }
+                    console.log('?? G�rsel ' + i + ' Firebase\'den g�ncellendi');
+                    updated = true;
+                }
+            }
+            var bottomSaved = localStorage.getItem(pageId + '_bottomImg1');
+            // localStorage'da veri YOKSA veya BO� �SE Firebase'den y�kle
+            if ((!bottomSaved || bottomSaved.length < 100) && gorseller['bottomImg1']) {
+                localStorage.setItem(pageId + '_bottomImg1', gorseller['bottomImg1']);
+                document.getElementById('bottomImage').src = gorseller['bottomImg1'];
+                console.log('?? Bottom image Firebase\'den g�ncellendi');
+                updated = true;
+            }
+        });
+    }
+}
+
+function loadSavedData() {
+    // SADECE localStorage'dan y�kle - Firebase'i devre d��� b�rak
+    for(var i = 1; i <= 8; i++) {
+        var savedIsim = localStorage.getItem(getAdminKey('urun' + i + '_isim'));
+        
+        if (savedIsim) {
+            var isimEl = document.getElementById('urun' + i + 'IsimDisplay');
+            if (isimEl) {
+                isimEl.textContent = savedIsim;
+            }
+        }
+        
+        var savedFiyat = localStorage.getItem(getAdminKey('urun' + i + '_fiyat'));
+        
+        if (savedFiyat) {
+            var fiyatEl = document.getElementById('urun' + i + 'FiyatDisplay');
+            if (fiyatEl) {
+                if (savedFiyat.indexOf('TL') === -1) {
+                    fiyatEl.textContent = savedFiyat + 'TL';
+                } else {
+                    fiyatEl.textContent = savedFiyat;
+                }
+            }
+        }
+        
+        var savedGoster = localStorage.getItem(getAdminKey('urun' + i + '_aktif'));
+        var secimDiv = document.getElementById('adetSecim' + i);
+        if(savedGoster === 'true' && secimDiv) {
+            secimDiv.style.display = 'flex';
+        } else if(savedGoster === 'false' && secimDiv) {
+            secimDiv.style.display = 'none';
+        }
+    }
+    ilkGoruneniSec();
+    
+    // Firebase k�sm� kald�r�ld� - sadece localStorage kullan
+}
+
+function ilkGoruneniSec() {
+    for(var i = 1; i <= 8; i++) {
+        var secimDiv = document.getElementById('adetSecim' + i);
+        if(secimDiv && secimDiv.style.display !== 'none') {
+            var radio = secimDiv.querySelector('input[type="radio"]');
+            if(radio) {
+                radio.checked = true;
+                break;
+            }
+        }
+    }
+}
+
+function scrollToForm() {
+    // Formu g�ster
+    var formWrapper = document.querySelector('.formWrapper');
+    if(formWrapper) {
+        formWrapper.style.display = 'flex';
+        formWrapper.style.opacity = '1';
+    }
+    
+    // Form'a kayd�r
+    const formLabel = document.querySelector('.formLabel');
+    if (formLabel) {
+        setTimeout(function() {
+            formLabel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    }
+}
+
+function validateForm() {
+    let isValid = true;
+    
+    // Ad Soyad kontrol�
+    const ad = document.getElementById('adInput').value.trim();
+    const adError = document.getElementById('adError');
+    const adInput = document.getElementById('adInput');
+    if (ad === '') {
+        adError.textContent = 'L�tfen ad�n�z� ve soyad�n�z� girin';
+        adError.style.display = 'block';
+        adInput.classList.add('error');
+        isValid = false;
+    } else {
+        adError.style.display = 'none';
+        adInput.classList.remove('error');
+    }
+    
+    // Telefon kontrol�
+    const telefon = document.getElementById('telefonInput').value.trim();
+    const telefonError = document.getElementById('telefonError');
+    const telefonInput = document.getElementById('telefonInput');
+    if (telefon === '' || telefon.length !== 10) {
+        telefonError.textContent = 'L�tfen 10 haneli telefon numaras� girin';
+        telefonError.style.display = 'block';
+        telefonInput.classList.add('error');
+        isValid = false;
+    } else {
+        telefonError.style.display = 'none';
+        telefonInput.classList.remove('error');
+    }
+    
+    // �l kontrol�
+    const il = document.getElementById('il-select').value;
+    const ilError = document.getElementById('ilError');
+    const ilSelect = document.getElementById('il-select');
+    if (il === '') {
+        ilError.textContent = 'L�tfen bir �ehir se�in';
+        ilError.style.display = 'block';
+        ilSelect.classList.add('error');
+        isValid = false;
+    } else {
+        ilError.style.display = 'none';
+        ilSelect.classList.remove('error');
+    }
+    
+    // �l�e kontrol�
+    const ilce = document.getElementById('ilce-select').value;
+    const ilceError = document.getElementById('ilceError');
+    const ilceSelect = document.getElementById('ilce-select');
+    if (ilce === '') {
+        ilceError.textContent = 'L�tfen bir il�e se�in';
+        ilceError.style.display = 'block';
+        ilceSelect.classList.add('error');
+        isValid = false;
+    } else {
+        ilceError.style.display = 'none';
+        ilceSelect.classList.remove('error');
+    }
+    
+    // Adres kontrol�
+    const adres = document.getElementById('adresInput').value.trim();
+    const adresError = document.getElementById('adresError');
+    const adresInput = document.getElementById('adresInput');
+    if (adres === '') {
+        adresError.textContent = 'L�tfen a��k adresinizi girin';
+        adresError.style.display = 'block';
+        adresInput.classList.add('error');
+        isValid = false;
+    } else {
+        adresError.style.display = 'none';
+        adresInput.classList.remove('error');
+    }
+    
+    if (isValid) {
+        // SPAM KORUMASI: Ayn� telefon g�nde max 5 sipari�
+        var bugun = new Date();
+        var bugunStr = bugun.getDate().toString().padStart(2,'0') + '.' + (bugun.getMonth()+1).toString().padStart(2,'0') + '.' + bugun.getFullYear();
+        
+        database.ref(SITE_ID + '/siparisler').orderByChild('telefon').equalTo(telefon).once('value', function(snapshot){
+            var bugunSiparisSayisi = 0;
+            
+            snapshot.forEach(function(child){
+                var siparis = child.val();
+                if(siparis.tarih === bugunStr){
+                    bugunSiparisSayisi++;
+                }
+            });
+            
+            if(bugunSiparisSayisi >= 5){
+                var uyari = document.getElementById('spamUyari');
+                uyari.style.display = 'flex';
+                setTimeout(function(){ uyari.querySelector('.spam-popup-box').style.animation = 'popupCik 0.3s ease forwards'; setTimeout(function(){ uyari.style.display = 'none'; uyari.querySelector('.spam-popup-box').style.animation = 'popupGir 0.4s ease'; }, 300); }, 4000);
+                return;
+            }
+            
+            // Sipari�i Firebase'e kaydet
+            var tarih = new Date();
+            var tarihStr = tarih.getDate().toString().padStart(2,'0') + '.' + (tarih.getMonth()+1).toString().padStart(2,'0') + '.' + tarih.getFullYear();
+            var secim = document.querySelector('input[name="urunSecim"]:checked').value;
+            var secimNum = parseInt(secim);
+            var odemeYontemi = document.querySelector('input[name="odeme"]:checked').value === 'nakit' ? 'Kap�da Nakit' : 'Kap�da Kredi Kart�';
+            
+            // 8 adet i�in dinamik tutar, isim ve adet
+            var tutar = document.getElementById('urun' + secimNum + 'FiyatDisplay').textContent;
+            var adet = secimNum + ' Adet';
+            var urunAdi = localStorage.getItem(getAdminKey('genel_urun_adi')) || document.getElementById('urun' + secimNum + 'IsimDisplay').textContent;
+            var tutarSayisal = parseInt(tutar.replace(/[^0-9]/g,'')) || 0;
+            var birimFiyat = Math.round(tutarSayisal / secimNum) + 'TL';
+            
+            // Renk ve beden bilgilerini al - g�r�n�r dropdown'lardan E�LE�T�R�LM��
+            var renkler = [];
+            var bedenler = [];
+            var eslestirilmis = [];
+            var tumRenkDropdowns = document.querySelectorAll('.renk-dropdown');
+            var tumBedenDropdowns = document.querySelectorAll('.beden-dropdown');
+            var gorunurRenkler = [];
+            var gorunurBedenler = [];
+            tumRenkDropdowns.forEach(function(select) {
+                if (select.offsetParent !== null) gorunurRenkler.push(select.value || '');
+            });
+            tumBedenDropdowns.forEach(function(select) {
+                if (select.offsetParent !== null) gorunurBedenler.push(select.value || '');
+            });
+            
+            // Her adet i�in renk-beden e�le�tir
+            var maxLen = Math.max(gorunurRenkler.length, gorunurBedenler.length);
+            for (var idx = 0; idx < maxLen; idx++) {
+                var r = gorunurRenkler[idx] || '';
+                var b = gorunurBedenler[idx] || '';
+                if (r) renkler.push(r);
+                if (b) bedenler.push(b);
+                if (r && b) {
+                    eslestirilmis.push('#' + (idx+1) + ': ' + r + ' / ' + b);
+                } else if (r) {
+                    eslestirilmis.push('#' + (idx+1) + ': ' + r);
+                } else if (b) {
+                    eslestirilmis.push('#' + (idx+1) + ': ' + b);
+                }
+            }
+            
+            var secilenRenk = renkler.length > 0 ? renkler.join(', ') : '-';
+            var secilenBeden = bedenler.length > 0 ? bedenler.join(', ') : '-';
+            var secilenVaryant = eslestirilmis.length > 0 ? eslestirilmis.join(' | ') : '-';
+            
+            var yeniSiparis = {
+                siparisNo: '#' + Date.now(),
+                tarih: tarihStr,
+                musteri: ad,
+                telefon: telefon,
+                forum: 1,
+                tutar: tutar,
+                il: document.getElementById('il-select').options[document.getElementById('il-select').selectedIndex].text,
+                ilce: ilce,
+                adres: adres,
+                odemeYontemi: odemeYontemi,
+                adet: adet,
+                urunAdi: urunAdi,
+                renk: secilenRenk,
+                beden: secilenBeden,
+                varyant: secilenVaryant,
+                kdvOrani: localStorage.getItem(pageId + '_kdv') || '20',
+                birimFiyat: birimFiyat,
+                timestamp: Date.now()
+            };
+            
+            database.ref(SITE_ID + '/siparisler').push(yeniSiparis);
+            
+            // Te�ekk�r kart�n� hemen g�ster (webhook'u bekleme)
+            showSuccessModal();
+            
+            // ========== MAKE.COM WEBHOOK ==========
+            // Kargo �l��lerini Firebase'den al
+            database.ref(SITE_ID + '/kargoOlculeri/forum' + yeniSiparis.forum).once('value', function(kargoSnapshot) {
+                var kargoOlculeri = kargoSnapshot.val() || {
+                    agirlik: 0,
+                    uzunluk: 0, 
+                    genislik: 0,
+                    yukseklik: 0
+                };
+                
+                // Ad ve soyad� ay�r
+                var fullName = yeniSiparis.musteri || '';
+                var nameParts = fullName.trim().split(' ');
+                var firstName = nameParts[0] || '';
+                var lastName = nameParts.slice(1).join(' ') || firstName; // E�er soyad yoksa, ad� tekrarla
+                
+                // �l�eyi adresin sonuna ekle (Shopify i�in)
+                var district = yeniSiparis.ilce || '';
+                var baseAddress = yeniSiparis.adres || '';
+                var fullAddress = district ? (baseAddress + ', ' + district) : baseAddress;
+                
+                // Posta kodunu al
+                var selectedIl = document.getElementById('il-select').options[document.getElementById('il-select').selectedIndex].text;
+                var selectedIlce = document.getElementById('ilce-select').options[document.getElementById('ilce-select').selectedIndex].text;
+                var postalCode = getPostalCode(selectedIl, selectedIlce);
+                
+                // Shopify uyumlu fiyat format� (1.999TL � 1999.00)
+                function formatPriceForShopify(priceStr) {
+                    if (!priceStr) return "0.00";
+                    // "1.999TL" � "1999" � 1999.00 (Shopify TRY format�)
+                    var numericPrice = parseFloat(priceStr.replace(/[^0-9]/g, '')) || 0;
+                    return numericPrice.toFixed(2);
+                }
+                var shopifyPrice = formatPriceForShopify(yeniSiparis.tutar);
+                
+                // Birim fiyat hesapla (toplam fiyat � adet) - Ondal�k hata d�zeltmesi
+                var birimFiyatHam = parseFloat(shopifyPrice) / secimNum;
+                var birimFiyat = (Math.round(birimFiyatHam * 100) / 100).toFixed(2);
+                
+                // Webhook verisi haz�rla
+                var webhookData = {
+                    first_name: firstName,
+                    last_name: lastName,
+                    phone: yeniSiparis.telefon,
+                    city: yeniSiparis.il || '',
+                    district: yeniSiparis.ilce || '',
+                    address: yeniSiparis.adres || '',
+                    postal_code: postalCode,
+                    product_name: yeniSiparis.urunAdi || '',
+                    quantity: secimNum,
+                    price: birimFiyat,
+                    tags: secimNum + " �r�n",
+                    payment_type: yeniSiparis.odemeYontemi,
+                    forum: yeniSiparis.forum || 1,
+                    color: yeniSiparis.renk || '-',
+                    size: yeniSiparis.beden || '-',
+                    variant: yeniSiparis.varyant || '-',
+                    weight: kargoOlculeri.agirlik || 0,
+                    length: kargoOlculeri.uzunluk || 0,
+                    width: kargoOlculeri.genislik || 0,
+                    height: kargoOlculeri.yukseklik || 0,
+                    tax_rate: yeniSiparis.kdvOrani || '20'
+                };
+                
+                console.log('?? Webhook verisi g�nderiliyor:', JSON.stringify(webhookData, null, 2));
+                console.log('?? Ad ayr�m� - Tam isim:', fullName);
+                console.log('?? Ad ayr�m� - �lk ad:', firstName);
+                console.log('?? Ad ayr�m� - Soyad:', lastName);
+                console.log('??? G�rsel URL:', document.getElementById('topImage1').src);
+                console.log('??? G�rsel element:', document.getElementById('topImage1'));
+                
+                // Zapier webhook'a g�nder
+                fetch('https://hooks.zapier.com/hooks/catch/27514482/4y644wa/', {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: Object.keys(webhookData).map(function(key) {
+                        return encodeURIComponent(key) + '=' + encodeURIComponent(webhookData[key]);
+                    }).join('&')
+                }).then(function(response) {
+                    console.log('? Webhook g�nderildi');
+                    console.log('?? Kargo �l��leri:', kargoOlculeri);
+                }).catch(function(error) {
+                    console.log('? Webhook hatas�:', error);
+                });
+                
+                // ========== ANLIK �STAT�ST�K G�NCELLE ==========
+                var tutarSayi = parseInt(tutar.replace(/[^0-9]/g, '')) || 0;
+                var bugunTarih = tarihStr;
+                
+                database.ref(SITE_ID + '/istatistikler').once('value', function(istatSnap) {
+                    var istat = istatSnap.val() || {};
+                    var kayitliTarih = istat.bugunTarih || '';
+                    
+                    if(kayitliTarih !== bugunTarih) {
+                        database.ref(SITE_ID + '/istatistikler').update({
+                            bugunTarih: bugunTarih,
+                            bugunSiparis: 1,
+                            bugunCiro: tutarSayi,
+                            toplamSiparis: (istat.toplamSiparis || 0) + 1,
+                            toplamCiro: (istat.toplamCiro || 0) + tutarSayi
+                        });
+                    } else {
+                        database.ref(SITE_ID + '/istatistikler').update({
+                            bugunSiparis: (istat.bugunSiparis || 0) + 1,
+                            bugunCiro: (istat.bugunCiro || 0) + tutarSayi,
+                            toplamSiparis: (istat.toplamSiparis || 0) + 1,
+                            toplamCiro: (istat.toplamCiro || 0) + tutarSayi
+                        });
+                    }
+                });
+                
+                // Aktivite kayd�
+                if(typeof aktiviteKaydet === 'function') aktiviteKaydet('siparis', 'Yeni sipari�: ' + ad + ' - ' + tutar);
+                
+                // Stok d���r - Forum 1
+                var adetSayi = secimNum;
+                database.ref(SITE_ID + '/forumStoklar/forum1').once('value', function(snapshot){
+                    var mevcutStok = snapshot.val() || 0;
+                    var yeniStok = mevcutStok - adetSayi;
+                    if(yeniStok < 0) yeniStok = 0;
+                    database.ref(SITE_ID + '/forumStoklar/forum1').set(yeniStok);
+                });
+                
+                // Pixel eventleri tetikle (sipari� ba�ar�yla kaydedildi)
+                var fiyatNumeric = parseFloat(tutar.replace(/[^0-9]/g, '')) || 0;
+                
+                // Meta Pixel Lead eventi
+                if(typeof fireMetaLeadEvent === 'function'){
+                    fireMetaLeadEvent(fiyatNumeric);
+                }
+                
+                // TikTok Pixel eventi
+                if(typeof fireTikTokSubmitFormEvent === 'function'){
+                    fireTikTokSubmitFormEvent(fiyatNumeric);
+                }
+            });
+            // ==========================================
+        });
+    }
+    
+    return false;
+}
+
+function showSuccessModal() {
+    const modal = document.getElementById('successModal');
+    modal.classList.add('show');
+    
+    // 8 saniye sonra kapat
+    setTimeout(() => {
+        modal.classList.remove('show');
+    }, 8000);
+}
+
+function createConfetti() {
+    // Confetti devre d��� - k���k modal i�in gereksiz
+}
+</script>
+
+
+
+<!-- CANLI Z�YARET�� TAK�P -->
+<script>
+// Firebase y�klendi�inde otomatik �al��acak
+(function(){
+  // Firebase y�klenene kadar bekle
+  var checkFirebase = setInterval(function(){
+    if(typeof database !== 'undefined' && database) {
+      clearInterval(checkFirebase);
+      initZiyaretciTakip();
+    }
+  }, 100);
+  
+  function initZiyaretciTakip() {
+  var sayfaNo = 1; // Bu de�er kopyalan�rken de�i�ecek
+  var visitorId = localStorage.getItem('visitor_id');
+  if(!visitorId) {
+    visitorId = 'v_' + Date.now() + '_' + Math.random().toString(36).substr(2,9);
+    localStorage.setItem('visitor_id', visitorId);
+  }
+  
+  function getCihazTipi() {
+    var ua = navigator.userAgent;
+    if(/tablet|ipad|playbook|silk/i.test(ua)) return 'tablet';
+    if(/mobile|iphone|ipod|android|blackberry|opera mini|iemobile/i.test(ua)) return 'mobil';
+    if(window.innerWidth <= 1366) return 'laptop';
+    return 'masaustu';
+  }
+  
+  function getTrafikKaynagi() {
+    var ref = document.referrer.toLowerCase();
+    if(ref.indexOf('google') > -1) return 'google';
+    if(ref.indexOf('instagram') > -1 || ref.indexOf('ig.') > -1) return 'instagram';
+    if(ref.indexOf('tiktok') > -1) return 'tiktok';
+    if(ref.indexOf('facebook') > -1 || ref.indexOf('fb.') > -1) return 'facebook';
+    if(ref === '' || ref.indexOf(window.location.hostname) > -1) return 'direkt';
+    return 'diger';
+  }
+  
+  var cihaz = getCihazTipi();
+  var trafikKaynagi = getTrafikKaynagi();
+  var visitorRef = database.ref(SITE_ID + '/canliZiyaretciler/' + visitorId);
+  
+  function updatePresence() {
+    visitorRef.set({
+      sayfa: sayfaNo,
+      timestamp: Date.now(),
+      userAgent: navigator.userAgent.substr(0,50),
+      cihaz: cihaz,
+      trafikKaynagi: trafikKaynagi
+    });
+  }
+  
+  updatePresence();
+  setInterval(updatePresence, 5000); // 5 saniyede bir g�ncelle
+  
+  window.addEventListener('beforeunload', function() { visitorRef.remove(); });
+  document.addEventListener('visibilitychange', function() {
+    if(document.visibilityState === 'hidden') visitorRef.remove();
+    else updatePresence();
+  });
+  
+  var bugun = new Date().toLocaleDateString('tr-TR');
+  var bugunPadded = new Date().getDate().toString().padStart(2,'0') + '.' + (new Date().getMonth()+1).toString().padStart(2,'0') + '.' + new Date().getFullYear();
+  var ziyaretKey = visitorId + '_' + bugun.replace(/\./g, '-') + '_sayfa' + sayfaNo;
+  console.log('?? Ziyaret kontrol� ba�l�yor... Key:', ziyaretKey);
+  database.ref(SITE_ID + '/ziyaretciler/' + ziyaretKey).once('value', function(snapshot) {
+    console.log('?? Ziyaret var m�:', snapshot.exists());
+    if(!snapshot.exists()) {
+      console.log('? YEN� Z�YARET - Kaydediliyor...');
+      database.ref(SITE_ID + '/ziyaretciler/' + ziyaretKey).set({
+        visitorId: visitorId, tarih: bugunPadded, sayfa: sayfaNo, timestamp: Date.now(),
+        cihaz: cihaz, trafikKaynagi: trafikKaynagi, sehir: ''
+      });
+      
+      // ========== ANLIK Z�YARET�� �STAT�ST��� ==========
+      database.ref(SITE_ID + '/istatistikler').once('value', function(istatSnap) {
+        var istat = istatSnap.val() || {};
+        var kayitliTarih = istat.bugunTarih || '';
+        console.log('?? �statistik g�ncelleniyor... urun1Ziyaret:', (istat.urun1Ziyaret || 0) + 1);
+        
+        if(kayitliTarih !== bugunPadded) {
+          database.ref(SITE_ID + '/istatistikler').update({
+            bugunTarih: bugunPadded,
+            bugunZiyaretci: 1,
+            bugunSiparis: 0,
+            bugunCiro: 0,
+            toplamZiyaretci: (istat.toplamZiyaretci || 0) + 1,
+            urun1Ziyaret: (istat.urun1Ziyaret || 0) + 1
+          }).then(function() { console.log('? urun1Ziyaret g�ncellendi!'); });
+        } else {
+          database.ref(SITE_ID + '/istatistikler').update({
+            bugunZiyaretci: (istat.bugunZiyaretci || 0) + 1,
+            toplamZiyaretci: (istat.toplamZiyaretci || 0) + 1,
+            urun1Ziyaret: (istat.urun1Ziyaret || 0) + 1
+          }).then(function() { console.log('? urun1Ziyaret g�ncellendi!'); });
+        }
+      });
+      // ================================================
+    } else {
+      console.log('?? Bu ziyaret�i bug�n zaten bu sayfay� ziyaret etmi�');
+    }
+  });
+  
+  window.tiklamaKaydet = function(tip, ekBilgi) {
+    database.ref(SITE_ID + '/tiklamalar').push({ tip: tip, sayfa: sayfaNo, tarih: bugun, timestamp: Date.now(), visitorId: visitorId, ekBilgi: ekBilgi || '' });
+  };
+  window.aktiviteKaydet = function(tip, mesaj) {
+    database.ref(SITE_ID + '/aktiviteler').push({ tip: tip, mesaj: mesaj, sayfa: sayfaNo, tarih: bugun, timestamp: Date.now() });
+  };
+  aktiviteKaydet('ziyaret', '�r�n ' + sayfaNo + ' sayfas� g�r�nt�lendi');
+  }
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var siparisBtn = document.querySelector('.siparisBtn');
+  if(siparisBtn){
+    var orig = siparisBtn.onclick;
+    siparisBtn.onclick = function(e){
+      if(typeof tiklamaKaydet === 'function') tiklamaKaydet('siparis_btn', '�r�n 1');
+      if(typeof aktiviteKaydet === 'function') aktiviteKaydet('tiklama', 'Sipari� butonu t�kland� - �r�n 1');
+      if(orig) return orig.call(this, e);
+    };
+  }
+  // WHATSAPP TAKIP KODU KALDIRILDI
+  var ilSelect = document.getElementById('il-select');
+  if(ilSelect){
+    ilSelect.addEventListener('change', function(){
+      var sehir = this.options[this.selectedIndex].text;
+      var visitorId = localStorage.getItem('visitor_id');
+      var bugun = new Date().toLocaleDateString('tr-TR');
+      database.ref(SITE_ID + '/ziyaretciler/' + visitorId + '_' + bugun.replace(/\./g, '-') + '_sayfa1/sehir').set(sehir);
+    });
+  }
+});
+</script>
+
+<script>
+// G�rsellerin y�klenmesini bekle, sonra formu g�ster
+var gorselSayisi = 15;
+var yuklenenGorsel = 0;
+
+function gorselYuklendi() {
+  yuklenenGorsel++;
+  if(yuklenenGorsel >= gorselSayisi) {
+    var form = document.querySelector('.formWrapper');
+    if(form) {
+      form.style.animation = 'formGoster 0.3s ease forwards';
+    }
+  }
+}
+
+// G�rselleri y�kle - Firebase �ncelikli
+function gorselleriYukle() {
+  var pageId = getAdminKey('admin_1_sayfa');
+  
+  // �nce localStorage'dan h�zl� y�kle (anl�k g�r�nt� i�in)
+  for(var i = 1; i <= 15; i++) {
+    var img = document.getElementById('topImage' + i);
+    var saved = localStorage.getItem(pageId + '_topImg' + i);
+    if (!saved) saved = localStorage.getItem(pageId + '_topImg' + i + '_url');
+    if (!saved) saved = localStorage.getItem('sayfa1_topImg' + i);
+    if (!saved) saved = localStorage.getItem('sayfa1_topImg' + i + '_url');
+    if(img && saved) img.src = saved;
+  }
+  
+  var bottomImg = document.getElementById('bottomImage');
+  var bottomSaved = localStorage.getItem(pageId + '_bottomImg1');
+  if (!bottomSaved) bottomSaved = localStorage.getItem(pageId + '_bottomImg1_url');
+  if (!bottomSaved) bottomSaved = localStorage.getItem('sayfa1_bottomImg1');
+  if (!bottomSaved) bottomSaved = localStorage.getItem('sayfa1_bottomImg1_url');
+  if(bottomImg && bottomSaved) bottomImg.src = bottomSaved;
+  
+  // Firebase'den g�ncel g�rselleri �ek ve localStorage'� g�ncelle
+  if (typeof database !== 'undefined' && database) {
+    database.ref(SITE_ID + '/urunAyarlari/urun1/gorseller').once('value', function(snapshot) {
+      var gorseller = snapshot.val() || {};
+      for(var i = 1; i <= 15; i++) {
+        var img = document.getElementById('topImage' + i);
+        if(img) {
+          if(gorseller['topImg' + i]) {
+            img.src = gorseller['topImg' + i];
+            localStorage.setItem(pageId + '_topImg' + i, gorseller['topImg' + i]);
+          } else {
+            // Firebase'de yoksa sil
+            img.src = '';
+            localStorage.removeItem(pageId + '_topImg' + i);
+            localStorage.removeItem(pageId + '_topImg' + i + '_url');
+          }
+        }
+      }
+      var bottomImg = document.getElementById('bottomImage');
+      if(bottomImg) {
+        if(gorseller['bottomImg1']) {
+          bottomImg.src = gorseller['bottomImg1'];
+          localStorage.setItem(pageId + '_bottomImg1', gorseller['bottomImg1']);
+        } else {
+          bottomImg.src = '';
+          localStorage.removeItem(pageId + '_bottomImg1');
+          localStorage.removeItem(pageId + '_bottomImg1_url');
+        }
+      }
+      console.log('? G�rseller Firebase\'den g�ncellendi');
+    });
+  } else if (typeof onFirebaseReady === 'function') {
+    onFirebaseReady(function() {
+      database.ref(SITE_ID + '/urunAyarlari/urun1/gorseller').once('value', function(snapshot) {
+        var gorseller = snapshot.val() || {};
+        for(var i = 1; i <= 15; i++) {
+          var img = document.getElementById('topImage' + i);
+          if(img) {
+            if(gorseller['topImg' + i]) {
+              img.src = gorseller['topImg' + i];
+              localStorage.setItem(pageId + '_topImg' + i, gorseller['topImg' + i]);
+            } else {
+              img.src = '';
+              localStorage.removeItem(pageId + '_topImg' + i);
+              localStorage.removeItem(pageId + '_topImg' + i + '_url');
+            }
+          }
+        }
+        var bottomImg = document.getElementById('bottomImage');
+        if(bottomImg) {
+          if(gorseller['bottomImg1']) {
+            bottomImg.src = gorseller['bottomImg1'];
+            localStorage.setItem(pageId + '_bottomImg1', gorseller['bottomImg1']);
+          } else {
+            bottomImg.src = '';
+            localStorage.removeItem(pageId + '_bottomImg1');
+            localStorage.removeItem(pageId + '_bottomImg1_url');
+          }
+        }
+        console.log('? G�rseller Firebase\'den g�ncellendi (gecikme)');
+      });
+    });
+  }
+}
+
+// Sayfa y�klenince g�rselleri y�kle
+document.addEventListener('DOMContentLoaded', gorselleriYukle);
+
+// Fallback: 1.5 saniye sonra formu g�ster (veya t�m g�rseller y�klendikten sonra)
+var allImagesLoaded = false;
+var formShowTimeout = null;
+
+function showForm() {
+  var form = document.querySelector('.formWrapper');
+  if(form && form.style.opacity !== '1') {
+    form.style.animation = 'formGoster 0.3s ease forwards';
+  }
+}
+
+// T�m g�rsellerin y�klenmesini kontrol et
+function checkAllImagesLoaded() {
+  var images = document.querySelectorAll('img[id^="topImage"], img[id="bottomImage"]');
+  var loadedCount = 0;
+  
+  images.forEach(function(img) {
+    if(img.complete) {
+      loadedCount++;
+    }
+  });
+  
+  if(loadedCount === images.length) {
+    allImagesLoaded = true;
+    if(formShowTimeout) clearTimeout(formShowTimeout);
+    showForm();
+  }
+}
+
+// G�rsellerin y�klenmesini dinle
+document.querySelectorAll('img[id^="topImage"], img[id="bottomImage"]').forEach(function(img) {
+  img.addEventListener('load', checkAllImagesLoaded);
+  img.addEventListener('error', checkAllImagesLoaded);
+});
+
+// Maksimum 1.5 saniye bekle
+formShowTimeout = setTimeout(function() {
+  if(!allImagesLoaded) {
+    showForm();
+  }
+}, 1500);
+</script>
+
+<!-- F�REBASE SCRIPTLER - SIRAYLA Y�KLEN�YOR -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+
+<script>
+// RENK/BEDEN Y�NET�M S�STEM� - M��TER� SAYFASI
+function loadCustomerRenkBedenSettings() {
+    console.log('?? loadCustomerRenkBedenSettings ba�lad� (urunx-1)');
+    
+    // �nce localStorage'dan h�zl� y�kle (cache)
+    try {
+        var aktifRenklerStr = localStorage.getItem(getAdminKey('aktif_renkler'));
+        var aktifBedenlerStr = localStorage.getItem(getAdminKey('aktif_bedenler'));
+        
+        console.log('?? localStorage\'dan okunan - aktif_renkler:', aktifRenklerStr);
+        console.log('?? localStorage\'dan okunan - aktif_bedenler:', aktifBedenlerStr);
+        
+        var aktifRenkler = JSON.parse(aktifRenklerStr || '[]');
+        var aktifBedenler = JSON.parse(aktifBedenlerStr || '[]');
+        
+        console.log('?? Parse edilmi� - Renkler:', aktifRenkler, 'Bedenler:', aktifBedenler);
+        
+        updateCustomerDropdowns(aktifRenkler, aktifBedenler);
+    } catch(e) {
+        console.log('? Renk/Beden ayarlar� y�klenemedi:', e);
+    }
+    
+    // Sonra Firebase'den g�ncel veriyi al (telefon senkronizasyonu i�in)
+    if (typeof database !== 'undefined' && database) {
+        database.ref(SITE_ID + '/urunAyarlari/urun1/aktifSecenekler').once('value', function(snapshot) {
+            var data = snapshot.val();
+            if (data && data.aktif_renkler && data.aktif_bedenler) {
+                console.log('?? Firebase\'den al�nan - Renkler:', data.aktif_renkler, 'Bedenler:', data.aktif_bedenler);
+                
+                // localStorage'� g�ncelle
+                localStorage.setItem(getAdminKey('aktif_renkler'), JSON.stringify(data.aktif_renkler));
+                localStorage.setItem(getAdminKey('aktif_bedenler'), JSON.stringify(data.aktif_bedenler));
+                
+                // Dropdown'lar� g�ncelle
+                updateCustomerDropdowns(data.aktif_renkler, data.aktif_bedenler);
+                
+                console.log('? Renk/Beden Firebase\'den g�ncellendi ve localStorage\'a kaydedildi');
+            }
+        });
+    }
+}
+
+// �R�N SE�ENEKLER�N� KONTROL ET - M��TER� SAYFASI
+function loadUrunSecenekleri() {
+    console.log('?? �R�N-1: loadUrunSecenekleri ba�lad�');
+    
+    // DEBUG: localStorage de�erlerini kontrol et
+    for (var j = 1; j <= 8; j++) {
+        var debugKey = getAdminKey('urun' + j + '_aktif');
+        var debugValue = localStorage.getItem(debugKey);
+        console.log('?? DEBUG �r�n ' + j + ': Key=' + debugKey + ', Value=' + debugValue);
+    }
+    
+    // HER ADET'� KENDI BUTONUNA G�RE KONTROL ET - DO�RU MANTIK
+    var ilkAktifUrun = null;
+    
+    for (var i = 1; i <= 8; i++) {
+        var key = getAdminKey('urun' + i + '_aktif');
+        var aktif = localStorage.getItem(key) !== 'false'; // Default true
+        
+        console.log('?? �r�n ' + i + ': Key=' + key + ', Aktif=' + aktif + ', LocalStorage=' + localStorage.getItem(key));
+        
+        // �r�n se�ene�i container'�n� bul
+        var urunRadio = document.querySelector('input[name="urunSecim"][value="' + i + '"]');
+        
+        if (urunRadio) {
+            console.log('? �r�n ' + i + ' radio bulundu');
+            // En d�� container'� bul (border: 2px solid olan div)
+            var container = urunRadio.closest('div[style*="border: 2px solid"]');
+            
+            if (container) {
+                console.log('? �r�n ' + i + ' container bulundu');
+                if (aktif) {
+                    container.style.display = 'block';
+                    console.log('? �r�n ' + i + ' g�sterildi (display: block)');
+                    if (ilkAktifUrun === null) {
+                        ilkAktifUrun = i;
+                    }
+                } else {
+                    container.style.display = 'none';
+                    console.log('? �r�n ' + i + ' gizlendi (display: none)');
+                    // E�er se�ili olan �r�n kapat�ld�ysa, se�imi kald�r
+                    if (urunRadio.checked) {
+                        urunRadio.checked = false;
+                    }
+                }
+            } else {
+                console.log('? �r�n ' + i + ' container bulunamad�!');
+            }
+        } else {
+            console.log('? �r�n ' + i + ' radio bulunamad�!');
+        }
+    }
+    
+    // �lk aktif �r�n� se� (e�er hi�biri se�ili de�ilse)
+    if (ilkAktifUrun !== null) {
+        var mevcutSecim = document.querySelector('input[name="urunSecim"]:checked');
+        if (!mevcutSecim) {
+            var ilkRadio = document.querySelector('input[name="urunSecim"][value="' + ilkAktifUrun + '"]');
+            if (ilkRadio && ilkRadio.closest('div[style*="border: 2px solid"]').style.display !== 'none') {
+                ilkRadio.checked = true;
+                if (typeof updateBorder === 'function') {
+                    updateBorder(ilkAktifUrun);
+                }
+            }
+        }
+    }
+    
+    console.log('? �R�N-1: M��teri �r�n se�enekleri y�klendi, ilk aktif: ' + ilkAktifUrun);
+}
+
+// RENK VE BEDEN DROPDOWN'LARINI KONTROL ET
+function loadRenkBedenDropdowns() {
+    // ANA TOGGLE'LARDAN KONTROL ET
+    var herhangiRenkAktif = localStorage.getItem(getAdminKey('renk_ana_aktif')) === 'true';
+    var herhangiBedenAktif = localStorage.getItem(getAdminKey('beden_ana_aktif')) === 'true';
+    
+    console.log('M��teri - Renk aktif: ' + herhangiRenkAktif + ', Beden aktif: ' + herhangiBedenAktif);
+    
+    // Renk dropdown'lar�n� kontrol et
+    var renkDropdowns = document.querySelectorAll('.renk-dropdown');
+    renkDropdowns.forEach(function(select) {
+        if (herhangiRenkAktif) {
+            select.style.display = 'block';
+            select.disabled = false;
+            select.style.opacity = '1';
+            select.style.cursor = 'pointer';
+            select.style.backgroundColor = '#fff';
+        } else {
+            select.style.display = 'none';
+        }
+    });
+    
+    // Beden dropdown'lar�n� kontrol et
+    var bedenDropdowns = document.querySelectorAll('.beden-dropdown');
+    bedenDropdowns.forEach(function(select) {
+        if (herhangiBedenAktif) {
+            select.style.display = 'block';
+            select.disabled = false;
+            select.style.opacity = '1';
+            select.style.cursor = 'pointer';
+            select.style.backgroundColor = '#fff';
+        } else {
+            select.style.display = 'none';
+        }
+    });
+    
+    // Eski y�ntemle de kontrol et (class's�z select'ler)
+    var allSelects = document.querySelectorAll('select');
+    allSelects.forEach(function(select) {
+        if (!select.classList.contains('renk-dropdown') && !select.classList.contains('beden-dropdown')) {
+            if (select.innerHTML.includes('Renk Se�iniz') || select.innerHTML.includes('? Renk Se�iniz')) {
+                select.style.display = herhangiRenkAktif ? 'block' : 'none';
+            }
+            if (select.innerHTML.includes('Beden Se�iniz')) {
+                select.style.display = herhangiBedenAktif ? 'block' : 'none';
+            }
+        }
+    });
+    
+    // Renk, Beden ba�l���n� kontrol et
+    var allElements = document.querySelectorAll('.product-options > div:first-child');
+    allElements.forEach(function(element) {
+        if (element.textContent && element.textContent.trim() === 'Renk, Beden') {
+            if (!herhangiRenkAktif && !herhangiBedenAktif) {
+                element.style.display = 'none';
+            } else if (herhangiRenkAktif && !herhangiBedenAktif) {
+                element.textContent = 'Renk';
+                element.style.display = 'block';
+            } else if (!herhangiRenkAktif && herhangiBedenAktif) {
+                element.textContent = 'Beden';
+                element.style.display = 'block';
+            } else {
+                element.textContent = 'Renk, Beden';
+                element.style.display = 'block';
+            }
+        }
+    });
+}
+
+function updateCustomerDropdowns(aktifRenkler, aktifBedenler) {
+    console.log('?? updateCustomerDropdowns �a�r�ld� (urunx-1) - Renkler:', aktifRenkler, 'Bedenler:', aktifBedenler);
+    
+    var renkIsimleri = {
+        'siyah': '? Siyah',
+        'beyaz': '? Beyaz', 
+        'gri': '?? Gri',
+        'lacivert': '?? Lacivert',
+        'kahverengi': '?? Kahverengi',
+        'kirmizi': '?? K�rm�z�',
+        'mavi': '?? Mavi',
+        'yesil': '?? Ye�il',
+        'sari': '?? Sar�',
+        'turuncu': '?? Turuncu',
+        'mor': '?? Mor',
+        'pembe': '?? Pembe',
+        'bordo': '?? Bordo',
+        'haki': '?? Haki',
+        'bej': '?? Bej',
+        'krem': '?? Krem',
+        'fume': '?? F�me',
+        'antrasit': '? Antrasit'
+    };
+    
+    var bedenIsimleri = {
+        // Ayakkab� Bedenleri - de�i�mez
+        '35': '35', '36': '36', '37': '37', '38': '38', '39': '39', '40': '40',
+        '41': '41', '42': '42', '43': '43', '44': '44', '45': '45', '46': '46',
+        // Giyim Bedenleri - g�ncellendi
+        'xs-dar': 'XS (Dar Kal�p)', 's-kucuk': 'S (K���k)', 'm-orta': 'M (Orta)',
+        'l-buyuk': 'L (B�y�k)', 'xl-cok': 'XL (�ok B�y�k)', 'xxl-ekstra': 'XXL (Ekstra B�y�k)',
+        'XS': 'XS (Yeti�kin)', 'S': 'S (Yeti�kin)', 'M': 'M (Yeti�kin)', 'L': 'L (Yeti�kin)', 'XL': 'XL (Yeti�kin)', 'XXL': 'XXL (Yeti�kin)',
+        // Bebek Bedenleri - de�i�mez
+        '0-3ay': '0�3 Ay', '3-6ay': '3�6 Ay', '6-9ay': '6�9 Ay',
+        '9-12ay': '9�12 Ay', '12-18ay': '12�18 Ay', '18-24ay': '18�24 Ay',
+        // �ocuk Bedenleri - g�ncellendi
+        '2-3yas': '2�3 Ya�', '3-4yas': '3�4 Ya�', '4-5yas': '4�5 Ya�',
+        'cocuk-xs': 'XS (5�7 Ya�)', 'cocuk-s': 'S (7�10 Ya�)', 'cocuk-m': 'M (10�12 Ya�)',
+        'cocuk-l': 'L (12�14 Ya�)', 'cocuk-xl': 'XL (14�16 Ya�)',
+        // Kad�n Bedenleri - g�ncellendi
+        'k-34': '(XS)', 'k-36': '(S)', 'k-38': '(M)', 'k-40': '(L)', 'k-42': '(XL)', 'k-44': '(XXL)',
+        // Erkek Bedenleri - g�ncellendi
+        'e-46': '(S)', 'e-48': '(M)', 'e-50': '(L)', 'e-52': '(XL)', 'e-54': '(XXL)', 'e-56': '(XXXL)'
+    };
+    
+    // Renk dropdown'lar�n� g�ncelle - sadece admin'den eklenen renkler g�sterilsin
+    var renkDropdowns = document.querySelectorAll('.renk-dropdown');
+    if (aktifRenkler && aktifRenkler.length > 0) {
+        renkDropdowns.forEach(function(select) {
+            select.innerHTML = '<option value="">? Renk Se�iniz �</option>';
+            aktifRenkler.forEach(function(renk) {
+                var option = document.createElement('option');
+                option.value = renk;
+                option.textContent = renkIsimleri[renk] || renk;
+                select.appendChild(option);
+            });
+        });
+    } else {
+        // Aktif renk yoksa dropdown'� temizle
+        renkDropdowns.forEach(function(select) {
+            select.innerHTML = '<option value="">? Renk Se�iniz �</option>';
+        });
+    }
+    
+    // Beden dropdown'lar�n� g�ncelle - sadece admin'den eklenen bedenler g�sterilsin
+    var bedenDropdowns = document.querySelectorAll('.beden-dropdown');
+    if (aktifBedenler && aktifBedenler.length > 0) {
+        bedenDropdowns.forEach(function(select) {
+            select.innerHTML = '<option value="">Beden Se�iniz �</option>';
+            aktifBedenler.forEach(function(beden) {
+                var option = document.createElement('option');
+                option.value = beden;
+                option.textContent = bedenIsimleri[beden] || beden;
+                select.appendChild(option);
+            });
+        });
+    } else {
+        // Aktif beden yoksa dropdown'� temizle
+        bedenDropdowns.forEach(function(select) {
+            select.innerHTML = '<option value="">Beden Se�iniz �</option>';
+        });
+    }
+    
+    // G�r�n�rl�k kontrol�
+    loadRenkBedenDropdowns();
+}
+
+// Sayfa y�klenince renk/beden ayarlar�n� y�kle
+window.addEventListener('DOMContentLoaded', function() {
+    // Firebase haz�r olunca toggle durumlar�n� �ek
+    if (typeof onFirebaseReady === 'function') {
+        onFirebaseReady(function() {
+            database.ref(SITE_ID + '/urunAyarlari/urun1/toggleDurumlari').once('value', function(snapshot) {
+                var data = snapshot.val();
+                if (data) {
+                    for (var key in data) {
+                        localStorage.setItem(getAdminKey(key), data[key].toString());
+                    }
+                    console.log('? Toggle durumlar� Firebase\'den y�klendi');
+                }
+                // Firebase'den veri geldikten sonra her �eyi g�ncelle
+                loadCustomerRenkBedenSettings();
+                loadUrunSecenekleri();
+                loadRenkBedenDropdowns();
+                gorselleriYukle();
+                
+                // toggleOptions fonksiyonu zaten do�ru kontrol yap�yor
+            });
+        });
+    }
+    // localStorage'dan da hemen y�kle (h�z i�in)
+    setTimeout(function() {
+        loadCustomerRenkBedenSettings();
+        loadUrunSecenekleri();
+        loadRenkBedenDropdowns();
+    }, 500);
+});
+
+// Sayfa tamamen y�klenince de bir kez daha kontrol et
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        loadCustomerRenkBedenSettings();
+        loadUrunSecenekleri();
+        loadRenkBedenDropdowns();
+    }, 1000);
+});
+
+// Form g�sterildikten sonra da kontrol et
+setTimeout(function() {
+    loadCustomerRenkBedenSettings();
+    loadUrunSecenekleri();
+    loadRenkBedenDropdowns();
+}, 2000);
+
+// localStorage de�i�ikliklerini dinle (admin panelinden de�i�iklik olursa)
+window.addEventListener('storage', function(e) {
+    if (e.key && (e.key.includes('_urun') || e.key.includes('_renk') || e.key.includes('_beden')) && e.key.includes('_aktif')) {
+        console.log('Ayar de�i�ti, yeniden y�kleniyor...');
+        setTimeout(function() {
+            loadUrunSecenekleri();
+            loadRenkBedenDropdowns();
+        }, 100);
+    }
+});
+
+// Periyodik kontrol kald�r�ld� - performans i�in
+// setInterval(function() {
+//     loadUrunSecenekleri();
+//     loadRenkBedenDropdowns();
+// }, 500);
+
+// 8-OPTION PRODUCT SELECTION FUNCTIONS
+function updateBorder(selectedId) {
+    // Remove active border from all options
+    for (let i = 1; i <= 8; i++) {
+        const element = document.getElementById('secim' + i);
+        if (element) {
+            const container = element.closest('div[style*="border: 2px solid"]');
+            if (container) {
+                container.style.border = '2px solid #ddd';
+                container.style.backgroundColor = 'white';
+            }
+        }
+    }
+    
+    // Add active border to selected option
+    const selectedElement = document.getElementById('secim' + selectedId);
+    if (selectedElement) {
+        const container = selectedElement.closest('div[style*="border: 2px solid"]');
+        if (container) {
+            container.style.border = '2px solid #000';
+            container.style.backgroundColor = '#f8fff8';
+        }
+    }
+    
+    // Show color and size options for selected item
+    toggleOptions(selectedId);
+}
+
+function toggleOptions(selectedId) {
+    // ANA TOGGLE'LARDAN KONTROL ET
+    var herhangiRenkAktif = localStorage.getItem(getAdminKey('renk_ana_aktif')) === 'true';
+    var herhangiBedenAktif = localStorage.getItem(getAdminKey('beden_ana_aktif')) === 'true';
+    
+    // Hide all color/size options first
+    for (let i = 1; i <= 8; i++) {
+        const optionsDiv = document.getElementById('options' + i);
+        if (optionsDiv) {
+            optionsDiv.style.display = 'none';
+        }
+    }
+    
+    // Renk VEYA beden a��ksa options b�l�m� g�ster
+    if (herhangiRenkAktif || herhangiBedenAktif) {
+        console.log(selectedId + ' ADET: Renk veya beden a��k, options g�steriliyor');
+        const selectedOptionsDiv = document.getElementById('options' + selectedId);
+        if (selectedOptionsDiv) {
+            selectedOptionsDiv.style.display = 'block';
+        } else {
+            createOptionsDiv(selectedId);
+        }
+    } else {
+        console.log(selectedId + ' ADET: Renk ve beden kapal�, options g�sterilmiyor');
+    }
+}
+
+function createOptionsDiv(id) {
+    // ANA TOGGLE'LARDAN KONTROL ET
+    var herhangiRenkAktif = localStorage.getItem(getAdminKey('renk_ana_aktif')) === 'true';
+    var herhangiBedenAktif = localStorage.getItem(getAdminKey('beden_ana_aktif')) === 'true';
+    
+    // Renk ve beden ikisi de kapal�ysa dropdown olu�turma
+    if (!herhangiRenkAktif && !herhangiBedenAktif) {
+        console.log(id + ' ADET: Renk ve beden kapal� - dropdown olu�turulmuyor');
+        return;
+    }
+    
+    // 1 ADET i�in kontrol ge�ti VEYA 2,3,4,5,6,7,8 ADET (normal davran��)
+    const selectedElement = document.getElementById('secim' + id);
+    if (selectedElement) {
+        const container = selectedElement.closest('div[style*="border: 2px solid"]');
+        if (container) {
+            // Check if options div already exists
+            let optionsDiv = container.querySelector('.product-options');
+            if (!optionsDiv) {
+                // Create new options div
+                optionsDiv = document.createElement('div');
+                optionsDiv.className = 'product-options';
+                optionsDiv.id = 'options' + id;
+                optionsDiv.style.cssText = 'margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee;';
+                
+                // Create separate color/size selections for each pair
+                let optionsHTML = '<div style="color: #666; font-size: 14px; margin-bottom: 10px;">Renk, Beden</div>';
+                
+                for (let i = 1; i <= parseInt(id); i++) {
+                    optionsHTML += `
+                        <div style="margin-bottom: 15px;">
+                            <div style="font-weight: bold; color: #333; margin-bottom: 8px; font-size: 16px;">#${i}</div>
+                            <div style="display: flex; gap: 10px;">
+                                <select class="renk-dropdown" style="flex: 1; padding: 8px 12px; border: 2px solid #ddd; border-radius: 6px; font-size: 14px; background: white;">
+                                    <option value="">? Renk Se�iniz �</option>
+                                    <option value="siyah">? Siyah</option>
+                                    <option value="beyaz">? Beyaz</option>
+                                    <option value="gri">?? Gri</option>
+                                    <option value="lacivert">?? Lacivert</option>
+                                    <option value="kahverengi">?? Kahverengi</option>
+                                    <option value="kirmizi">?? K�rm�z�</option>
+                                    <option value="mavi">?? Mavi</option>
+                                    <option value="yesil">?? Ye�il</option>
+                                    <option value="sari">?? Sar�</option>
+                                    <option value="turuncu">?? Turuncu</option>
+                                    <option value="mor">?? Mor</option>
+                                    <option value="pembe">?? Pembe</option>
+                                    <option value="bordo">?? Bordo</option>
+                                    <option value="haki">?? Haki</option>
+                                    <option value="bej">?? Bej</option>
+                                    <option value="krem">?? Krem</option>
+                                    <option value="fume">?? F�me</option>
+                                    <option value="antrasit">? Antrasit</option>
+                                </select>
+                                <select class="beden-dropdown" style="flex: 1; padding: 8px 12px; border: 2px solid #ddd; border-radius: 6px; font-size: 14px; background: white;">
+                                    <option value="">Beden Se�iniz �</option>
+                                    <optgroup label="?? Bebek Bedenleri">
+                                        <option value="0-3ay">0-3 Ay</option>
+                                        <option value="3-6ay">3-6 Ay</option>
+                                        <option value="6-9ay">6-9 Ay</option>
+                                        <option value="9-12ay">9-12 Ay</option>
+                                        <option value="12-18ay">12-18 Ay</option>
+                                        <option value="18-24ay">18-24 Ay</option>
+                                    </optgroup>
+                                    <optgroup label="?? �ocuk Bedenleri">
+                                        <option value="2-3yas">2-3 Ya�</option>
+                                        <option value="3-4yas">3-4 Ya�</option>
+                                        <option value="4-5yas">4-5 Ya�</option>
+                                        <option value="cocuk-xs">�ocuk XS</option>
+                                        <option value="cocuk-s">�ocuk S</option>
+                                        <option value="cocuk-m">�ocuk M</option>
+                                        <option value="cocuk-l">�ocuk L</option>
+                                        <option value="cocuk-xl">�ocuk XL</option>
+                                    </optgroup>
+                                    <optgroup label="?? Ayakkab� Numaralar�">
+                                        <option value="35">35</option>
+                                        <option value="36">36</option>
+                                        <option value="37">37</option>
+                                        <option value="38">38</option>
+                                        <option value="39">39</option>
+                                        <option value="40">40</option>
+                                        <option value="41">41</option>
+                                        <option value="42">42</option>
+                                        <option value="43">43</option>
+                                        <option value="44">44</option>
+                                        <option value="45">45</option>
+                                        <option value="46">46</option>
+                                    </optgroup>
+                                    <optgroup label="?? Giyim Bedenleri">
+                                        <option value="XS">XS</option>
+                                        <option value="S">S</option>
+                                        <option value="M">M</option>
+                                        <option value="L">L</option>
+                                        <option value="XL">XL</option>
+                                        <option value="XXL">XXL</option>
+                                    </optgroup>
+                                    <optgroup label="?? Kad�n Bedenleri">
+                                        <option value="k-34">K-34</option>
+                                        <option value="k-36">K-36</option>
+                                        <option value="k-38">K-38</option>
+                                        <option value="k-40">K-40</option>
+                                        <option value="k-42">K-42</option>
+                                        <option value="k-44">K-44</option>
+                                    </optgroup>
+                                    <optgroup label="?? Erkek Bedenleri">
+                                        <option value="e-46">E-46</option>
+                                        <option value="e-48">E-48</option>
+                                        <option value="e-50">E-50</option>
+                                        <option value="e-52">E-52</option>
+                                        <option value="e-54">E-54</option>
+                                        <option value="e-56">E-56</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>`;
+                }
+                
+                optionsDiv.innerHTML = optionsHTML;
+                container.appendChild(optionsDiv);
+                
+                // Dropdown'lar� hemen g�ncelle
+                setTimeout(function() {
+                    loadCustomerRenkBedenSettings();
+                }, 100);
+            }
+            
+            optionsDiv.style.display = 'block';
+        }
+    }
+}
+
+// Initialize the first option as selected on page load
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('?? �R�N-1: Sayfa y�klendi, forum ayarlar� yap�l�yor...');
+    
+    // �R�N FORUM AYARLARINI ZORLA TRUE YAP - HEPS�N� AKT�F ET
+    for (var i = 1; i <= 8; i++) {
+        var urunKey = getAdminKey('urun' + i + '_aktif');
+        localStorage.setItem(urunKey, 'true'); // ZORLA TRUE YAP
+        console.log('? �r�n ' + i + ' aktif edildi: ' + urunKey);
+    }
+    
+    // RENK ve BEDEN toggle durumlar�n� kontrol et (admin'den gelir)
+    console.log('? Renk/Beden toggle durumlar� admin ayarlar�ndan okunacak');
+    
+    // �lk se�ene�i se�ili yap
+    const firstElement = document.getElementById('secim1');
+    if (firstElement) {
+        const container = firstElement.closest('div[style*="border: 2px solid"]');
+        if (container) {
+            container.style.border = '2px solid #000';
+            container.style.backgroundColor = '#f8fff8';
+            console.log('? �lk se�enek border ayarland�');
+        }
+    }
+    
+    // Renk/beden se�eneklerini g�ster
+    if (typeof toggleOptions === 'function') {
+        toggleOptions(1);
+        console.log('? toggleOptions(1) �a�r�ld�');
+    }
+    
+    // FORUM AYARLARINI HEMEN Y�KLE
+    setTimeout(function() {
+        console.log('?? loadUrunSecenekleri �a�r�l�yor...');
+        if (typeof loadUrunSecenekleri === 'function') {
+            loadUrunSecenekleri();
+        }
+    }, 100);
+    
+    // toggleOptions fonksiyonu zaten do�ru kontrol yap�yor - ek temizlik gerekmez
+    
+    // �R�N B�LG�LER�N� Y�KLE
+    yukleUrunBilgileriCustomer();
+    
+    // H�zl� temizlik kald�r�ld� - toggleOptions fonksiyonu zaten do�ru kontrol yap�yor
+    
+    // Periyodik kontrol - SADECE 1 ADET i�in options b�l�m�n� kontrol et
+    // Periyodik kontrol kald�r�ld� - performans i�in
+    // setInterval(function() {
+    //     var renkKey = getAdminKey('renk_siyah_aktif');
+    //     var renkAktif = localStorage.getItem(renkKey) !== 'false';
+    //     
+    //     var bedenKey = getAdminKey('beden_XS_aktif');
+    //     var bedenAktif = localStorage.getItem(bedenKey) !== 'false';
+    //     
+    //     if (!renkAktif || !bedenAktif) {
+    //         // SADECE options1 kald�r
+    //         const options1Div = document.getElementById('options1');
+    //         if (options1Div) {
+    //             options1Div.remove();
+    //         }
+    //         
+    //         // SADECE 1 ADET container'�ndaki product-options kald�r
+    //         const firstElement = document.getElementById('secim1');
+    //         if (firstElement) {
+    //             const container = firstElement.closest('div[style*="border: 2px solid"]');
+    //             if (container) {
+    //                 const productOptions = container.querySelectorAll('.product-options');
+    //                 productOptions.forEach(function(element) {
+    //                     element.remove();
+    //                 });
+    //             }
+    //         }
+    //     }
+    // }, 500);
+});
+
+function yukleUrunBilgileriCustomer() {
+    // �nce Firebase'den oku, sonra localStorage'dan g�ncelle
+    if (typeof database !== 'undefined' && database) {
+        database.ref(SITE_ID + '/urunAyarlari/urun1/urunBilgileri').once('value', function(snapshot) {
+            var data = snapshot.val();
+            if (data) {
+                for (var key in data) {
+                    localStorage.setItem(getAdminKey(key), data[key]);
+                }
+                console.log('? �r�n bilgileri Firebase\'den y�klendi');
+            }
+            urunBilgileriEkranaYaz();
+        });
+        // Genel �r�n ad�n� da Firebase'den �ek
+        database.ref(SITE_ID + '/urunAyarlari/urun1/genel_urun_adi').once('value', function(snapshot) {
+            var urunAdi = snapshot.val();
+            if (urunAdi) {
+                localStorage.setItem(getAdminKey('genel_urun_adi'), urunAdi);
+                console.log('? Genel �r�n ad� Firebase\'den y�klendi: ' + urunAdi);
+                
+                // D�NAM�K BA�LIK G�NCELLEMES�
+                document.title = urunAdi + ' | H�zl� Kargo - kargonburada.online';
+                document.getElementById('pageTitle').textContent = urunAdi + ' | H�zl� Kargo - kargonburada.online';
+            }
+        });
+        
+        // SEO a��klamas�n� da Firebase'den �ek
+        database.ref(SITE_ID + '/urunAyarlari/urun1/seo_aciklamasi').once('value', function(snapshot) {
+            var seoAciklama = snapshot.val();
+            if (seoAciklama) {
+                document.querySelector('meta[name="description"]').setAttribute('content', seoAciklama);
+                document.getElementById('pageDescription').setAttribute('content', seoAciklama);
+            }
+        });
+    } else if (typeof onFirebaseReady === 'function') {
+        onFirebaseReady(function() {
+            yukleUrunBilgileriCustomer();
+        });
+    }
+    urunBilgileriEkranaYaz();
+}
+
+function urunBilgileriEkranaYaz() {
+    for (var i = 1; i <= 8; i++) {
+        var savedIsim = localStorage.getItem(getAdminKey('urun' + i + '_isim'));
+        var savedFiyat = localStorage.getItem(getAdminKey('urun' + i + '_fiyat'));
+        var savedEskiFiyat = localStorage.getItem(getAdminKey('urun' + i + '_eski_fiyat'));
+        var savedEtiket = localStorage.getItem(getAdminKey('urun' + i + '_etiket'));
+        var savedTasarruf = localStorage.getItem(getAdminKey('urun' + i + '_tasarruf'));
+        
+        var isimElement = document.getElementById('urun' + i + 'IsimDisplay');
+        if (isimElement && savedIsim) isimElement.textContent = savedIsim;
+        
+        var fiyatElement = document.getElementById('urun' + i + 'FiyatDisplay');
+        if (fiyatElement && savedFiyat) fiyatElement.textContent = savedFiyat;
+        
+        var eskiFiyatElement = document.getElementById('urun' + i + 'EskiFiyatDisplay');
+        if (eskiFiyatElement && savedEskiFiyat) eskiFiyatElement.textContent = savedEskiFiyat;
+        
+        var etiketElement = document.getElementById('urun' + i + 'EtiketDisplay');
+        if (etiketElement && savedEtiket) etiketElement.textContent = savedEtiket;
+        
+        var tasarrufElement = document.getElementById('urun' + i + 'TasarrufDisplay');
+        if (tasarrufElement && savedTasarruf) tasarrufElement.textContent = savedTasarruf;
+    }
+}
+</script>
+
+<script>
+// =============================================
+// HIZLI S�PAR�� �ER�D� AYARLARINI Y�KLE (ADM�N-1'DEN)
+// =============================================
+
+function loadSiparisSeridiSettingsFromAdmin() {
+    // ?? Firebase'den renkleri y�kle (t�m cihazlarda ayn�)
+    onFirebaseReady(function(db) {
+        db.ref('www_kargonburada_online/siparisSeridiColors').on('value', function(snapshot) {
+            var data = snapshot.val();
+            var bgColor = '#000000';
+            var textColor = '#ffffff';
+            
+            if (data) {
+                bgColor = data.bgColor || '#000000';
+                textColor = data.textColor || '#ffffff';
+                console.log('?? Firebase\'den y�klendi (urunx-1):', data);
+            } else {
+                console.log('?? Firebase\'de renk yok, varsay�lan kullan�l�yor');
+            }
+            
+            // DEBUG: Konsola yazd�r
+            console.log('?? DEBUG - H�zl� Sipari� �eridi (urunx-1.html):');
+            console.log('BG Color Value:', bgColor);
+            console.log('Text Color Value:', textColor);
+            
+            // H�zl� sipari� �eridini g�ncelle
+            updateSiparisSeridiDisplayFromAdmin(bgColor, textColor);
+            
+            console.log('? H�zl� sipari� �eridi ayarlar� y�klendi (urunx-1.html)');
+        });
+    });
+}
+
+function updateSiparisSeridiDisplayFromAdmin(bgColor, textColor) {
+    var siparisSeridi = document.getElementById('siparisSeridi');
+    var siparisSeridiText = document.getElementById('siparisSeridiText');
+    
+    console.log('?? �erit elementleri (urunx-1):', siparisSeridi, siparisSeridiText);
+    
+    if (siparisSeridi && siparisSeridiText) {
+        // Arkaplan rengini g�ncelle
+        siparisSeridi.style.background = bgColor;
+        siparisSeridi.style.backgroundColor = bgColor;
+        
+        // Yaz� rengini g�ncelle
+        siparisSeridiText.style.color = textColor;
+        
+        console.log('? H�zl� sipari� �eridi g�r�n�m� g�ncellendi (urunx-1):', bgColor, textColor);
+    } else {
+        console.log('? H�zl� sipari� �eridi elementleri bulunamad� (urunx-1)!');
+    }
+}
+
+// Sayfa y�klenince
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('?? urunx-1.html y�klendi, h�zl� sipari� �eridi kontrol ediliyor...');
+    
+    // Firebase'den renkleri y�kle
+    loadSiparisSeridiSettingsFromAdmin();
+});
+
+// Window focus oldu�unda
+window.addEventListener('focus', function() {
+    setTimeout(loadSiparisSeridiSettingsFromAdmin, 200);
+});
+
+// Sayfa g�r�n�r oldu�unda
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+        setTimeout(loadSiparisSeridiSettingsFromAdmin, 300);
+    }
+});
+
+// Window focus oldu�unda
+window.addEventListener('focus', function() {
+    setTimeout(loadSiparisSeridiSettingsFromAdmin, 200);
+});
+
+// Sayfa g�r�n�r oldu�unda
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+        setTimeout(loadSiparisSeridiSettingsFromAdmin, 300);
+    }
+});
+</script>
+
+</body>
+</html>
+
+

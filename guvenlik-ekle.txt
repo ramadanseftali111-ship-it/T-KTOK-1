@@ -1,0 +1,12 @@
+<script>
+// 🔐 GÜVENLİK KONTROLÜ
+(function() {
+  var token = localStorage.getItem('__ACCESS_TOKEN__');
+  var now = Date.now();
+  
+  if (!token || parseInt(token) < now) {
+    alert('⛔ ERİŞİM ENGELLENDİ!\n\nBu sayfaya sadece ana sayfadan giriş yapabilirsiniz.\n\nAna sayfaya yönlendiriliyorsunuz...');
+    window.location.href = 'ana-sayfa.html';
+  }
+})();
+</script>

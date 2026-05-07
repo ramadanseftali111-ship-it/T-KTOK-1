@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shopify Entegrasyonu</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#96bf3d 0%,#1B5E20 100%);min-height:100vh;padding:20px}
+.container{max-width:800px;margin:0 auto}
+.header{text-align:center;color:#fff;margin-bottom:30px}
+.header h1{font-size:32px;margin-bottom:10px}
+.header p{opacity:0.9}
+.card{background:#fff;border-radius:16px;padding:30px;margin-bottom:20px;box-shadow:0 10px 40px rgba(0,0,0,0.2)}
+.card h2{color:#1B5E20;margin-bottom:20px;font-size:20px;display:flex;align-items:center;gap:10px}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-weight:bold;margin-bottom:8px;color:#333}
+.form-group input{width:100%;padding:14px;border:2px solid #e0e0e0;border-radius:10px;font-size:15px}
+.form-group input:focus{outline:none;border-color:#96bf3d}
+.form-group small{color:#888;font-size:12px;margin-top:5px;display:block}
+.btn{padding:14px 30px;border:none;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;margin-right:10px;margin-top:10px}
+.btn-primary{background:#96bf3d;color:#fff}
+.btn-primary:hover{background:#7da832}
+.btn-test{background:#17a2b8;color:#fff}
+.btn-test:hover{background:#138496}
+.btn-danger{background:#dc3545;color:#fff}
+.btn-danger:hover{background:#c82333}
+.status{padding:15px;border-radius:10px;margin-top:15px;display:none}
+.status.success{background:#d4edda;color:#155724;display:block}
+.status.error{background:#f8d7da;color:#721c24;display:block}
+.status.info{background:#d1ecf1;color:#0c5460;display:block}
+.info-box{background:#e8f5e9;border-left:4px solid #96bf3d;padding:15px;border-radius:0 10px 10px 0;margin-bottom:20px}
+.info-box h4{color:#1B5E20;margin-bottom:10px}
+.info-box ol{margin-left:20px;color:#333}
+.info-box li{margin-bottom:8px}
+.geriBtn{position:fixed;bottom:20px;right:20px;background:#000;color:#fff;border:none;padding:12px 24px;border-radius:10px;font-weight:bold;cursor:pointer}
+.connection-status{display:flex;align-items:center;gap:10px;padding:15px;background:#f5f5f5;border-radius:10px;margin-bottom:20px}
+.status-dot{width:12px;height:12px;border-radius:50%}
+.status-dot.red{background:#dc3545}
+.status-dot.green{background:#28a745}
+.status-dot.yellow{background:#ffc107}
+</style>
+</head>
+<body>
+<script>
+//  GÜVENLİK KONTROLÜ
+(function() {
+  var token = localStorage.getItem('__ACCESS_TOKEN__');
+  var now = Date.now();
+  
+  if (!token || parseInt(token) < now) {
+    alert(' ERİŞİM ENGELLENDİ!\n\nBu sayfaya sadece ana sayfadan giriş yapabilirsiniz.\n\nAna sayfaya yönlendiriliyorsunuz...');
+    window.location.href = 'admin-giriş.html';
+  }
+})();
+</script>
+
+
+<div class="container">
+<div class="header">
+<h1>🛒 Shopify Entegrasyonu</h1>
+<p>Siparişlerin otomatik olarak Shopify'a aktarılması için ayarlar</p>
+</div>
+
+<!-- BAĞLANTI DURUMU -->
+<div class="card">
+<div class="connection-status">
+<div class="status-dot red" id="statusDot"></div>
+<span id="statusText">Shopify bağlı değil</span>
+</div>
+</div>
+
+<!-- NASIL YAPILIR -->
+<div class="card">
+<h2>📋 Nasıl Yapılır?</h2>
+<div class="info-box">
+<h4>Shopify API Bilgilerini Almak İçin:</h4>
+<ol>
+<li><a href="https://dev.shopify.com" target="_blank">dev.shopify.com</a> adresine git</li>
+<li><strong>Apps</strong> → <strong>Create an app</strong> tıkla</li>
+<li>App name: <strong>SiparisAPI</strong> yaz, <strong>Create</strong> bas</li>
+<li>Sol menüden <strong>Settings</strong> tıkla</li>
+<li><strong>Client ID</strong> ve <strong>Secret</strong> bilgilerini kopyala</li>
+<li>Aşağıya yapıştır ve <strong>Kaydet</strong> bas</li>
+</ol>
+</div>
+</div>
+
+<!-- SHOPIFY AYARLARI -->
+<div class="card">
+<h2>🔑 Shopify API Bilgileri</h2>
+
+<div class="form-group">
+<label>Mağaza Adresi</label>
+<input type="text" id="shopifyStore" placeholder="magaza-adi.myshopify.com">
+<small>Shopify mağazanızın adresi (örn: nexo.myshopify.com)</small>
+</div>
+
+<div class="form-group">
+<label>Client ID</label>
+<input type="text" id="shopifyClientId" placeholder="9e75258cac0f458f614ea286ed9a70d0">
+<small>Settings sayfasındaki Client ID</small>
+</div>
+
+<div class="form-group">
+<label>Client Secret</label>
+<input type="text" id="shopifySecret" placeholder="Gizli anahtar buraya">
+<small>Settings sayfasındaki Secret (göz ikonuna tıklayıp kopyala)</small>
+</div>
+
+<div class="form-group">
+<label>Access Token</label>
+<input type="text" id="shopifyToken" placeholder="Otomatik alınacak veya manuel gir">
+<small>Token Al butonuna bas veya manuel olarak gir</small>
+</div>
+
+<button class="btn btn-primary" onclick="shopifyKaydet()">💾 Kaydet</button>
+<button class="btn" style="background:#9c27b0;color:#fff" onclick="tokenAl()">🔐 Token Al (OAuth)</button>
+<button class="btn btn-test" onclick="shopifyTest()">🔗 Bağlantıyı Test Et</button>
+<button class="btn btn-danger" onclick="shopifySil()">🗑️ Bilgileri Sil</button>
+
+<div class="status" id="shopifyStatus"></div>
+</div>
+
+<!-- ENTEGRASYON AYARLARI -->
+<div class="card">
+<h2>⚙️ Entegrasyon Ayarları</h2>
+
+<div class="form-group">
+<label><input type="checkbox" id="otomatikAktar" checked> Siparişleri otomatik Shopify'a aktar</label>
+<small>Yeni sipariş geldiğinde otomatik olarak Shopify'da sipariş oluşturur</small>
+</div>
+
+<div class="form-group">
+<label><input type="checkbox" id="stokSenkron"> Stokları senkronize et</label>
+<small>Shopify'daki stok değişikliklerini sisteme yansıt</small>
+</div>
+
+<button class="btn btn-primary" onclick="entegrasyonKaydet()">💾 Ayarları Kaydet</button>
+</div>
+
+</div>
+
+<button class="geriBtn" onclick="window.location.href='ana-sayfa.html'">← Ana Sayfa</button>
+
+<!-- Site Config & Firebase -->
+<script src="site-config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+
+<script>
+// Site ID'li localStorage key
+function getShopifyKey(key) {
+    if (typeof getSiteKey === 'function') return getSiteKey(key);
+    if (typeof SITE_ID !== 'undefined') return SITE_ID + '_' + key;
+    return key;
+}
+
+// Sayfa yüklendiğinde kayıtlı bilgileri getir
+window.onload = function() {
+    // OAuth callback kontrolü
+    checkOAuthCallback();
+    
+    var saved = localStorage.getItem(getShopifyKey('shopify_settings'));
+    if (saved) {
+        var s = JSON.parse(saved);
+        document.getElementById('shopifyStore').value = s.store || '';
+        document.getElementById('shopifyClientId').value = s.clientId || '';
+        document.getElementById('shopifySecret').value = s.secret || '';
+        document.getElementById('shopifyToken').value = s.token || '';
+        document.getElementById('otomatikAktar').checked = s.otomatikAktar !== false;
+        document.getElementById('stokSenkron').checked = s.stokSenkron || false;
+        
+        if (s.store && (s.clientId || s.token)) {
+            document.getElementById('statusDot').className = 'status-dot yellow';
+            document.getElementById('statusText').textContent = 'Shopify ayarları kayıtlı - Test edilmedi';
+        }
+    }
+};
+
+function shopifyKaydet() {
+    var store = document.getElementById('shopifyStore').value.trim();
+    var clientId = document.getElementById('shopifyClientId').value.trim();
+    var secret = document.getElementById('shopifySecret').value.trim();
+    var token = document.getElementById('shopifyToken').value.trim();
+    
+    if (!store) {
+        durumGoster('shopifyStatus', '❌ Mağaza adresi gerekli!', 'error');
+        return;
+    }
+    
+    if (!clientId && !token) {
+        durumGoster('shopifyStatus', '❌ Client ID veya Access Token gerekli!', 'error');
+        return;
+    }
+    
+    // .myshopify.com ekle eğer yoksa
+    if (!store.includes('.myshopify.com')) {
+        store = store + '.myshopify.com';
+        document.getElementById('shopifyStore').value = store;
+    }
+    
+    var settings = {
+        store: store,
+        clientId: clientId,
+        secret: secret,
+        token: token,
+        otomatikAktar: document.getElementById('otomatikAktar').checked,
+        stokSenkron: document.getElementById('stokSenkron').checked
+    };
+    
+    localStorage.setItem(getShopifyKey('shopify_settings'), JSON.stringify(settings));
+    
+    document.getElementById('statusDot').className = 'status-dot yellow';
+    document.getElementById('statusText').textContent = 'Shopify ayarları kayıtlı - Test edilmedi';
+    
+    if(typeof basariSesCal === 'function') basariSesCal();
+    durumGoster('shopifyStatus', '✅ Shopify bilgileri kaydedildi!', 'success');
+}
+
+function shopifyTest() {
+    var store = document.getElementById('shopifyStore').value.trim();
+    var token = document.getElementById('shopifyToken').value.trim();
+    
+    if (!store || !token) {
+        durumGoster('shopifyStatus', '❌ Test için Mağaza adresi ve Access Token gerekli!', 'error');
+        return;
+    }
+    
+    durumGoster('shopifyStatus', '⏳ Bağlantı test ediliyor...', 'info');
+    
+    // Not: Tarayıcıdan direkt Shopify API'ye istek atılamaz (CORS)
+    // Bu yüzden gerçek test için backend gerekir
+    // Şimdilik sadece bilgilerin formatını kontrol edelim
+    
+    if (store.includes('.myshopify.com') && token.startsWith('shpat_')) {
+        document.getElementById('statusDot').className = 'status-dot green';
+        document.getElementById('statusText').textContent = 'Shopify bağlantısı hazır';
+        durumGoster('shopifyStatus', '✅ Bilgiler doğru formatta! Entegrasyon hazır.', 'success');
+    } else {
+        document.getElementById('statusDot').className = 'status-dot red';
+        document.getElementById('statusText').textContent = 'Bilgiler hatalı';
+        durumGoster('shopifyStatus', '❌ Bilgiler hatalı! Store: xxx.myshopify.com, Token: shpat_xxx formatında olmalı', 'error');
+    }
+}
+
+function shopifySil() {
+    // Onay kaldırıldı - direkt sil
+    localStorage.removeItem(getShopifyKey('shopify_settings'));
+    document.getElementById('shopifyStore').value = '';
+    document.getElementById('shopifyClientId').value = '';
+    document.getElementById('shopifySecret').value = '';
+    document.getElementById('shopifyToken').value = '';
+    document.getElementById('statusDot').className = 'status-dot red';
+    document.getElementById('statusText').textContent = 'Shopify bağlı değil';
+    durumGoster('shopifyStatus', '🗑️ Bilgiler silindi!', 'info');
+}
+
+function entegrasyonKaydet() {
+    var saved = JSON.parse(localStorage.getItem(getShopifyKey('shopify_settings')) || '{}');
+    saved.otomatikAktar = document.getElementById('otomatikAktar').checked;
+    saved.stokSenkron = document.getElementById('stokSenkron').checked;
+    localStorage.setItem(getShopifyKey('shopify_settings'), JSON.stringify(saved));
+    if(typeof basariSesCal === 'function') basariSesCal();
+    alert('✅ Entegrasyon ayarları kaydedildi!');
+}
+
+function durumGoster(elementId, mesaj, tip) {
+    var el = document.getElementById(elementId);
+    el.textContent = mesaj;
+    el.className = 'status ' + tip;
+}
+
+// OAuth ile Token Al
+function tokenAl() {
+    var store = document.getElementById('shopifyStore').value.trim();
+    var clientId = document.getElementById('shopifyClientId').value.trim();
+    
+    if (!store || !clientId) {
+        durumGoster('shopifyStatus', '❌ Önce Mağaza Adresi ve Client ID gir!', 'error');
+        return;
+    }
+    
+    // .myshopify.com ekle
+    if (!store.includes('.myshopify.com')) {
+        store = store + '.myshopify.com';
+    }
+    
+    // Mağaza adını al (luma-10053 gibi)
+    var storeName = store.replace('.myshopify.com', '');
+    
+    // Redirect URI - bu sayfanın adresi
+    var redirectUri = window.location.href.split('?')[0];
+    
+    // Gerekli izinler (scopes)
+    var scopes = 'write_orders,read_orders,write_products,read_products,write_customers,read_customers,write_draft_orders,read_draft_orders,write_fulfillments,read_fulfillments';
+    
+    // OAuth URL oluştur
+    var authUrl = 'https://' + storeName + '.myshopify.com/admin/oauth/authorize?' +
+        'client_id=' + clientId +
+        '&scope=' + scopes +
+        '&redirect_uri=' + encodeURIComponent(redirectUri) +
+        '&state=' + Date.now();
+    
+    // Bilgileri kaydet (callback için)
+    localStorage.setItem(getShopifyKey('shopify_oauth_pending'), JSON.stringify({
+        store: store,
+        clientId: clientId,
+        secret: document.getElementById('shopifySecret').value.trim()
+    }));
+    
+    durumGoster('shopifyStatus', '⏳ Shopify izin sayfasına yönlendiriliyorsunuz...', 'info');
+    
+    // Shopify'a yönlendir
+    setTimeout(function() {
+        window.location.href = authUrl;
+    }, 1000);
+}
+
+// Sayfa yüklendiğinde OAuth callback kontrolü
+function checkOAuthCallback() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var code = urlParams.get('code');
+    
+    if (code) {
+        var pending = JSON.parse(localStorage.getItem(getShopifyKey('shopify_oauth_pending')) || '{}');
+        
+        if (pending.clientId && pending.secret) {
+            durumGoster('shopifyStatus', '⏳ Token alınıyor...', 'info');
+            
+            // Not: Token exchange için backend gerekir (CORS nedeniyle)
+            // Şimdilik kullanıcıya kodu gösterelim
+            
+            alert('OAuth Kodu alındı: ' + code + '\n\nBu kodu kullanarak token almak için backend gerekiyor.\n\nAlternatif: Shopify Admin > Ayarlar > Uygulamalar > SiparisAPI > API credentials kısmından manuel token alabilirsin.');
+            
+            // URL'den code parametresini temizle
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+        
+        localStorage.removeItem(getShopifyKey('shopify_oauth_pending'));
+    }
+}
+</script>
+
+<!-- 🔔 SİPARİŞ SES SİSTEMİ - Her sayfada çalışır -->
+<script src="ramco-beyin.js"></script>
+<script src="ramco-widget.js"></script>
+</body>
+</html>

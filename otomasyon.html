@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🤖 Otomasyon Merkezi</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#0a0a0a 0%,#1a1a2e 50%,#16213e 100%);min-height:100vh;color:#fff;overflow-x:hidden}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:#0a0a0a}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#e94560,#0f3460);border-radius:10px}
+
+/* HEADER */
+.header{background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);padding:20px 30px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #e94560;position:sticky;top:0;z-index:100}
+.header h1{font-size:28px;background:linear-gradient(90deg,#e94560,#0f3460,#e94560);background-size:200%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:gradientMove 3s ease infinite}
+@keyframes gradientMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.header-stats{display:flex;gap:20px}
+.stat-box{background:rgba(233,69,96,0.1);border:1px solid rgba(233,69,96,0.3);padding:10px 20px;border-radius:10px;text-align:center}
+.stat-box .num{font-size:24px;font-weight:900;color:#e94560}
+.stat-box .label{font-size:11px;color:#888}
+.geriBtn{background:linear-gradient(135deg,#e94560,#0f3460);color:#fff;border:none;padding:12px 25px;border-radius:10px;font-weight:bold;cursor:pointer;transition:all 0.3s}
+.geriBtn:hover{transform:scale(1.05);box-shadow:0 5px 20px rgba(233,69,96,0.4)}
+</style>
+</head>
+<body>
+<script>
+//  GÜVENLİK KONTROLÜ
+(function() {
+  var token = localStorage.getItem('__ACCESS_TOKEN__');
+  var now = Date.now();
+  
+  if (!token || parseInt(token) < now) {
+    alert(' ERİŞİM ENGELLENDİ!\n\nBu sayfaya sadece ana sayfadan giriş yapabilirsiniz.\n\nAna sayfaya yönlendiriliyorsunuz...');
+    window.location.href = 'admin-giriş.html';
+  }
+})();
+</script>
+
+
+<div class="header">
+<h1>🤖 OTOMASYON MERKEZİ</h1>
+<div class="header-stats">
+<div class="stat-box"><div class="num" id="aktifSayisi">0</div><div class="label">AKTİF</div></div>
+<div class="stat-box"><div class="num" id="toplamSayisi">0</div><div class="label">TOPLAM</div></div>
+</div>
+<button class="geriBtn" onclick="location.href='ana-sayfa.html'">← ANA SAYFA</button>
+</div>
+
+<div class="container" id="container"></div>
+
+</body>
+</html>
+
+<style>
+/* CONTAINER */
+.container{padding:30px;max-width:1400px;margin:0 auto}
+
+/* SECTION */
+.section{margin-bottom:40px}
+.section-header{display:flex;align-items:center;gap:15px;margin-bottom:20px;padding-bottom:15px;border-bottom:1px solid rgba(233,69,96,0.3)}
+.section-icon{width:50px;height:50px;background:linear-gradient(135deg,#e94560,#0f3460);border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 5px 20px rgba(233,69,96,0.3)}
+.section-title{font-size:22px;font-weight:900;color:#fff}
+.section-desc{font-size:12px;color:#666;margin-top:3px}
+
+/* KARTLAR */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+.card{background:rgba(15,15,35,0.8);border:1px solid rgba(233,69,96,0.2);border-radius:20px;padding:25px;transition:all 0.4s ease;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#e94560,#0f3460,#e94560);background-size:200%;animation:gradientMove 3s ease infinite;opacity:0;transition:opacity 0.3s}
+.card:hover{transform:translateY(-5px);border-color:rgba(233,69,96,0.5);box-shadow:0 15px 40px rgba(233,69,96,0.2)}
+.card:hover::before{opacity:1}
+.card.aktif{border-color:#28a745;box-shadow:0 0 30px rgba(40,167,69,0.2)}
+.card.aktif::before{background:linear-gradient(90deg,#28a745,#20c997,#28a745);opacity:1}
+
+/* KART HEADER */
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:15px}
+.card-info{flex:1}
+.card-title{font-size:16px;font-weight:bold;color:#fff;margin-bottom:5px;display:flex;align-items:center;gap:10px}
+.card-title .emoji{font-size:20px}
+.card-desc{font-size:12px;color:#888;line-height:1.5}
+
+/* LED IŞIK */
+.led{width:14px;height:14px;border-radius:50%;flex-shrink:0;transition:all 0.3s}
+.led.off{background:#dc3545;box-shadow:0 0 10px rgba(220,53,69,0.5)}
+.led.on{background:#28a745;box-shadow:0 0 15px rgba(40,167,69,0.8);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 15px rgba(40,167,69,0.8)}50%{box-shadow:0 0 25px rgba(40,167,69,1)}}
+
+/* TOGGLE SWITCH */
+.toggle-container{display:flex;align-items:center;gap:10px;margin-top:15px;padding-top:15px;border-top:1px solid rgba(255,255,255,0.1)}
+.toggle-label{font-size:12px;color:#888;flex:1}
+.toggle{width:50px;height:26px;background:#333;border-radius:13px;position:relative;cursor:pointer;transition:all 0.3s}
+.toggle::after{content:"";position:absolute;width:20px;height:20px;background:#666;border-radius:50%;top:3px;left:3px;transition:all 0.3s}
+.toggle.on{background:linear-gradient(90deg,#28a745,#20c997)}
+.toggle.on::after{left:27px;background:#fff}
+
+/* AYAR INPUTLARI */
+.card-settings{margin-top:15px;padding-top:15px;border-top:1px solid rgba(255,255,255,0.1);display:none}
+.card.aktif .card-settings{display:block}
+.setting-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.setting-row label{font-size:11px;color:#888;min-width:80px}
+.setting-row input,.setting-row select{flex:1;background:#111;border:1px solid #333;color:#fff;padding:8px 12px;border-radius:8px;font-size:12px}
+.setting-row input:focus,.setting-row select:focus{outline:none;border-color:#e94560}
+</style>
+
+<style>
+/* DURUM BADGE */
+.status-badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:bold;text-transform:uppercase}
+.status-badge.aktif{background:rgba(40,167,69,0.2);color:#28a745;border:1px solid rgba(40,167,69,0.3)}
+.status-badge.pasif{background:rgba(220,53,69,0.2);color:#dc3545;border:1px solid rgba(220,53,69,0.3)}
+
+/* LOG ALANI */
+.log-area{background:#0a0a0a;border:1px solid #222;border-radius:10px;padding:15px;margin-top:15px;max-height:150px;overflow-y:auto;font-family:monospace;font-size:11px}
+.log-item{padding:5px 0;border-bottom:1px solid #1a1a1a;color:#888}
+.log-item:last-child{border-bottom:none}
+.log-item .time{color:#e94560}
+.log-item .msg{color:#28a745}
+
+/* ÖZET PANELI */
+.summary-panel{background:linear-gradient(135deg,rgba(233,69,96,0.1),rgba(15,52,96,0.1));border:1px solid rgba(233,69,96,0.3);border-radius:20px;padding:30px;margin-bottom:40px;display:grid;grid-template-columns:repeat(9,1fr);gap:15px}
+.summary-item{text-align:center;padding:15px 10px;background:rgba(0,0,0,0.3);border-radius:15px;transition:all 0.3s}
+.summary-item:hover{transform:scale(1.05);background:rgba(233,69,96,0.1)}
+.summary-item .icon{font-size:28px;margin-bottom:8px}
+.summary-item .value{font-size:24px;font-weight:900;color:#e94560;margin-bottom:5px}
+.summary-item .label{font-size:10px;color:#888;text-transform:uppercase}
+
+/* HIZLI AKSIYONLAR */
+.quick-actions{display:flex;gap:15px;margin-bottom:40px;flex-wrap:wrap}
+.quick-btn{background:linear-gradient(135deg,#1a1a2e,#0f3460);border:1px solid rgba(233,69,96,0.3);color:#fff;padding:15px 25px;border-radius:12px;cursor:pointer;font-size:13px;font-weight:bold;transition:all 0.3s;display:flex;align-items:center;gap:10px}
+.quick-btn:hover{background:linear-gradient(135deg,#e94560,#0f3460);border-color:#e94560;transform:translateY(-3px);box-shadow:0 10px 30px rgba(233,69,96,0.3)}
+.quick-btn .emoji{font-size:18px}
+
+/* FLOATING BUTTON */
+.floating-btn{position:fixed;bottom:30px;right:30px;width:60px;height:60px;background:linear-gradient(135deg,#e94560,#0f3460);border:none;border-radius:50%;color:#fff;font-size:24px;cursor:pointer;box-shadow:0 5px 30px rgba(233,69,96,0.5);transition:all 0.3s;z-index:1000}
+.floating-btn:hover{transform:scale(1.1) rotate(90deg);box-shadow:0 10px 40px rgba(233,69,96,0.7)}
+
+/* MODAL */
+.modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;z-index:2000}
+.modal.show{display:flex}
+.modal-content{background:linear-gradient(135deg,#0a0a0a,#1a1a2e);border:2px solid #e94560;border-radius:20px;padding:30px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:15px;border-bottom:1px solid rgba(233,69,96,0.3)}
+.modal-header h3{font-size:20px;color:#e94560}
+.modal-close{background:#dc3545;color:#fff;border:none;width:35px;height:35px;border-radius:50%;cursor:pointer;font-size:18px}
+
+/* RESPONSIVE */
+@media(max-width:1400px){.summary-panel{grid-template-columns:repeat(5,1fr)}}
+@media(max-width:1200px){.summary-panel{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:768px){.summary-panel{grid-template-columns:repeat(3,1fr)}.cards-grid{grid-template-columns:1fr}.header{flex-direction:column;gap:15px}.quick-actions{justify-content:center}}
+</style>
+
+<script src="site-config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+// Otomasyon key'leri için domain bazlı yardımcı fonksiyonlar
+function getOtoKey(key) {
+  return getSiteKey('oto_' + key);
+}
+function getOtoValue(key) {
+  return localStorage.getItem(getOtoKey(key));
+}
+function setOtoValue(key, value) {
+  localStorage.setItem(getOtoKey(key), value);
+}
+
+// Otomasyon Tanımları
+var otomasyonlar = {
+  siparis: [
+    {id:'sip_ses', baslik:'🔔 Sipariş Sesi', aciklama:'Yeni sipariş gelince ses çalsın', ayarlar:[{key:'sesTipi',label:'Ses Tipi',type:'select',options:['Zil','Bildirim','Alarm','Kasa']}]},
+    {id:'sip_barkod', baslik:'🏷️ Otomatik Barkod/Etiket', aciklama:'Sipariş gelince yazdırılabilir kargo etiketi oluştur', ayarlar:[{key:'etiketBoyut',label:'Etiket Boyutu',type:'select',options:['10x15cm','10x10cm','A6']}]},
+    {id:'sip_stok', baslik:'📦 Otomatik Stok Düşür', aciklama:'Sipariş gelince stoktan otomatik düş', ayarlar:[]},
+    {id:'sip_oncelik', baslik:'⭐ VIP Öncelik', aciklama:'Belirli tutarın üstüne öncelik ver', ayarlar:[{key:'minTutar',label:'Min Tutar (₺)',type:'number',placeholder:'500'}]},
+    {id:'sip_tekrar', baslik:'🔄 Tekrar Müşteri', aciklama:'Aynı müşteri tekrar sipariş verince VIP işaretle', ayarlar:[]}
+  ],
+  kargo: [
+    {id:'kar_etiket', baslik:'🏷️ Otomatik Kargo Etiketi', aciklama:'Sipariş onayında otomatik etiket oluştur', ayarlar:[{key:'kargoFirma',label:'Varsayılan Firma',type:'select',options:['Yurtiçi','Aras','MNG','PTT','Sürat']}]},
+    {id:'kar_barkod', baslik:'📊 Barkod Oluştur', aciklama:'Her sipariş için benzersiz barkod', ayarlar:[{key:'barkodTip',label:'Barkod Tipi',type:'select',options:['CODE128','QR Code','EAN13']}]},
+    {id:'kar_durum', baslik:'🔄 Otomatik Durum', aciklama:'Kargoya verilince durumu otomatik güncelle', ayarlar:[]},
+    {id:'kar_takip', baslik:'📍 Kargo Takip', aciklama:'Takip numarası oluştur ve durumu takip et', ayarlar:[]}
+  ],
+  fatura: [
+    {id:'fat_otomatik', baslik:'🧾 E-Fatura Oluştur', aciklama:'PDF fatura oluştur ve yazdır', ayarlar:[{key:'faturaFirma',label:'Fatura Firması',type:'select',options:['Manuel','PAX','Paraşüt','Logo','Foriba']}]},
+    {id:'fat_forum', baslik:'📋 Forum→Fatura Akışı', aciklama:'Forum\'dan otomatik fatura listesine aktar', ayarlar:[]},
+    {id:'fat_rapor', baslik:'📊 Aylık Fatura Raporu', aciklama:'Fatura kesilen/bekleyen raporu', ayarlar:[]}
+  ],
+  stok: [
+    {id:'stk_uyari', baslik:'⚠️ Kritik Stok Uyarısı', aciklama:'Stok kritik seviyeye düşünce uyar', ayarlar:[{key:'kritikSeviye',label:'Kritik Seviye',type:'number',placeholder:'5'}]},
+    {id:'stk_gizle', baslik:'🚫 Otomatik Ürün Gizle', aciklama:'Stok bitince ürünü otomatik gizle', ayarlar:[]},
+    {id:'stk_rapor', baslik:'📋 Haftalık Stok Raporu', aciklama:'Her hafta stok durumu raporu', ayarlar:[{key:'raporGun',label:'Gönderim Günü',type:'select',options:['Pazartesi','Cuma','Pazar']}]}
+  ],
+  musteri: [
+    {id:'mus_degerlendirme', baslik:'⭐ Değerlendirme İsteği', aciklama:'WhatsApp ile değerlendirme linki gönder', ayarlar:[{key:'gunSonra',label:'Kaç Gün Sonra',type:'number',placeholder:'3'}]},
+    {id:'mus_vip', baslik:'👑 VIP Müşteri Sistemi', aciklama:'Çok sipariş veren müşterileri VIP yap', ayarlar:[{key:'minSiparis',label:'Min Sipariş Sayısı',type:'number',placeholder:'3'}]},
+    {id:'mus_kara_liste', baslik:'🚫 Kara Liste', aciklama:'Sorunlu müşterileri işaretle', ayarlar:[]}
+  ],
+  rapor: [
+    {id:'rap_gunluk', baslik:'📈 Günlük Satış Özeti', aciklama:'Günlük sipariş ve ciro özeti', ayarlar:[{key:'raporSaat',label:'Saat',type:'select',options:['08:00','18:00','22:00']}]},
+    {id:'rap_haftalik', baslik:'🏆 Haftalık En Çok Satanlar', aciklama:'En çok satan ürünler raporu', ayarlar:[]},
+    {id:'rap_aylik', baslik:'💰 Aylık Gelir/Gider', aciklama:'Aylık kar/zarar analizi', ayarlar:[]}
+  ],
+  akis: [
+    {id:'akis_tam', baslik:'🔄 Tam Otomasyon Akışı', aciklama:'Sipariş→Forum→Fatura→Kargo→Etiket otomatik', ayarlar:[]},
+    {id:'akis_forum_fatura', baslik:'📋→🧾 Forum→Fatura', aciklama:'Forum\'dan fatura kesmeye otomatik aktar', ayarlar:[]},
+    {id:'akis_fatura_kargo', baslik:'🧾→🚚 Fatura→Kargo', aciklama:'Fatura kesildikten sonra kargoya otomatik aktar', ayarlar:[]},
+    {id:'akis_tek_tik', baslik:'☝️ Tek Tık İşlem', aciklama:'Tek butona bas: Fatura kes + Etiket çıkar + Kargoya ver', ayarlar:[]}
+  ],
+  zamanli: [
+    {id:'zaman_sabah', baslik:'🌅 Sabah Raporu', aciklama:'Her sabah 09:00\'da günlük özet', ayarlar:[]},
+    {id:'zaman_aksam', baslik:'🌙 Akşam Raporu', aciklama:'Her akşam 21:00\'de günlük özet', ayarlar:[]},
+    {id:'zaman_yedek', baslik:'💾 Manuel Yedekleme', aciklama:'Verileri JSON olarak indir', ayarlar:[]}
+  ],
+  webhook: [
+    {id:'web_giris', baslik:'🔗 Gelen Webhook', aciklama:'Dış sistemlerden veri al (n8n, Zapier)', ayarlar:[{key:'webhookUrl',label:'Webhook URL',type:'text',placeholder:'Otomatik oluşturulacak'}]},
+    {id:'web_cikis', baslik:'📤 Giden Webhook', aciklama:'Olayları dış sistemlere bildir', ayarlar:[{key:'hedefUrl',label:'Hedef URL',type:'text',placeholder:'https://...'}]}
+  ]
+};
+
+var sectionInfo = {
+  siparis: {icon:'📦', title:'Sipariş Otomasyonları', desc:'Yeni siparişler için otomatik işlemler'},
+  kargo: {icon:'🚚', title:'Kargo Otomasyonları', desc:'Kargo süreçlerini otomatikleştir'},
+  fatura: {icon:'🧾', title:'Fatura Otomasyonları', desc:'E-fatura ve muhasebe işlemleri'},
+  stok: {icon:'📊', title:'Stok Otomasyonları', desc:'Stok takibi ve uyarılar'},
+  musteri: {icon:'👥', title:'Müşteri Otomasyonları', desc:'Müşteri ilişkileri yönetimi'},
+  rapor: {icon:'📈', title:'Raporlama Otomasyonları', desc:'Otomatik raporlar ve özetler'},
+  akis: {icon:'🔄', title:'İş Akışı Otomasyonları', desc:'Forum→Fatura→Kargo tam otomasyon'},
+  zamanli: {icon:'⏰', title:'Zamanlı Görevler', desc:'Belirli saatte çalışan işlemler'},
+  webhook: {icon:'🔗', title:'Webhook Entegrasyonları', desc:'Dış sistem bağlantıları'}
+};
+</script>
+
+<script>
+// Sayfa HTML'ini oluştur
+function sayfaOlustur() {
+  var container = document.getElementById('container');
+  var html = '';
+  
+  // Özet Panel
+  html += '<div class="summary-panel">';
+  html += '<div class="summary-item"><div class="icon">📦</div><div class="value" id="sum_siparis">0</div><div class="label">Sipariş</div></div>';
+  html += '<div class="summary-item"><div class="icon">🚚</div><div class="value" id="sum_kargo">0</div><div class="label">Kargo</div></div>';
+  html += '<div class="summary-item"><div class="icon">🧾</div><div class="value" id="sum_fatura">0</div><div class="label">Fatura</div></div>';
+  html += '<div class="summary-item"><div class="icon">📊</div><div class="value" id="sum_stok">0</div><div class="label">Stok</div></div>';
+  html += '<div class="summary-item"><div class="icon">👥</div><div class="value" id="sum_musteri">0</div><div class="label">Müşteri</div></div>';
+  html += '<div class="summary-item"><div class="icon">📈</div><div class="value" id="sum_rapor">0</div><div class="label">Rapor</div></div>';
+  html += '<div class="summary-item"><div class="icon">🔄</div><div class="value" id="sum_akis">0</div><div class="label">Akış</div></div>';
+  html += '<div class="summary-item"><div class="icon">⏰</div><div class="value" id="sum_zamanli">0</div><div class="label">Zamanlı</div></div>';
+  html += '<div class="summary-item"><div class="icon">🔗</div><div class="value" id="sum_webhook">0</div><div class="label">Webhook</div></div>';
+  html += '</div>';
+  
+  // Hızlı Aksiyonlar
+  html += '<div class="quick-actions">';
+  html += '<button class="quick-btn" onclick="tumunuAc()"><span class="emoji">✅</span> Tümünü Aç</button>';
+  html += '<button class="quick-btn" onclick="tumunuKapat()"><span class="emoji">❌</span> Tümünü Kapat</button>';
+  html += '<button class="quick-btn" onclick="ayarlariSifirla()"><span class="emoji">🔄</span> Sıfırla</button>';
+  html += '<button class="quick-btn" onclick="logTemizle()"><span class="emoji">🗑️</span> Logları Temizle</button>';
+  html += '<button class="quick-btn" onclick="testCalistir()"><span class="emoji">🧪</span> Test Et</button>';
+  html += '<button class="quick-btn" onclick="sonSiparisleriGoster()"><span class="emoji">📋</span> Son Siparişler</button>';
+  html += '<button class="quick-btn" onclick="etiketYazdir()"><span class="emoji">🖨️</span> Etiket Yazdır</button>';
+  html += '<button class="quick-btn" onclick="haftalikRaporGoster()"><span class="emoji">🏆</span> Haftalık Rapor</button>';
+  html += '<button class="quick-btn" onclick="aylikRaporGoster()"><span class="emoji">💰</span> Aylık Rapor</button>';
+  html += '<button class="quick-btn" onclick="faturaRaporGoster()"><span class="emoji">📊</span> Fatura Raporu</button>';
+  html += '<button class="quick-btn" onclick="verileriYedekle()"><span class="emoji">💾</span> Yedekle</button>';
+  html += '<button class="quick-btn" onclick="topluDegerlendirmeGonder()"><span class="emoji">⭐</span> Değerlendirme</button>';
+  html += '<button class="quick-btn" onclick="tekTikModalGoster()"><span class="emoji">☝️</span> Tek Tık</button>';
+  html += '<button class="quick-btn" onclick="stokRaporGoster()"><span class="emoji">📋</span> Stok Raporu</button>';
+  html += '</div>';
+  
+  // Her section için kartlar
+  for(var section in otomasyonlar) {
+    var info = sectionInfo[section];
+    html += '<div class="section">';
+    html += '<div class="section-header">';
+    html += '<div class="section-icon">' + info.icon + '</div>';
+    html += '<div><div class="section-title">' + info.title + '</div><div class="section-desc">' + info.desc + '</div></div>';
+    html += '</div>';
+    html += '<div class="cards-grid">';
+    
+    for(var i = 0; i < otomasyonlar[section].length; i++) {
+      var oto = otomasyonlar[section][i];
+      var aktif = getOtoValue(oto.id) === 'true';
+      
+      html += '<div class="card ' + (aktif ? 'aktif' : '') + '" data-id="' + oto.id + '">';
+      html += '<div class="card-header">';
+      html += '<div class="card-info">';
+      html += '<div class="card-title">' + oto.baslik + '</div>';
+      html += '<div class="card-desc">' + oto.aciklama + '</div>';
+      html += '</div>';
+      html += '<div class="led ' + (aktif ? 'on' : 'off') + '" id="led_' + oto.id + '"></div>';
+      html += '</div>';
+      
+      html += '<div class="toggle-container">';
+      html += '<span class="toggle-label">Otomasyon ' + (aktif ? 'Aktif' : 'Pasif') + '</span>';
+      html += '<div class="toggle ' + (aktif ? 'on' : '') + '" onclick="toggleOtomasyon(\'' + oto.id + '\')"></div>';
+      html += '</div>';
+      
+      // Ayarlar
+      if(oto.ayarlar && oto.ayarlar.length > 0) {
+        html += '<div class="card-settings">';
+        for(var j = 0; j < oto.ayarlar.length; j++) {
+          var ayar = oto.ayarlar[j];
+          var savedVal = getOtoValue(oto.id + '_' + ayar.key) || '';
+          html += '<div class="setting-row">';
+          html += '<label>' + ayar.label + '</label>';
+          if(ayar.type === 'select') {
+            html += '<select id="' + oto.id + '_' + ayar.key + '" onchange="ayarKaydet(\'' + oto.id + '\',\'' + ayar.key + '\')">';
+            for(var k = 0; k < ayar.options.length; k++) {
+              var sel = savedVal === ayar.options[k] ? 'selected' : '';
+              html += '<option value="' + ayar.options[k] + '" ' + sel + '>' + ayar.options[k] + '</option>';
+            }
+            html += '</select>';
+          } else {
+            html += '<input type="' + ayar.type + '" id="' + oto.id + '_' + ayar.key + '" placeholder="' + (ayar.placeholder||'') + '" value="' + savedVal + '" onchange="ayarKaydet(\'' + oto.id + '\',\'' + ayar.key + '\')">';
+          }
+          html += '</div>';
+        }
+        html += '</div>';
+      }
+      
+      html += '</div>';
+    }
+    
+    html += '</div></div>';
+  }
+  
+  // Log Alanı
+  html += '<div class="section">';
+  html += '<div class="section-header">';
+  html += '<div class="section-icon">📋</div>';
+  html += '<div><div class="section-title">Otomasyon Logları</div><div class="section-desc">Son işlemler ve olaylar</div></div>';
+  html += '</div>';
+  html += '<div class="log-area" id="logArea"><div class="log-item"><span class="time">[' + saatAl() + ']</span> <span class="msg">Sistem başlatıldı</span></div></div>';
+  html += '</div>';
+  
+  container.innerHTML = html;
+  sayilariGuncelle();
+}
+</script>
+
+<script>
+// Toggle Otomasyon
+function toggleOtomasyon(id) {
+  var card = document.querySelector('.card[data-id="' + id + '"]');
+  var led = document.getElementById('led_' + id);
+  var toggle = card.querySelector('.toggle');
+  var label = card.querySelector('.toggle-label');
+  var aktif = getOtoValue(id) === 'true';
+  
+  if(aktif) {
+    setOtoValue(id, 'false');
+    card.classList.remove('aktif');
+    led.classList.remove('on');
+    led.classList.add('off');
+    toggle.classList.remove('on');
+    label.textContent = 'Otomasyon Pasif';
+    logEkle('❌ ' + id + ' kapatıldı');
+  } else {
+    setOtoValue(id, 'true');
+    card.classList.add('aktif');
+    led.classList.remove('off');
+    led.classList.add('on');
+    toggle.classList.add('on');
+    label.textContent = 'Otomasyon Aktif';
+    logEkle('✅ ' + id + ' aktif edildi');
+  }
+  sayilariGuncelle();
+}
+
+// Ayar Kaydet
+function ayarKaydet(otoId, ayarKey) {
+  var input = document.getElementById(otoId + '_' + ayarKey);
+  setOtoValue(otoId + '_' + ayarKey, input.value);
+  logEkle('💾 ' + otoId + ' ayarı güncellendi: ' + ayarKey + ' = ' + input.value);
+}
+
+// Sayıları Güncelle
+function sayilariGuncelle() {
+  var toplam = 0;
+  var aktif = 0;
+  var sectionCounts = {siparis:0, kargo:0, fatura:0, stok:0, musteri:0, rapor:0, akis:0, zamanli:0, webhook:0};
+  
+  for(var section in otomasyonlar) {
+    for(var i = 0; i < otomasyonlar[section].length; i++) {
+      toplam++;
+      if(getOtoValue(otomasyonlar[section][i].id) === 'true') {
+        aktif++;
+        sectionCounts[section]++;
+      }
+    }
+  }
+  
+  document.getElementById('aktifSayisi').textContent = aktif;
+  document.getElementById('toplamSayisi').textContent = toplam;
+  document.getElementById('sum_siparis').textContent = sectionCounts.siparis;
+  document.getElementById('sum_kargo').textContent = sectionCounts.kargo;
+  document.getElementById('sum_fatura').textContent = sectionCounts.fatura;
+  document.getElementById('sum_stok').textContent = sectionCounts.stok;
+  document.getElementById('sum_musteri').textContent = sectionCounts.musteri;
+  document.getElementById('sum_rapor').textContent = sectionCounts.rapor;
+  document.getElementById('sum_akis').textContent = sectionCounts.akis;
+  document.getElementById('sum_zamanli').textContent = sectionCounts.zamanli;
+  document.getElementById('sum_webhook').textContent = sectionCounts.webhook;
+}
+
+// Tümünü Aç
+function tumunuAc() {
+  for(var section in otomasyonlar) {
+    for(var i = 0; i < otomasyonlar[section].length; i++) {
+      var id = otomasyonlar[section][i].id;
+      setOtoValue(id, 'true');
+    }
+  }
+  logEkle('✅ Tüm otomasyonlar aktif edildi');
+  sayfaOlustur();
+}
+
+// Tümünü Kapat
+function tumunuKapat() {
+  for(var section in otomasyonlar) {
+    for(var i = 0; i < otomasyonlar[section].length; i++) {
+      var id = otomasyonlar[section][i].id;
+      setOtoValue(id, 'false');
+    }
+  }
+  logEkle('❌ Tüm otomasyonlar kapatıldı');
+  sayfaOlustur();
+}
+
+// Ayarları Sıfırla
+function ayarlariSifirla() {
+  if(!confirm('Tüm otomasyon ayarları sıfırlansın mı?')) return;
+  for(var key in localStorage) {
+    if(key.startsWith('oto_')) {
+      localStorage.removeItem(key);
+    }
+  }
+  logEkle('🔄 Tüm ayarlar sıfırlandı');
+  sayfaOlustur();
+}
+
+// Log Temizle
+function logTemizle() {
+  document.getElementById('logArea').innerHTML = '<div class="log-item"><span class="time">[' + saatAl() + ']</span> <span class="msg">Loglar temizlendi</span></div>';
+}
+
+// Log Ekle
+function logEkle(mesaj) {
+  var logArea = document.getElementById('logArea');
+  var yeniLog = '<div class="log-item"><span class="time">[' + saatAl() + ']</span> <span class="msg">' + mesaj + '</span></div>';
+  logArea.innerHTML = yeniLog + logArea.innerHTML;
+}
+
+// Saat Al
+function saatAl() {
+  var now = new Date();
+  return now.toLocaleTimeString('tr-TR');
+}
+
+// Test Çalıştır
+function testCalistir() {
+  logEkle('🧪 Test başlatıldı...');
+  setTimeout(function() { logEkle('📦 Test siparişi oluşturuldu'); }, 500);
+  setTimeout(function() { logEkle('📱 SMS gönderildi (simülasyon)'); }, 1000);
+  setTimeout(function() { logEkle('🚚 Kargo etiketi oluşturuldu (simülasyon)'); }, 1500);
+  setTimeout(function() { logEkle('🧾 E-Fatura kesildi (simülasyon)'); }, 2000);
+  setTimeout(function() { logEkle('✅ Test tamamlandı!'); }, 2500);
+}
+
+// Sayfa Yüklenince
+window.onload = function() {
+  sayfaOlustur();
+  
+  // Firebase dinleyici - yeni sipariş gelince
+  database.ref(SITE_ID + '/siparisler').on('child_added', function(snapshot) {
+    var siparis = snapshot.val();
+    var siparisKey = snapshot.key;
+    
+    if(siparis && siparis.tarih) {
+      // Ses Otomasyonu
+      if(getOtoValue('sip_ses') === 'true') {
+        siparisSesCal();
+        logEkle('🔔 Yeni sipariş sesi çaldı: ' + (siparis.musteri || 'Müşteri'));
+      }
+      
+      // Barkod/Etiket Otomasyonu
+      if(getOtoValue('sip_barkod') === 'true') {
+        logEkle('🏷️ Kargo etiketi hazırlandı: ' + (siparis.siparisNo || 'Sipariş'));
+        sonSiparisData = siparis;
+        sonSiparisData.key = siparisKey;
+      }
+      
+      // Stok Düşür
+      if(getOtoValue('sip_stok') === 'true') {
+        stokDusur(siparis.forum || 1, siparis.adet);
+      }
+      
+      // VIP Öncelik
+      if(getOtoValue('sip_oncelik') === 'true') {
+        vipOncelikKontrol(siparis.tutar, siparisKey);
+      }
+      
+      // Tekrar Müşteri
+      if(getOtoValue('sip_tekrar') === 'true') {
+        tekrarMusteriKontrol(siparis.telefon, siparisKey);
+      }
+      
+      // VIP Müşteri
+      if(getOtoValue('mus_vip') === 'true') {
+        vipMusteriKontrol(siparis.telefon, siparis.musteri);
+      }
+      
+      // Forum → Fatura Akışı
+      if(getOtoValue('fat_forum') === 'true' || getOtoValue('akis_forum_fatura') === 'true') {
+        forumFaturaAktar(siparisKey);
+      }
+      
+      // Tam Otomasyon Akışı
+      if(getOtoValue('akis_tam') === 'true') {
+        tamOtomasyonCalistir(siparisKey, siparis);
+      }
+    }
+  });
+};
+
+// Sipariş Sesi Çal
+var sonSiparisData = null;
+function siparisSesCal() {
+  var sesTipi = getOtoValue('sip_ses_sesTipi') || 'Zil';
+  var audio = new Audio();
+  
+  // Web Audio API ile ses üret
+  var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  var oscillator = audioCtx.createOscillator();
+  var gainNode = audioCtx.createGain();
+  
+  oscillator.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+  
+  if(sesTipi === 'Zil') {
+    oscillator.frequency.value = 800;
+    oscillator.type = 'sine';
+  } else if(sesTipi === 'Bildirim') {
+    oscillator.frequency.value = 600;
+    oscillator.type = 'triangle';
+  } else if(sesTipi === 'Alarm') {
+    oscillator.frequency.value = 1000;
+    oscillator.type = 'square';
+  } else {
+    oscillator.frequency.value = 500;
+    oscillator.type = 'sawtooth';
+  }
+  
+  gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+  gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+  
+  oscillator.start(audioCtx.currentTime);
+  oscillator.stop(audioCtx.currentTime + 0.5);
+  
+  // İkinci ses
+  setTimeout(function() {
+    var osc2 = audioCtx.createOscillator();
+    var gain2 = audioCtx.createGain();
+    osc2.connect(gain2);
+    gain2.connect(audioCtx.destination);
+    osc2.frequency.value = 1000;
+    osc2.type = 'sine';
+    gain2.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+    osc2.start(audioCtx.currentTime);
+    osc2.stop(audioCtx.currentTime + 0.3);
+  }, 200);
+}
+
+// Son Siparişleri Göster
+function sonSiparisleriGoster() {
+  database.ref(SITE_ID + '/siparisler').limitToLast(10).once('value', function(snapshot) {
+    var siparisler = [];
+    snapshot.forEach(function(child) {
+      var s = child.val();
+      s.key = child.key;
+      siparisler.push(s);
+    });
+    siparisler.reverse();
+    
+    var html = '<div style="max-height:400px;overflow-y:auto;">';
+    siparisler.forEach(function(s, i) {
+      html += '<div style="background:#111;border:1px solid #333;border-radius:10px;padding:15px;margin-bottom:10px;">';
+      html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">';
+      html += '<strong style="color:#e94560;">#' + (s.siparisNo || (i+1)) + '</strong>';
+      html += '<span style="color:#888;font-size:11px;">' + (s.tarih || '-') + '</span>';
+      html += '</div>';
+      html += '<div style="font-size:13px;color:#fff;margin-bottom:5px;">👤 ' + (s.musteri || '-') + '</div>';
+      html += '<div style="font-size:12px;color:#888;margin-bottom:5px;">📱 ' + (s.telefon || '-') + '</div>';
+      html += '<div style="font-size:12px;color:#888;margin-bottom:10px;">📍 ' + (s.il || '-') + ' / ' + (s.ilce || '-') + '</div>';
+      html += '<div style="font-size:13px;color:#28a745;font-weight:bold;margin-bottom:10px;">💰 ' + (s.tutar || '-') + '</div>';
+      html += '<button onclick="etiketYazdirTek(\'' + s.key + '\')" style="background:linear-gradient(135deg,#e94560,#0f3460);color:#fff;border:none;padding:8px 15px;border-radius:8px;cursor:pointer;font-size:12px;width:100%;">🖨️ ETİKET YAZDIR</button>';
+      html += '</div>';
+    });
+    html += '</div>';
+    
+    modalGoster('📋 Son 10 Sipariş', html);
+  });
+}
+
+// Modal Göster
+function modalGoster(baslik, icerik) {
+  var modal = document.createElement('div');
+  modal.className = 'modal show';
+  modal.id = 'dinamikModal';
+  modal.onclick = function(e) { if(e.target === modal) modal.remove(); };
+  modal.innerHTML = '<div class="modal-content"><div class="modal-header"><h3>' + baslik + '</h3><button class="modal-close" onclick="document.getElementById(\'dinamikModal\').remove()">✕</button></div><div class="modal-body">' + icerik + '</div></div>';
+  document.body.appendChild(modal);
+}
+
+// Etiket Yazdır (Son sipariş)
+function etiketYazdir() {
+  if(!sonSiparisData) {
+    alert('Henüz yeni sipariş yok! Son Siparişler\'den seçin.');
+    sonSiparisleriGoster();
+    return;
+  }
+  etiketYazdirTek(sonSiparisData.key);
+}
+
+// Tek Sipariş Etiketi Yazdır
+function etiketYazdirTek(key) {
+  database.ref(SITE_ID + '/siparisler/' + key).once('value', function(snapshot) {
+    var s = snapshot.val();
+    if(!s) { alert('Sipariş bulunamadı!'); return; }
+    
+    var barkodNo = 'SIP' + Date.now().toString().slice(-8);
+    
+    var etiketHTML = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Kargo Etiketi</title>';
+    etiketHTML += '<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;padding:10mm}';
+    etiketHTML += '.etiket{width:100mm;border:2px solid #000;padding:5mm}';
+    etiketHTML += '.baslik{background:#000;color:#fff;padding:3mm;text-align:center;font-size:14pt;font-weight:bold;margin-bottom:3mm}';
+    etiketHTML += '.satir{padding:2mm 0;border-bottom:1px dashed #ccc;font-size:10pt}';
+    etiketHTML += '.satir:last-child{border-bottom:none}';
+    etiketHTML += '.label{color:#666;font-size:8pt}';
+    etiketHTML += '.deger{font-weight:bold;font-size:11pt}';
+    etiketHTML += '.barkod{text-align:center;padding:5mm;font-family:monospace;font-size:24pt;letter-spacing:3px;border:1px solid #000;margin-top:3mm}';
+    etiketHTML += '.barkodAlt{text-align:center;font-size:8pt;color:#666;margin-top:1mm}';
+    etiketHTML += '@media print{body{padding:0}.etiket{border:none}}</style></head><body>';
+    etiketHTML += '<' + 'script>';
+    etiketHTML += '(function() {';
+    etiketHTML += '  var token = localStorage.getItem("__ACCESS_TOKEN__");';
+    etiketHTML += '  var now = Date.now();';
+    etiketHTML += '  if (!token || parseInt(token) < now) {';
+    etiketHTML += '    alert("ERİŞİM ENGELLENDİ!\\n\\nBu sayfaya sadece ana sayfadan giriş yapabilirsiniz.\\n\\nAna sayfaya yönlendiriliyorsunuz...");';
+    etiketHTML += '    window.location.href = "admin-giriş.html";';
+    etiketHTML += '  }';
+    etiketHTML += '})();';
+    etiketHTML += '<' + '/script>';
+    etiketHTML += '<div class="etiket">';
+    etiketHTML += '<div class="baslik">📦 KARGO ETİKETİ</div>';
+    etiketHTML += '<div class="satir"><div class="label">ALICI</div><div class="deger">' + (s.musteri || '-') + '</div></div>';
+    etiketHTML += '<div class="satir"><div class="label">TELEFON</div><div class="deger">' + (s.telefon || '-') + '</div></div>';
+    etiketHTML += '<div class="satir"><div class="label">ADRES</div><div class="deger">' + (s.il || '') + ' / ' + (s.ilce || '') + '<br>' + (s.adres || '-') + '</div></div>';
+    etiketHTML += '<div class="satir"><div class="label">ÜRÜN</div><div class="deger">' + (s.urunAdi || '-') + ' x ' + (s.adet || '1') + '</div></div>';
+    etiketHTML += '<div class="satir"><div class="label">TUTAR</div><div class="deger" style="color:#e94560;font-size:14pt">' + (s.tutar || '-') + '</div></div>';
+    etiketHTML += '<div class="barkod">||||| ' + barkodNo + ' |||||</div>';
+    etiketHTML += '<div class="barkodAlt">Sipariş: ' + (s.siparisNo || '-') + ' | Tarih: ' + (s.tarih || '-') + '</div>';
+    etiketHTML += '</div></body></html>';
+    
+    var yazdirPencere = window.open('', '_blank', 'width=450,height=600');
+    yazdirPencere.document.write(etiketHTML);
+    yazdirPencere.document.close();
+    yazdirPencere.focus();
+    setTimeout(function() { yazdirPencere.print(); }, 500);
+    
+    logEkle('🖨️ Etiket yazdırıldı: ' + (s.siparisNo || barkodNo));
+  });
+}
+
+// ==================== GERÇEK ÇALIŞAN OTOMASYONLAR ====================
+
+// 1. OTOMATİK STOK DÜŞÜR - Forum Stok Sistemi
+function stokDusur(forumNo, adet) {
+  if(getOtoValue('sip_stok') !== 'true') return;
+  if(!forumNo) forumNo = 1;
+  
+  adet = parseInt(adet) || 1;
+  
+  database.ref(SITE_ID + '/forumStoklar/forum' + forumNo).once('value', function(snapshot) {
+    var mevcutStok = snapshot.val() || 0;
+    var yeniStok = Math.max(0, mevcutStok - adet);
+    database.ref(SITE_ID + '/forumStoklar/forum' + forumNo).set(yeniStok);
+    logEkle('📦 Forum ' + forumNo + ' stok düşürüldü: ' + adet + ' adet → Kalan: ' + yeniStok);
+    
+    // Kritik stok kontrolü
+    kritikStokKontrol(forumNo, yeniStok);
+  });
+}
+
+// 2. KRİTİK STOK UYARISI
+function kritikStokKontrol(forumNo, miktar) {
+  if(getOtoValue('stk_uyari') !== 'true') return;
+  
+  var kritikSeviye = parseInt(getOtoValue('stk_uyari_kritikSeviye')) || 5;
+  
+  if(miktar <= kritikSeviye) {
+    logEkle('⚠️ KRİTİK STOK: Forum ' + forumNo + ' sadece ' + miktar + ' adet kaldı!');
+    
+    // Masaüstü bildirimi
+    if(Notification.permission === 'granted') {
+      new Notification('⚠️ Kritik Stok Uyarısı', {
+        body: 'Forum ' + forumNo + ' sadece ' + miktar + ' adet kaldı!',
+        icon: '⚠️'
+      });
+    }
+    
+    // Otomatik ürün gizle
+    if(getOtoValue('stk_gizle') === 'true' && miktar === 0) {
+      urunGizle(urunAdi);
+    }
+  }
+}
+
+// 3. VIP MÜŞTERİ SİSTEMİ
+function vipMusteriKontrol(telefon, musteriAdi) {
+  if(getOtoValue('mus_vip') !== 'true') return;
+  
+  var minSiparis = parseInt(getOtoValue('mus_vip_minSiparis')) || 3;
+  
+  database.ref(SITE_ID + '/siparisler').orderByChild('telefon').equalTo(telefon).once('value', function(snapshot) {
+    var siparisSayisi = snapshot.numChildren();
+    
+    if(siparisSayisi >= minSiparis) {
+      // VIP olarak işaretle
+      database.ref(SITE_ID + '/musteriler/' + telefon.replace(/[^0-9]/g, '')).update({
+        vip: true,
+        siparisSayisi: siparisSayisi,
+        sonGuncelleme: new Date().toISOString()
+      });
+      logEkle('👑 VIP Müşteri: ' + musteriAdi + ' (' + siparisSayisi + ' sipariş)');
+    }
+  });
+}
+
+// 4. TEKRAR MÜŞTERİ TESPİTİ
+function tekrarMusteriKontrol(telefon, siparisKey) {
+  if(getOtoValue('sip_tekrar') !== 'true') return;
+  
+  database.ref(SITE_ID + '/siparisler').orderByChild('telefon').equalTo(telefon).once('value', function(snapshot) {
+    if(snapshot.numChildren() > 1) {
+      database.ref(SITE_ID + '/siparisler/' + siparisKey).update({ tekrarMusteri: true });
+      logEkle('🔄 Tekrar müşteri tespit edildi: ' + telefon);
+    }
+  });
+}
+
+// 5. VIP ÖNCELİK
+function vipOncelikKontrol(tutar, siparisKey) {
+  if(getOtoValue('sip_oncelik') !== 'true') return;
+  
+  var minTutar = parseInt(getOtoValue('sip_oncelik_minTutar')) || 500;
+  var tutarNum = parseInt((tutar || '0').replace(/[^0-9]/g, ''));
+  
+  if(tutarNum >= minTutar) {
+    database.ref(SITE_ID + '/siparisler/' + siparisKey).update({ vipSiparis: true, oncelikli: true });
+    logEkle('⭐ VIP Sipariş: ' + tutar + ' (öncelikli)');
+  }
+}
+
+// 6. OTOMATİK DURUM GÜNCELLE
+function durumGuncelle(siparisKey, yeniDurum) {
+  if(getOtoValue('kar_durum') !== 'true') return;
+  
+  database.ref(SITE_ID + '/siparisler/' + siparisKey).update({ 
+    durum: yeniDurum,
+    durumTarihi: new Date().toISOString()
+  });
+  logEkle('🔄 Durum güncellendi: ' + yeniDurum);
+}
+
+// 7. FORUM → FATURA AKIŞI
+function forumFaturaAktar(siparisKey) {
+  if(getOtoValue('akis_forum_fatura') !== 'true' && getOtoValue('fat_forum') !== 'true') return;
+  
+  database.ref(SITE_ID + '/siparisler/' + siparisKey).update({ 
+    faturaHazir: true,
+    faturaListesinde: true,
+    faturaEklenmeTarihi: new Date().toISOString()
+  });
+  logEkle('📋→🧾 Fatura listesine eklendi');
+}
+
+// 8. GÜNLÜK ÖZET RAPORU
+function gunlukOzetOlustur() {
+  var bugun = new Date().toLocaleDateString('tr-TR');
+  
+  database.ref(SITE_ID + '/siparisler').orderByChild('tarih').equalTo(bugun).once('value', function(snapshot) {
+    var toplamSiparis = 0;
+    var toplamCiro = 0;
+    var bekleyenKargo = 0;
+    
+    snapshot.forEach(function(child) {
+      var s = child.val();
+      toplamSiparis++;
+      toplamCiro += parseInt((s.tutar || '0').replace(/[^0-9]/g, '')) || 0;
+      if(!s.kargoyaVerildi) bekleyenKargo++;
+    });
+    
+    var ozet = '📊 GÜNLÜK ÖZET (' + bugun + ')\n\n';
+    ozet += '📦 Sipariş: ' + toplamSiparis + '\n';
+    ozet += '💰 Ciro: ' + toplamCiro.toLocaleString('tr-TR') + '₺\n';
+    ozet += '🚚 Bekleyen Kargo: ' + bekleyenKargo;
+    
+    logEkle(ozet.replace(/\n/g, ' | '));
+    
+    // Masaüstü bildirimi
+    if(Notification.permission === 'granted') {
+      new Notification('📊 Günlük Özet', {
+        body: toplamSiparis + ' sipariş, ' + toplamCiro.toLocaleString('tr-TR') + '₺ ciro'
+      });
+    }
+    
+    return ozet;
+  });
+}
+
+// 9. ZAMANLI GÖREVLER
+function zamanliGorevleriBaslat() {
+  // Her saat başı kontrol
+  setInterval(function() {
+    var saat = new Date().getHours();
+    
+    // Sabah raporu (09:00)
+    if(saat === 9 && getOtoValue('zaman_sabah') === 'true') {
+      var sonSabahRapor = localStorage.getItem(getSiteKey('son_sabah_rapor'));
+      var bugun = new Date().toDateString();
+      if(sonSabahRapor !== bugun) {
+        localStorage.setItem(getSiteKey('son_sabah_rapor'), bugun);
+        logEkle('🌅 Sabah raporu hazırlanıyor...');
+        gunlukOzetOlustur();
+      }
+    }
+    
+    // Akşam raporu (21:00)
+    if(saat === 21 && getOtoValue('zaman_aksam') === 'true') {
+      var sonAksamRapor = localStorage.getItem(getSiteKey('son_aksam_rapor'));
+      var bugun = new Date().toDateString();
+      if(sonAksamRapor !== bugun) {
+        localStorage.setItem(getSiteKey('son_aksam_rapor'), bugun);
+        logEkle('🌙 Akşam raporu hazırlanıyor...');
+        gunlukOzetOlustur();
+      }
+    }
+  }, 60000); // Her dakika kontrol
+}
+
+// 10. TAM OTOMASYON AKIŞI
+function tamOtomasyonCalistir(siparisKey, siparis) {
+  if(getOtoValue('akis_tam') !== 'true') return;
+  
+  logEkle('🔄 Tam otomasyon başlatıldı...');
+  
+  // 1. Stok düşür
+  setTimeout(function() {
+    stokDusur(siparis.forum || 1, siparis.adet);
+  }, 500);
+  
+  // 2. VIP kontrol
+  setTimeout(function() {
+    vipOncelikKontrol(siparis.tutar, siparisKey);
+  }, 1000);
+  
+  // 3. Tekrar müşteri kontrol
+  setTimeout(function() {
+    tekrarMusteriKontrol(siparis.telefon, siparisKey);
+  }, 1500);
+  
+  // 4. VIP müşteri kontrol
+  setTimeout(function() {
+    vipMusteriKontrol(siparis.telefon, siparis.musteri);
+  }, 2000);
+  
+  // 5. Fatura listesine ekle
+  setTimeout(function() {
+    forumFaturaAktar(siparisKey);
+  }, 2500);
+  
+  logEkle('✅ Tam otomasyon tamamlandı!');
+}
+
+// Bildirim izni iste
+function bildirimIzniIste() {
+  if('Notification' in window && Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
+}
+
+// ==================== KARA LİSTE SİSTEMİ ====================
+function karaListeyeEkle(telefon, sebep) {
+  if(!telefon) return;
+  
+  var temizTelefon = telefon.replace(/[^0-9]/g, '');
+  
+  database.ref(SITE_ID + '/kara_liste/' + temizTelefon).set({
+    telefon: telefon,
+    sebep: sebep || 'Belirtilmedi',
+    tarih: new Date().toISOString(),
+    aktif: true
+  });
+  
+  logEkle('🚫 Kara listeye eklendi: ' + telefon + ' (' + sebep + ')');
+}
+
+function karaListeKontrol(telefon, callback) {
+  var temizTelefon = telefon.replace(/[^0-9]/g, '');
+  
+  database.ref(SITE_ID + '/kara_liste/' + temizTelefon).once('value', function(snapshot) {
+    var data = snapshot.val();
+    if(data && data.aktif) {
+      callback(true, data.sebep);
+    } else {
+      callback(false, null);
+    }
+  });
+}
+
+function karaListedenCikar(telefon) {
+  var temizTelefon = telefon.replace(/[^0-9]/g, '');
+  database.ref(SITE_ID + '/kara_liste/' + temizTelefon).update({ aktif: false });
+  logEkle('✅ Kara listeden çıkarıldı: ' + telefon);
+}
+
+// ==================== HAFTALIK EN ÇOK SATANLAR ====================
+function haftalikEnCokSatanlar(callback) {
+  var birHaftaOnce = new Date();
+  birHaftaOnce.setDate(birHaftaOnce.getDate() - 7);
+  
+  database.ref(SITE_ID + '/siparisler').once('value', function(snapshot) {
+    var urunSayilari = {};
+    
+    snapshot.forEach(function(child) {
+      var s = child.val();
+      var siparisTarih = s.tarih ? new Date(s.tarih.split('.').reverse().join('-')) : null;
+      
+      if(siparisTarih && siparisTarih >= birHaftaOnce) {
+        var urun = s.urunAdi || s.urun || 'Bilinmeyen';
+        var adet = parseInt(s.adet) || 1;
+        urunSayilari[urun] = (urunSayilari[urun] || 0) + adet;
+      }
+    });
+    
+    // Sırala
+    var sirali = Object.entries(urunSayilari).sort(function(a, b) { return b[1] - a[1]; });
+    
+    var rapor = '🏆 HAFTALIK EN ÇOK SATANLAR\n\n';
+    sirali.slice(0, 10).forEach(function(item, i) {
+      var medal = i === 0 ? '🥇' : (i === 1 ? '🥈' : (i === 2 ? '🥉' : (i + 1) + '.'));
+      rapor += medal + ' ' + item[0] + ' - ' + item[1] + ' adet\n';
+    });
+    
+    if(sirali.length === 0) {
+      rapor += 'Bu hafta satış yok.';
+    }
+    
+    logEkle('🏆 Haftalık rapor oluşturuldu');
+    if(callback) callback(rapor, sirali);
+  });
+}
+
+// ==================== AYLIK GELİR/GİDER RAPORU ====================
+function aylikGelirGiderRaporu(callback) {
+  var buAy = new Date();
+  var ayBaslangic = new Date(buAy.getFullYear(), buAy.getMonth(), 1);
+  
+  database.ref(SITE_ID + '/siparisler').once('value', function(snapshot) {
+    var toplamGelir = 0;
+    var siparisSayisi = 0;
+    var iptalSayisi = 0;
+    var iadeSayisi = 0;
+    
+    snapshot.forEach(function(child) {
+      var s = child.val();
+      var siparisTarih = s.tarih ? new Date(s.tarih.split('.').reverse().join('-')) : null;
+      
+      if(siparisTarih && siparisTarih >= ayBaslangic) {
+        siparisSayisi++;
+        var tutar = parseInt((s.tutar || '0').replace(/[^0-9]/g, '')) || 0;
+        
+        if(s.durum === 'İptal' || s.iptal) {
+          iptalSayisi++;
+        } else if(s.durum === 'İade' || s.iade) {
+          iadeSayisi++;
+        } else {
+          toplamGelir += tutar;
+        }
+      }
+    });
+    
+    // Tahmini giderler (kargo, komisyon vs.)
+    var tahminiKargo = siparisSayisi * 35; // Ortalama kargo ücreti
+    var tahminiKomisyon = toplamGelir * 0.05; // %5 komisyon tahmini
+    var netKar = toplamGelir - tahminiKargo - tahminiKomisyon;
+    
+    var ayAdi = buAy.toLocaleDateString('tr-TR', { month: 'long', year: 'numeric' });
+    
+    var rapor = '💰 AYLIK GELİR/GİDER - ' + ayAdi.toUpperCase() + '\n\n';
+    rapor += '📦 Toplam Sipariş: ' + siparisSayisi + '\n';
+    rapor += '❌ İptal: ' + iptalSayisi + '\n';
+    rapor += '↩️ İade: ' + iadeSayisi + '\n\n';
+    rapor += '💵 Brüt Gelir: ' + toplamGelir.toLocaleString('tr-TR') + '₺\n';
+    rapor += '🚚 Tahmini Kargo: -' + tahminiKargo.toLocaleString('tr-TR') + '₺\n';
+    rapor += '📊 Tahmini Komisyon: -' + Math.round(tahminiKomisyon).toLocaleString('tr-TR') + '₺\n';
+    rapor += '━━━━━━━━━━━━━━━━━━\n';
+    rapor += '💎 Net Kar: ' + Math.round(netKar).toLocaleString('tr-TR') + '₺';
+    
+    logEkle('💰 Aylık rapor oluşturuldu: ' + toplamGelir.toLocaleString('tr-TR') + '₺');
+    if(callback) callback(rapor);
+  });
+}
+
+// ==================== AYLIK FATURA RAPORU ====================
+function aylikFaturaRaporu(callback) {
+  var buAy = new Date();
+  var ayBaslangic = new Date(buAy.getFullYear(), buAy.getMonth(), 1);
+  
+  database.ref(SITE_ID + '/siparisler').once('value', function(snapshot) {
+    var faturaKesilen = 0;
+    var faturaKesilmemis = 0;
+    var toplamFaturaTutar = 0;
+    var bekleyenTutar = 0;
+    
+    snapshot.forEach(function(child) {
+      var s = child.val();
+      var siparisTarih = s.tarih ? new Date(s.tarih.split('.').reverse().join('-')) : null;
+      
+      if(siparisTarih && siparisTarih >= ayBaslangic) {
+        var tutar = parseInt((s.tutar || '0').replace(/[^0-9]/g, '')) || 0;
+        
+        if(s.faturaKesildi || s.faturalandi) {
+          faturaKesilen++;
+          toplamFaturaTutar += tutar;
+        } else {
+          faturaKesilmemis++;
+          bekleyenTutar += tutar;
+        }
+      }
+    });
+    
+    var ayAdi = buAy.toLocaleDateString('tr-TR', { month: 'long', year: 'numeric' });
+    
+    var rapor = '📊 AYLIK FATURA RAPORU - ' + ayAdi.toUpperCase() + '\n\n';
+    rapor += '✅ Fatura Kesilen: ' + faturaKesilen + ' sipariş\n';
+    rapor += '💵 Faturalanan Tutar: ' + toplamFaturaTutar.toLocaleString('tr-TR') + '₺\n\n';
+    rapor += '⏳ Bekleyen Fatura: ' + faturaKesilmemis + ' sipariş\n';
+    rapor += '💰 Bekleyen Tutar: ' + bekleyenTutar.toLocaleString('tr-TR') + '₺\n\n';
+    
+    if(faturaKesilmemis > 0) {
+      rapor += '⚠️ ' + faturaKesilmemis + ' sipariş fatura bekliyor!';
+    } else {
+      rapor += '🎉 Tüm faturalar kesilmiş!';
+    }
+    
+    logEkle('📊 Fatura raporu: ' + faturaKesilen + ' kesilen, ' + faturaKesilmemis + ' bekleyen');
+    if(callback) callback(rapor);
+  });
+}
+
+// ==================== KARGO TAKİP SİSTEMİ ====================
+function kargoTakipNumarasiOlustur(siparisKey, kargoFirma) {
+  var firma = kargoFirma || getOtoValue('kar_etiket_kargoFirma') || 'Yurtiçi';
+  var prefix = {
+    'Yurtiçi': 'YK',
+    'Aras': 'AR',
+    'MNG': 'MN',
+    'PTT': 'PT',
+    'Sürat': 'SR'
+  };
+  
+  var takipNo = (prefix[firma] || 'KR') + Date.now().toString().slice(-10);
+  
+  database.ref(SITE_ID + '/siparisler/' + siparisKey).update({
+    kargoTakipNo: takipNo,
+    kargoFirma: firma,
+    kargoyaVerildi: true,
+    kargoTarihi: new Date().toISOString(),
+    kargoDurum: 'Kargoya Verildi'
+  });
+  
+  logEkle('📍 Kargo takip no oluşturuldu: ' + takipNo + ' (' + firma + ')');
+  return takipNo;
+}
+
+function kargoDurumGuncelle(siparisKey, yeniDurum) {
+  var durumlar = ['Kargoya Verildi', 'Aktarmada', 'Dağıtımda', 'Teslim Edildi'];
+  
+  database.ref(SITE_ID + '/siparisler/' + siparisKey).update({
+    kargoDurum: yeniDurum,
+    kargoDurumTarihi: new Date().toISOString()
+  });
+  
+  logEkle('🚚 Kargo durumu: ' + yeniDurum);
+}
+
+function kargoTakipSorgula(takipNo, callback) {
+  database.ref(SITE_ID + '/siparisler').orderByChild('kargoTakipNo').equalTo(takipNo).once('value', function(snapshot) {
+    snapshot.forEach(function(child) {
+      var s = child.val();
+      var bilgi = {
+        takipNo: takipNo,
+        firma: s.kargoFirma,
+        durum: s.kargoDurum || 'Bilinmiyor',
+        tarih: s.kargoTarihi,
+        musteri: s.musteri,
+        adres: s.il + '/' + s.ilce
+      };
+      if(callback) callback(bilgi);
+    });
+  });
+}
+
+// ==================== DEĞERLENDİRME İSTEĞİ (WhatsApp) ====================
+function degerlendirmeLinki(telefon, musteriAdi, urunAdi) {
+  var temizTelefon = telefon.replace(/[^0-9]/g, '');
+  if(temizTelefon.startsWith('0')) temizTelefon = '90' + temizTelefon.slice(1);
+  if(!temizTelefon.startsWith('90')) temizTelefon = '90' + temizTelefon;
+  
+  var mesaj = 'Merhaba ' + (musteriAdi || 'Değerli Müşterimiz') + '! 🌟\n\n';
+  mesaj += (urunAdi ? urunAdi + ' ' : '') + 'ürününüzü aldığınız için teşekkür ederiz!\n\n';
+  mesaj += 'Ürünümüzü beğendiyseniz bizi değerlendirir misiniz? ⭐⭐⭐⭐⭐\n\n';
+  mesaj += 'Görüşleriniz bizim için çok değerli! 🙏';
+  
+  var link = 'https://wa.me/' + temizTelefon + '?text=' + encodeURIComponent(mesaj);
+  
+  logEkle('⭐ Değerlendirme linki oluşturuldu: ' + telefon);
+  return link;
+}
+
+function topluDegerlendirmeGonder() {
+  if(getOtoValue('mus_degerlendirme') !== 'true') return;
+  
+  var gunSonra = parseInt(getOtoValue('mus_degerlendirme_gunSonra')) || 3;
+  var hedefTarih = new Date();
+  hedefTarih.setDate(hedefTarih.getDate() - gunSonra);
+  var hedefStr = hedefTarih.toLocaleDateString('tr-TR');
+  
+  database.ref(SITE_ID + '/siparisler').orderByChild('tarih').equalTo(hedefStr).once('value', function(snapshot) {
+    var linkler = [];
+    snapshot.forEach(function(child) {
+      var s = child.val();
+      if(s.durum === 'Teslim Edildi' && !s.degerlendirmeGonderildi) {
+        var link = degerlendirmeLinki(s.telefon, s.musteri, s.urunAdi);
+        linkler.push({ link: link, musteri: s.musteri, key: child.key });
+        
+        database.ref(SITE_ID + '/siparisler/' + child.key).update({ degerlendirmeGonderildi: true });
+      }
+    });
+    
+    if(linkler.length > 0) {
+      logEkle('⭐ ' + linkler.length + ' müşteriye değerlendirme gönderilecek');
+      // Modal ile linkleri göster
+      var html = '<div style="max-height:400px;overflow-y:auto;">';
+      linkler.forEach(function(item) {
+        html += '<div style="background:#111;border-radius:8px;padding:15px;margin-bottom:10px;">';
+        html += '<div style="color:#fff;margin-bottom:10px;">👤 ' + item.musteri + '</div>';
+        html += '<a href="' + item.link + '" target="_blank" style="display:block;background:#25D366;color:#fff;padding:10px;border-radius:8px;text-decoration:none;text-align:center;">📱 WhatsApp Gönder</a>';
+        html += '</div>';
+      });
+      html += '</div>';
+      modalGoster('⭐ Değerlendirme İstekleri', html);
+    }
+  });
+}
+
+// ==================== OTOMATİK YEDEKLEME ====================
+function verileriYedekle() {
+  logEkle('💾 Yedekleme başlatılıyor...');
+  
+  var yedekData = {
+    tarih: new Date().toISOString(),
+    versiyon: '1.0'
+  };
+  
+  // Siparişleri yedekle
+  database.ref(SITE_ID + '/siparisler').once('value', function(sipSnapshot) {
+    yedekData.siparisler = sipSnapshot.val() || {};
+    
+    // Stokları yedekle
+    database.ref(SITE_ID + '/stoklar').once('value', function(stokSnapshot) {
+      yedekData.stoklar = stokSnapshot.val() || {};
+      
+      // Müşterileri yedekle
+      database.ref(SITE_ID + '/musteriler').once('value', function(musSnapshot) {
+        yedekData.musteriler = musSnapshot.val() || {};
+        
+        // JSON olarak indir
+        var jsonStr = JSON.stringify(yedekData, null, 2);
+        var blob = new Blob([jsonStr], { type: 'application/json' });
+        var url = URL.createObjectURL(blob);
+        
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'yedek_' + new Date().toISOString().slice(0,10) + '.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        logEkle('💾 Yedekleme tamamlandı! Dosya indirildi.');
+      });
+    });
+  });
+}
+
+function yedektenYukle(dosya) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var data = JSON.parse(e.target.result);
+      
+      if(confirm('Bu yedek yüklenecek. Mevcut veriler üzerine yazılacak. Emin misiniz?')) {
+        if(data.siparisler) database.ref(SITE_ID + '/siparisler').set(data.siparisler);
+        if(data.stoklar) database.ref(SITE_ID + '/stoklar').set(data.stoklar);
+        if(data.musteriler) database.ref(SITE_ID + '/musteriler').set(data.musteriler);
+        
+        logEkle('✅ Yedek yüklendi: ' + data.tarih);
+        alert('Yedek başarıyla yüklendi!');
+      }
+    } catch(err) {
+      alert('Hatalı yedek dosyası!');
+      logEkle('❌ Yedek yükleme hatası');
+    }
+  };
+  reader.readAsText(dosya);
+}
+
+// ==================== WEBHOOK SİSTEMİ ====================
+var webhookEndpoint = 'https://kargo-backend.vercel.app/api';
+
+function webhookGonder(olay, veri) {
+  if(getOtoValue('web_cikis') !== 'true') return;
+  
+  var hedefUrl = getOtoValue('web_cikis_hedefUrl');
+  if(!hedefUrl) return;
+  
+  var payload = {
+    olay: olay,
+    tarih: new Date().toISOString(),
+    veri: veri
+  };
+  
+  fetch(hedefUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).then(function(response) {
+    logEkle('📤 Webhook gönderildi: ' + olay);
+  }).catch(function(err) {
+    logEkle('❌ Webhook hatası: ' + err.message);
+  });
+}
+
+function webhookUrlOlustur() {
+  var benzersizId = 'wh_' + Date.now().toString(36);
+  var url = webhookEndpoint + '/webhook/' + benzersizId;
+  
+  setOtoValue('web_giris_webhookUrl', url);
+  localStorage.setItem(getSiteKey('webhook_id'), benzersizId);
+  
+  logEkle('🔗 Webhook URL oluşturuldu');
+  return url;
+}
+
+// ==================== E-FATURA OLUŞTUR (PDF) ====================
+function eFaturaOlustur(siparisKey) {
+  database.ref(SITE_ID + '/siparisler/' + siparisKey).once('value', function(snapshot) {
+    var s = snapshot.val();
+    if(!s) { alert('Sipariş bulunamadı!'); return; }
+    
+    var faturaNo = 'FTR' + new Date().getFullYear() + '-' + Date.now().toString().slice(-6);
+    var tutar = parseInt((s.tutar || '0').replace(/[^0-9]/g, '')) || 0;
+    var kdv = Math.round(tutar * 0.20); // %20 KDV
+    var araToplam = tutar - kdv;
+    
+    var faturaHTML = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>E-Fatura</title>';
+    faturaHTML += '<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;padding:20mm;background:#fff;color:#000}';
+    faturaHTML += '.fatura{max-width:210mm;margin:0 auto;border:1px solid #000;padding:10mm}';
+    faturaHTML += '.header{display:flex;justify-content:space-between;border-bottom:2px solid #000;padding-bottom:10px;margin-bottom:20px}';
+    faturaHTML += '.logo{font-size:24px;font-weight:bold}';
+    faturaHTML += '.fatura-no{text-align:right;font-size:12px}';
+    faturaHTML += '.fatura-no strong{display:block;font-size:16px;color:#e94560}';
+    faturaHTML += '.bilgiler{display:flex;justify-content:space-between;margin-bottom:20px}';
+    faturaHTML += '.bilgi-kutu{width:48%;padding:10px;background:#f5f5f5;border-radius:5px}';
+    faturaHTML += '.bilgi-kutu h4{font-size:12px;color:#666;margin-bottom:5px}';
+    faturaHTML += '.bilgi-kutu p{font-size:13px;margin-bottom:3px}';
+    faturaHTML += 'table{width:100%;border-collapse:collapse;margin-bottom:20px}';
+    faturaHTML += 'th,td{border:1px solid #ddd;padding:10px;text-align:left}';
+    faturaHTML += 'th{background:#333;color:#fff}';
+    faturaHTML += '.toplam{text-align:right}';
+    faturaHTML += '.toplam-satir{display:flex;justify-content:flex-end;gap:50px;padding:5px 0}';
+    faturaHTML += '.toplam-satir.son{font-size:18px;font-weight:bold;border-top:2px solid #000;padding-top:10px}';
+    faturaHTML += '.footer{margin-top:30px;text-align:center;font-size:11px;color:#666}';
+    faturaHTML += '@media print{body{padding:0}.fatura{border:none}}</style></head><body>';
+    faturaHTML += '<' + 'script>';
+    faturaHTML += '(function() {';
+    faturaHTML += '  var token = localStorage.getItem("__ACCESS_TOKEN__");';
+    faturaHTML += '  var now = Date.now();';
+    faturaHTML += '  if (!token || parseInt(token) < now) {';
+    faturaHTML += '    alert("ERİŞİM ENGELLENDİ!\\n\\nBu sayfaya sadece ana sayfadan giriş yapabilirsiniz.\\n\\nAna sayfaya yönlendiriliyorsunuz...");';
+    faturaHTML += '    window.location.href = "admin-giriş.html";';
+    faturaHTML += '  }';
+    faturaHTML += '})();';
+    faturaHTML += '<' + '/script>';
+    
+    faturaHTML += '<div class="fatura">';
+    faturaHTML += '<div class="header">';
+    faturaHTML += '<div class="logo">🧾 E-FATURA</div>';
+    faturaHTML += '<div class="fatura-no">Fatura No<strong>' + faturaNo + '</strong>' + new Date().toLocaleDateString('tr-TR') + '</div>';
+    faturaHTML += '</div>';
+    
+    faturaHTML += '<div class="bilgiler">';
+    faturaHTML += '<div class="bilgi-kutu"><h4>SATICI</h4><p><strong>Firma Adınız</strong></p><p>Adres bilgisi</p><p>VKN: 1234567890</p></div>';
+    faturaHTML += '<div class="bilgi-kutu"><h4>ALICI</h4><p><strong>' + (s.musteri || '-') + '</strong></p><p>' + (s.adres || '-') + '</p><p>' + (s.il || '') + '/' + (s.ilce || '') + '</p><p>Tel: ' + (s.telefon || '-') + '</p></div>';
+    faturaHTML += '</div>';
+    
+    faturaHTML += '<table><thead><tr><th>Ürün</th><th>Adet</th><th>Birim Fiyat</th><th>Tutar</th></tr></thead>';
+    faturaHTML += '<tbody><tr><td>' + (s.urunAdi || s.urun || 'Ürün') + '</td><td>' + (s.adet || 1) + '</td><td>' + araToplam.toLocaleString('tr-TR') + '₺</td><td>' + araToplam.toLocaleString('tr-TR') + '₺</td></tr></tbody></table>';
+    
+    faturaHTML += '<div class="toplam">';
+    faturaHTML += '<div class="toplam-satir"><span>Ara Toplam:</span><span>' + araToplam.toLocaleString('tr-TR') + '₺</span></div>';
+    faturaHTML += '<div class="toplam-satir"><span>KDV (%20):</span><span>' + kdv.toLocaleString('tr-TR') + '₺</span></div>';
+    faturaHTML += '<div class="toplam-satir son"><span>GENEL TOPLAM:</span><span>' + tutar.toLocaleString('tr-TR') + '₺</span></div>';
+    faturaHTML += '</div>';
+    
+    faturaHTML += '<div class="footer">Bu fatura elektronik ortamda oluşturulmuştur.<br>Fatura No: ' + faturaNo + '</div>';
+    faturaHTML += '</div></body></html>';
+    
+    // Fatura durumunu güncelle
+    database.ref(SITE_ID + '/siparisler/' + siparisKey).update({
+      faturaKesildi: true,
+      faturalandi: true,
+      faturaNo: faturaNo,
+      faturaTarihi: new Date().toISOString()
+    });
+    
+    // Yazdır
+    var pencere = window.open('', '_blank', 'width=800,height=600');
+    pencere.document.write(faturaHTML);
+    pencere.document.close();
+    pencere.focus();
+    setTimeout(function() { pencere.print(); }, 500);
+    
+    logEkle('🧾 E-Fatura oluşturuldu: ' + faturaNo);
+    
+    // Webhook gönder
+    webhookGonder('fatura_kesildi', { faturaNo: faturaNo, tutar: tutar, musteri: s.musteri });
+  });
+}
+
+// ==================== 1. OTOMATİK ÜRÜN GİZLE ====================
+function urunGizle(urunAdi) {
+  if(getOtoValue('stk_gizle') !== 'true') return;
+  
+  // Ürünü stoklar tablosunda gizli olarak işaretle
+  database.ref(SITE_ID + '/stoklar').orderByChild('urunAdi').equalTo(urunAdi).once('value', function(snapshot) {
+    snapshot.forEach(function(child) {
+      database.ref(SITE_ID + '/stoklar/' + child.key).update({
+        gizli: true,
+        gizlenmeTarihi: new Date().toISOString(),
+        gizlenmeSebebi: 'Stok bitti'
+      });
+    });
+  });
+  
+  // Ürün sayfalarında da işaretle
+  database.ref(SITE_ID + '/urunler').orderByChild('urunAdi').equalTo(urunAdi).once('value', function(snapshot) {
+    snapshot.forEach(function(child) {
+      database.ref(SITE_ID + '/urunler/' + child.key).update({
+        aktif: false,
+        gizli: true,
+        gizlenmeTarihi: new Date().toISOString()
+      });
+    });
+  });
+  
+  logEkle('🚫 Ürün gizlendi: ' + urunAdi + ' (stok bitti)');
+  
+  // Webhook gönder
+  webhookGonder('urun_gizlendi', { urunAdi: urunAdi, sebep: 'Stok bitti' });
+}
+
+// ==================== 2. HAFTALIK STOK RAPORU ====================
+function haftalikStokRaporu(callback) {
+  var raporGunu = getOtoValue('stk_rapor_raporGun') || 'Pazartesi';
+  var gunler = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+  var bugun = gunler[new Date().getDay()];
+  
+  database.ref(SITE_ID + '/stoklar').once('value', function(snapshot) {
+    var kritikUrunler = [];
+    var normalUrunler = [];
+    var gizliUrunler = [];
+    var toplamStok = 0;
+    
+    var kritikSeviye = parseInt(getOtoValue('stk_uyari_kritikSeviye')) || 5;
+    
+    snapshot.forEach(function(child) {
+      var s = child.val();
+      var miktar = parseInt(s.miktar) || 0;
+      toplamStok += miktar;
+      
+      if(s.gizli) {
+        gizliUrunler.push({ ad: s.urunAdi, miktar: miktar });
+      } else if(miktar <= kritikSeviye) {
+        kritikUrunler.push({ ad: s.urunAdi, miktar: miktar });
+      } else {
+        normalUrunler.push({ ad: s.urunAdi, miktar: miktar });
+      }
+    });
+    
+    var rapor = '📋 HAFTALIK STOK RAPORU\n';
+    rapor += '📅 ' + new Date().toLocaleDateString('tr-TR') + '\n\n';
+    
+    rapor += '📊 GENEL DURUM\n';
+    rapor += '━━━━━━━━━━━━━━━━━━\n';
+    rapor += '📦 Toplam Stok: ' + toplamStok + ' adet\n';
+    rapor += '✅ Normal: ' + normalUrunler.length + ' ürün\n';
+    rapor += '⚠️ Kritik: ' + kritikUrunler.length + ' ürün\n';
+    rapor += '🚫 Gizli: ' + gizliUrunler.length + ' ürün\n\n';
+    
+    if(kritikUrunler.length > 0) {
+      rapor += '⚠️ KRİTİK STOKLAR\n';
+      rapor += '━━━━━━━━━━━━━━━━━━\n';
+      kritikUrunler.forEach(function(u) {
+        rapor += '• ' + u.ad + ': ' + u.miktar + ' adet\n';
+      });
+      rapor += '\n';
+    }
+    
+    if(gizliUrunler.length > 0) {
+      rapor += '🚫 GİZLENEN ÜRÜNLER\n';
+      rapor += '━━━━━━━━━━━━━━━━━━\n';
+      gizliUrunler.forEach(function(u) {
+        rapor += '• ' + u.ad + '\n';
+      });
+    }
+    
+    logEkle('📋 Haftalık stok raporu oluşturuldu');
+    if(callback) callback(rapor);
+  });
+}
+
+// ==================== 3. FATURA → KARGO AKIŞI ====================
+function faturaKargoAktar(siparisKey) {
+  if(getOtoValue('akis_fatura_kargo') !== 'true') return;
+  
+  database.ref(SITE_ID + '/siparisler/' + siparisKey).once('value', function(snapshot) {
+    var s = snapshot.val();
+    if(!s) return;
+    
+    // Fatura kesilmiş mi kontrol et
+    if(s.faturaKesildi || s.faturalandi) {
+      // Kargo bilgilerini ekle
+      var takipNo = kargoTakipNumarasiOlustur(siparisKey, s.kargoFirma);
+      
+      database.ref(SITE_ID + '/siparisler/' + siparisKey).update({
+        kargoHazir: true,
+        kargoyaAktarildi: true,
+        kargoAktarimTarihi: new Date().toISOString(),
+        durum: 'Kargoya Hazır'
+      });
+      
+      logEkle('🧾→🚚 Fatura→Kargo aktarıldı: ' + takipNo);
+      
+      // Webhook gönder
+      webhookGonder('kargoya_aktarildi', { siparisKey: siparisKey, takipNo: takipNo });
+    }
+  });
+}
+
+// Fatura kesildiğinde otomatik kargoya aktar
+function faturaKesildiTetikle(siparisKey) {
+  // Fatura→Kargo otomasyonu açıksa
+  if(getOtoValue('akis_fatura_kargo') === 'true') {
+    setTimeout(function() {
+      faturaKargoAktar(siparisKey);
+    }, 1000);
+  }
+}
+
+// ==================== 4. TEK TIK İŞLEM ====================
+function tekTikIslem(siparisKey) {
+  if(!siparisKey) {
+    alert('Sipariş seçilmedi!');
+    return;
+  }
+  
+  logEkle('☝️ Tek tık işlem başlatıldı...');
+  
+  database.ref(SITE_ID + '/siparisler/' + siparisKey).once('value', function(snapshot) {
+    var s = snapshot.val();
+    if(!s) { alert('Sipariş bulunamadı!'); return; }
+    
+    var adimlar = [];
+    
+    // 1. ADIM: E-Fatura Kes
+    adimlar.push(function(next) {
+      logEkle('1️⃣ Fatura kesiliyor...');
+      eFaturaOlustur(siparisKey);
+      setTimeout(next, 1500);
+    });
+    
+    // 2. ADIM: Kargo Takip No Oluştur
+    adimlar.push(function(next) {
+      logEkle('2️⃣ Kargo takip no oluşturuluyor...');
+      kargoTakipNumarasiOlustur(siparisKey);
+      setTimeout(next, 1000);
+    });
+    
+    // 3. ADIM: Etiket Yazdır
+    adimlar.push(function(next) {
+      logEkle('3️⃣ Kargo etiketi yazdırılıyor...');
+      etiketYazdirTek(siparisKey);
+      setTimeout(next, 1000);
+    });
+    
+    // 4. ADIM: Durumu Güncelle
+    adimlar.push(function(next) {
+      logEkle('4️⃣ Durum güncelleniyor...');
+      database.ref(SITE_ID + '/siparisler/' + siparisKey).update({
+        durum: 'Kargoya Verildi',
+        tekTikTamamlandi: true,
+        tekTikTarihi: new Date().toISOString()
+      });
+      setTimeout(next, 500);
+    });
+    
+    // 5. ADIM: Tamamlandı
+    adimlar.push(function() {
+      logEkle('✅ Tek tık işlem tamamlandı!');
+      
+      // Bildirim göster
+      if(Notification.permission === 'granted') {
+        new Notification('✅ Tek Tık İşlem Tamamlandı', {
+          body: s.musteri + ' - Fatura + Etiket + Kargo hazır!'
+        });
+      }
+      
+      // Webhook gönder
+      webhookGonder('tek_tik_tamamlandi', { 
+        siparisKey: siparisKey, 
+        musteri: s.musteri,
+        tutar: s.tutar
+      });
+    });
+    
+    // Adımları sırayla çalıştır
+    function calistir(index) {
+      if(index < adimlar.length) {
+        adimlar[index](function() { calistir(index + 1); });
+      }
+    }
+    calistir(0);
+  });
+}
+
+// Tek Tık için sipariş seçme modalı
+function tekTikModalGoster() {
+  database.ref(SITE_ID + '/siparisler').orderByChild('tekTikTamamlandi').equalTo(null).limitToLast(20).once('value', function(snapshot) {
+    var siparisler = [];
+    snapshot.forEach(function(child) {
+      var s = child.val();
+      if(!s.tekTikTamamlandi && !s.kargoyaVerildi) {
+        s.key = child.key;
+        siparisler.push(s);
+      }
+    });
+    siparisler.reverse();
+    
+    var html = '<div style="max-height:400px;overflow-y:auto;">';
+    
+    if(siparisler.length === 0) {
+      html += '<p style="color:#888;text-align:center;padding:20px;">İşlem bekleyen sipariş yok</p>';
+    } else {
+      siparisler.forEach(function(s) {
+        html += '<div style="background:#111;border:1px solid #333;border-radius:10px;padding:15px;margin-bottom:10px;">';
+        html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">';
+        html += '<strong style="color:#e94560;">#' + (s.siparisNo || '-') + '</strong>';
+        html += '<span style="color:#888;font-size:11px;">' + (s.tarih || '-') + '</span>';
+        html += '</div>';
+        html += '<div style="font-size:13px;color:#fff;margin-bottom:5px;">👤 ' + (s.musteri || '-') + '</div>';
+        html += '<div style="font-size:13px;color:#28a745;font-weight:bold;margin-bottom:10px;">💰 ' + (s.tutar || '-') + '</div>';
+        html += '<button onclick="tekTikIslem(\'' + s.key + '\');document.getElementById(\'dinamikModal\').remove();" style="background:linear-gradient(135deg,#e94560,#0f3460);color:#fff;border:none;padding:10px 15px;border-radius:8px;cursor:pointer;font-size:12px;width:100%;font-weight:bold;">☝️ TEK TIK İŞLEM</button>';
+        html += '</div>';
+      });
+    }
+    html += '</div>';
+    
+    modalGoster('☝️ Tek Tık İşlem - Sipariş Seç', html);
+  });
+}
+
+// ==================== HIZLI BUTONLARA YENİ FONKSİYONLAR ====================
+function haftalikRaporGoster() {
+  haftalikEnCokSatanlar(function(rapor) {
+    modalGoster('🏆 Haftalık Rapor', '<pre style="white-space:pre-wrap;color:#fff;font-size:13px;">' + rapor + '</pre>');
+  });
+}
+
+function aylikRaporGoster() {
+  aylikGelirGiderRaporu(function(rapor) {
+    modalGoster('💰 Aylık Rapor', '<pre style="white-space:pre-wrap;color:#fff;font-size:13px;">' + rapor + '</pre>');
+  });
+}
+
+function faturaRaporGoster() {
+  aylikFaturaRaporu(function(rapor) {
+    modalGoster('📊 Fatura Raporu', '<pre style="white-space:pre-wrap;color:#fff;font-size:13px;">' + rapor + '</pre>');
+  });
+}
+
+function stokRaporGoster() {
+  haftalikStokRaporu(function(rapor) {
+    modalGoster('📋 Stok Raporu', '<pre style="white-space:pre-wrap;color:#fff;font-size:13px;">' + rapor + '</pre>');
+  });
+}
+
+// Sayfa yüklenince
+setTimeout(function() {
+  bildirimIzniIste();
+  zamanliGorevleriBaslat();
+  
+  // Günlük değerlendirme kontrolü
+  if(getOtoValue('mus_degerlendirme') === 'true') {
+    topluDegerlendirmeGonder();
+  }
+  
+  // Gelen Fatura Dinleyici - Otomatik Yazdırma
+  var sonFaturaKey = null;
+  database.ref(SITE_ID + '/gelenFaturalar').on('child_added', function(snapshot) {
+    var fatura = snapshot.val();
+    var faturaKey = snapshot.key;
+    
+    // İlk yüklemede tüm faturaları yazdırma, sadece yenileri
+    if(sonFaturaKey === null) {
+      sonFaturaKey = faturaKey;
+      return;
+    }
+    
+    // Otomatik fatura yazdırma aktifse
+    if(getOtoValue('fat_otomatik') === 'true') {
+      logEkle('🧾 Yeni fatura geldi: ' + (fatura.faturaNo || faturaKey));
+      faturaOtomatikYazdir(fatura, faturaKey);
+    }
+  });
+  
+  // Fatura Hazır Dinleyici - Otomatik E-Fatura Gönderimi
+  var sonFaturaHazirKey = null;
+  database.ref(SITE_ID + '/siparisler').orderByChild('faturaHazir').equalTo(true).on('child_added', function(snapshot) {
+    var siparis = snapshot.val();
+    var siparisKey = snapshot.key;
+    
+    // İlk yüklemede tüm siparişleri gönderme, sadece yenileri
+    if(sonFaturaHazirKey === null) {
+      sonFaturaHazirKey = siparisKey;
+      return;
+    }
+    
+    // Zaten fatura kesilmişse atla
+    if(siparis.faturaKesildi) return;
+    
+    // Otomatik e-fatura gönderimi aktifse
+    if(getOtoValue('fat_otomatik') === 'true') {
+      var faturaFirma = getOtoValue('fat_otomatik_faturaFirma') || 'Manuel';
+      if(faturaFirma !== 'Manuel') {
+        logEkle('🧾 Otomatik fatura gönderiliyor: ' + (siparis.siparisNo || siparisKey));
+        otomatikFaturaGonder(siparisKey, siparis, faturaFirma);
+      }
+    }
+  });
+}, 2000);
+
+// Otomatik E-Fatura Gönder
+function otomatikFaturaGonder(key, siparis, faturaFirma) {
+  // Firma bilgilerini localStorage'dan al
+  var firmaBilgi = localStorage.getItem(getSiteKey('fatura_' + faturaFirma));
+  if(!firmaBilgi) {
+    logEkle('❌ ' + faturaFirma + ' API bilgileri bulunamadı!');
+    return;
+  }
+  firmaBilgi = JSON.parse(firmaBilgi);
+  
+  // Firma bilgilerini al
+  var faturaBilgileri = localStorage.getItem(getSiteKey('faturaBilgileri'));
+  faturaBilgileri = faturaBilgileri ? JSON.parse(faturaBilgileri) : {};
+  
+  // Fatura verisi hazırla
+  var faturaData = {
+    satici: {
+      firmaAdi: faturaBilgileri.firmaAdi || '',
+      vergiDairesi: faturaBilgileri.vergiDairesi || '',
+      vergiNo: faturaBilgileri.vergiNo || '',
+      adres: faturaBilgileri.firmaAdres || '',
+      telefon: faturaBilgileri.firmaTel || ''
+    },
+    alici: {
+      ad: siparis.musteri || '',
+      telefon: siparis.telefon || '',
+      il: siparis.il || '',
+      ilce: siparis.ilce || '',
+      adres: siparis.adres || ''
+    },
+    fatura: {
+      siparisNo: siparis.siparisNo,
+      tarih: new Date().toISOString(),
+      urunAdi: siparis.urunAdi || 'Ürün',
+      adet: siparis.adet || '1',
+      birimFiyat: siparis.tutar,
+      toplamTutar: siparis.tutar,
+      kdvOrani: siparis.kdvOrani || '20',
+      odemeYontemi: siparis.odemeYontemi || 'Nakit'
+    }
+  };
+  
+  // Backend'e gönder
+  fetch('https://kargo-backend.vercel.app/api/fatura/gonder', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      firma: faturaFirma,
+      apiUrl: firmaBilgi.apiAdres,
+      apiKey: firmaBilgi.apiKey,
+      username: firmaBilgi.kullaniciAdi,
+      password: firmaBilgi.sifre,
+      vergiNo: firmaBilgi.vergiNo,
+      firmaKodu: firmaBilgi.firmaKodu,
+      entegratorKodu: firmaBilgi.entegratorKodu,
+      sertifikaBilgisi: firmaBilgi.sertifikaBilgisi,
+      testModu: firmaBilgi.testModu,
+      faturaData: faturaData
+    })
+  })
+  .then(function(response) { return response.json(); })
+  .then(function(result) {
+    if(result.success) {
+      var faturaNo = result.data.faturaNo || result.data.invoiceNumber || result.data.ettn || 'FATURA-' + Date.now();
+      database.ref(SITE_ID + '/siparisler/' + key).update({
+        faturaKesildi: true,
+        faturaTarih: new Date().toLocaleDateString('tr-TR'),
+        faturaFirma: faturaFirma,
+        faturaNo: faturaNo
+      });
+      logEkle('✅ Fatura kesildi: ' + faturaNo + ' (' + faturaFirma + ')');
+    } else {
+      logEkle('❌ Fatura hatası: ' + (result.error || 'Bilinmeyen hata'));
+    }
+  })
+  .catch(function(error) {
+    logEkle('❌ Fatura API hatası: ' + error.message);
+  });
+}
+
+// Fatura Otomatik Yazdır
+function faturaOtomatikYazdir(f, key) {
+  var yazdirPencere = window.open('', '_blank', 'width=400,height=600');
+  yazdirPencere.document.write('<html><head><title>Fatura</title>');
+  yazdirPencere.document.write('<style>body{font-family:monospace;font-size:12px;padding:10px;margin:0}h2{text-align:center;margin:0 0 10px}hr{border:1px dashed #000}.satir{display:flex;justify-content:space-between;margin:5px 0}.etiket{font-weight:bold}.deger{text-align:right}</style>');
+  yazdirPencere.document.write('</head><body>');
+  yazdirPencere.document.write('<' + 'script>');
+  yazdirPencere.document.write('(function() {');
+  yazdirPencere.document.write('  var token = localStorage.getItem("__ACCESS_TOKEN__");');
+  yazdirPencere.document.write('  var now = Date.now();');
+  yazdirPencere.document.write('  if (!token || parseInt(token) < now) {');
+  yazdirPencere.document.write('    alert("ERİŞİM ENGELLENDİ!\\n\\nBu sayfaya sadece ana sayfadan giriş yapabilirsiniz.\\n\\nAna sayfaya yönlendiriliyorsunuz...");');
+  yazdirPencere.document.write('    window.location.href = "admin-giriş.html";');
+  yazdirPencere.document.write('  }');
+  yazdirPencere.document.write('})();');
+  yazdirPencere.document.write('<' + '/script>');
+  yazdirPencere.document.write('<h2>FATURA</h2><hr>');
+  yazdirPencere.document.write('<div class="satir"><span class="etiket">Fatura No:</span><span class="deger">'+(f.faturaNo||'-')+'</span></div>');
+  yazdirPencere.document.write('<div class="satir"><span class="etiket">Tarih:</span><span class="deger">'+(f.tarih||'-')+'</span></div>');
+  yazdirPencere.document.write('<div class="satir"><span class="etiket">Müşteri:</span><span class="deger">'+(f.musteri||'-')+'</span></div>');
+  yazdirPencere.document.write('<hr>');
+  yazdirPencere.document.write('<div class="satir"><span class="etiket">Tutar:</span><span class="deger">'+(f.tutar||'-')+'</span></div>');
+  yazdirPencere.document.write('<div class="satir"><span class="etiket">KDV:</span><span class="deger">'+(f.kdv||'-')+'</span></div>');
+  yazdirPencere.document.write('<div class="satir"><span class="etiket">TOPLAM:</span><span class="deger" style="font-size:14px;font-weight:bold">'+(f.toplam||'-')+'</span></div>');
+  yazdirPencere.document.write('<hr>');
+  yazdirPencere.document.write('<div class="satir"><span class="etiket">Tip:</span><span class="deger">'+(f.tip||'-')+'</span></div>');
+  yazdirPencere.document.write('<div class="satir"><span class="etiket">Şirket:</span><span class="deger">'+(f.sirket||'-')+'</span></div>');
+  yazdirPencere.document.write('<div style="text-align:center;margin-top:15px;font-size:10px">ETTN: '+(f.ettn||'-')+'</div>');
+  yazdirPencere.document.write('</body></html>');
+  yazdirPencere.document.close();
+  yazdirPencere.print();
+  logEkle('🖨️ Fatura yazdırıldı: ' + (f.faturaNo || key));
+}
+
+// Kargo Hazır Dinleyici - Otomatik Kargo Gönderimi
+var sonKargoHazirKey = null;
+database.ref(SITE_ID + '/siparisler').orderByChild('kargoHazir').equalTo(true).on('child_added', function(snapshot) {
+  var siparis = snapshot.val();
+  var siparisKey = snapshot.key;
+  
+  // İlk yüklemede tüm siparişleri gönderme, sadece yenileri
+  if(sonKargoHazirKey === null) {
+    sonKargoHazirKey = siparisKey;
+    return;
+  }
+  
+  // Zaten kargoya verilmişse atla
+  if(siparis.kargoyaVerildi || siparis.durum === 'Kargoya Verildi') return;
+  
+  // Otomatik kargo gönderimi aktifse
+  if(getOtoValue('kar_etiket') === 'true') {
+    var kargoFirma = getOtoValue('kar_etiket_kargoFirma') || 'Yurtiçi';
+    logEkle('🚚 Otomatik kargo gönderiliyor: ' + (siparis.siparisNo || siparisKey));
+    otomatikKargoGonder(siparisKey, siparis, kargoFirma);
+  }
+});
+
+// Otomatik Kargo Gönder
+function otomatikKargoGonder(key, siparis, kargoFirma) {
+  // Firma adını localStorage key formatına çevir
+  var firmaKey = kargoFirma;
+  if(kargoFirma === 'Yurtiçi') firmaKey = 'Yurtiçi Kargo';
+  if(kargoFirma === 'Aras') firmaKey = 'Aras Kargo';
+  if(kargoFirma === 'MNG') firmaKey = 'MNG Kargo';
+  if(kargoFirma === 'PTT') firmaKey = 'PTT Kargo';
+  if(kargoFirma === 'Sürat') firmaKey = 'Sürat Kargo';
+  
+  // Firma bilgilerini localStorage'dan al
+  var firmaBilgi = localStorage.getItem(getSiteKey('kargo_' + firmaKey));
+  if(!firmaBilgi) {
+    logEkle('❌ ' + kargoFirma + ' API bilgileri bulunamadı!');
+    return;
+  }
+  firmaBilgi = JSON.parse(firmaBilgi);
+  
+  // Gönderici bilgilerini al
+  var gonderici = localStorage.getItem(getSiteKey('gonderici'));
+  gonderici = gonderici ? JSON.parse(gonderici) : {};
+  
+  // Kargo verisi hazırla
+  var kargoData = {
+    gonderen: {
+      ad: gonderici.ad || '',
+      telefon: gonderici.telefon || '',
+      il: gonderici.il || '',
+      ilce: gonderici.ilce || '',
+      adres: gonderici.adres || ''
+    },
+    alici: {
+      ad: siparis.musteri || '',
+      telefon: siparis.telefon || '',
+      il: siparis.il || '',
+      ilce: siparis.ilce || '',
+      adres: siparis.adres || ''
+    },
+    siparis: {
+      siparisNo: siparis.siparisNo,
+      urunAdi: siparis.urunAdi || 'Ürün',
+      adet: siparis.adet || '1',
+      tutar: siparis.tutar,
+      odemeYontemi: siparis.odemeYontemi || 'Nakit'
+    }
+  };
+  
+  // Backend'e gönder
+  fetch('https://kargo-backend.vercel.app/api/kargo/gonder', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      firma: kargoFirma,
+      apiUrl: firmaBilgi.apiAdres,
+      apiKey: firmaBilgi.apiKey,
+      username: firmaBilgi.kullaniciAdi,
+      password: firmaBilgi.sifre,
+      musteriKodu: firmaBilgi.musteriKodu,
+      odemeTipi: firmaBilgi.odemeTipi,
+      testModu: firmaBilgi.testModu,
+      kargoData: kargoData
+    })
+  })
+  .then(function(response) { return response.json(); })
+  .then(function(result) {
+    if(result.success) {
+      var takipNo = result.data.takipNo || result.data.trackingNumber || result.data.barkod || 'KARGO-' + Date.now();
+      database.ref(SITE_ID + '/siparisler/' + key).update({
+        kargoyaVerildi: true,
+        kargoTarih: new Date().toLocaleDateString('tr-TR'),
+        kargoFirma: kargoFirma,
+        kargoTakipNo: takipNo,
+        durum: 'Kargoya Verildi'
+      });
+      logEkle('✅ Kargo gönderildi: ' + takipNo + ' (' + kargoFirma + ')');
+    } else {
+      logEkle('❌ Kargo hatası: ' + (result.error || 'Bilinmeyen hata'));
+    }
+  })
+  .catch(function(error) {
+    logEkle('❌ Kargo API hatası: ' + error.message);
+  });
+}
+</script>
+
+<!-- 🔔 SİPARİŞ SES SİSTEMİ - Her sayfada çalışır -->
+<script src="ramco-beyin.js"></script>
+<script src="ramco-widget.js"></script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>15 Görsel Yükleyici - Grid</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+h1 {
+    text-align: center;
+    color: white;
+    margin-bottom: 10px;
+    font-size: 32px;
+}
+.subtitle {
+    text-align: center;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+.card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.card-title {
+    text-align: center;
+    color: #667eea;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+.upload-area {
+    border: 3px dashed #667eea;
+    border-radius: 10px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #f8f9ff;
+}
+.upload-area:hover {
+    border-color: #764ba2;
+    background: #f0f2ff;
+}
+.upload-area.dragover {
+    border-color: #28a745;
+    background: #e8f5e9;
+}
+.upload-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+.upload-text {
+    font-size: 13px;
+    color: #666;
+}
+.preview-area {
+    display: none;
+}
+.preview-area.show {
+    display: block;
+}
+.preview-img {
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    background: #f8f9ff;
+}
+.status {
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    font-size: 13px;
+}
+.status.error {
+    background: #f8d7da;
+    color: #721c24;
+}
+.link-box {
+    background: #f8f9ff;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+.link-text {
+    font-size: 11px;
+    color: #333;
+    word-break: break-all;
+    max-height: 60px;
+    overflow-y: auto;
+}
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 8px;
+}
+.btn-copy {
+    background: #28a745;
+    color: white;
+}
+.btn-copy:hover {
+    background: #218838;
+}
+.btn-new {
+    background: #667eea;
+    color: white;
+}
+.btn-new:hover {
+    background: #764ba2;
+}
+.btn-delete {
+    background: #dc3545;
+    color: white;
+}
+.btn-delete:hover {
+    background: #c82333;
+}
+.spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #667eea;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.copy-all-container {
+    max-width: 1600px;
+    margin: 20px auto 0;
+}
+.copy-all-btn {
+    width: 100%;
+    padding: 18px;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    background: white;
+    color: #667eea;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.copy-all-btn:hover {
+    background: #f0f2ff;
+}
+input[type="file"] {
+    display: none;
+}
+</style>
+</head>
+<body>
+
+<h1>🖼️ 15 Görsel Yükleyici</h1>
+<p class="subtitle">Her görseli yükle, linkini al!</p>
+
+<!-- Otomatik URL Üretici -->
+<div style="max-width:1600px;margin:0 auto 20px;background:white;border-radius:15px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,0.2);">
+    <h3 style="color:#667eea;margin-bottom:15px;text-align:center;">🔗 Otomatik 15 URL Üretici</h3>
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:15px;">
+        <input type="text" id="baseUrlInput" placeholder="Base URL (örn: https://example.com/image)" style="flex:1;padding:12px;border:2px solid #667eea;border-radius:8px;font-size:14px;">
+        <button onclick="generateUrls()" style="padding:12px 25px;background:#28a745;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;">🚀 URL'leri Üret</button>
+    </div>
+    <div id="generatedUrls" style="background:#f8f9ff;border-radius:8px;padding:15px;max-height:200px;overflow-y:auto;display:none;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <strong style="color:#667eea;">Üretilen URL'ler:</strong>
+            <button onclick="copyGeneratedUrls()" style="padding:8px 15px;background:#667eea;color:white;border:none;border-radius:6px;font-size:12px;cursor:pointer;">📋 Tümünü Kopyala</button>
+        </div>
+        <div id="urlList" style="font-size:12px;color:#333;line-height:1.6;"></div>
+    </div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<div class="copy-all-container">
+    <button class="copy-all-btn" onclick="copyAllLinks()">📋 Tüm Linkleri Kopyala</button>
+</div>
+
+<!-- API KEY AYARLARI -->
+<div style="max-width:1600px;margin:30px auto;background:white;border-radius:15px;padding:25px;box-shadow:0 10px 30px rgba(0,0,0,0.2);">
+    <h3 style="color:#667eea;margin-bottom:15px;text-align:center;">🔑 ImgBB API Key Ayarları</h3>
+    <div style="display:flex;gap:10px;align-items:center;">
+        <input type="text" id="apiKeyInput" placeholder="API Key'inizi buraya girin..." style="flex:1;padding:15px;border:2px solid #667eea;border-radius:10px;font-size:14px;">
+        <button onclick="saveApiKey()" style="padding:15px 30px;background:#28a745;color:white;border:none;border-radius:10px;font-weight:600;cursor:pointer;font-size:14px;">💾 Kaydet</button>
+        <button onclick="resetApiKey()" style="padding:15px 30px;background:#dc3545;color:white;border:none;border-radius:10px;font-weight:600;cursor:pointer;font-size:14px;">🔄 Sıfırla</button>
+    </div>
+    <p style="margin-top:15px;font-size:13px;color:#666;text-align:center;">
+        Şu an kullanılan API Key: <strong id="currentApiKey" style="color:#667eea;">Varsayılan</strong>
+    </p>
+    <p style="margin-top:10px;font-size:12px;color:#999;text-align:center;">
+        💡 Yeni API Key almak için: <a href="https://console.cloudinary.com/app/c-67d4c49e48dc09d6e1caa8f786d3b/image/getting-started" target="_blank" style="color:#667eea;">Cloudinary Console</a>
+    </p>
+</div>
+
+<script>
+// API Key yönetimi
+function getApiKey() {
+    const saved = localStorage.getItem('imgbb_api_key');
+    return saved || 'bc42466274af3c4778f12cc926c44aff';
+}
+
+function saveApiKey() {
+    const input = document.getElementById('apiKeyInput');
+    const key = input.value.trim();
+    if (key) {
+        localStorage.setItem('imgbb_api_key', key);
+        updateCurrentKeyDisplay();
+        alert('✅ API Key kaydedildi! Sayfa yenileniyor...');
+        location.reload();
+    } else {
+        alert('⚠️ Lütfen bir API Key girin!');
+    }
+}
+
+function resetApiKey() {
+    if (confirm('Varsayılan API Key\'e dönmek istediğinize emin misiniz?')) {
+        localStorage.removeItem('imgbb_api_key');
+        updateCurrentKeyDisplay();
+        alert('✅ API Key sıfırlandı! Sayfa yenileniyor...');
+        location.reload();
+    }
+}
+
+function updateCurrentKeyDisplay() {
+    const key = getApiKey();
+    const display = document.getElementById('currentApiKey');
+    if (key === 'bc42466274af3c4778f12cc926c44aff') {
+        display.textContent = 'Varsayılan';
+    } else {
+        display.textContent = key.substring(0, 8) + '...' + key.substring(key.length - 8);
+    }
+}
+
+// Sayfa yüklendiğinde mevcut key'i göster
+updateCurrentKeyDisplay();
+
+const API_KEY = getApiKey();
+const links = {};
+let generatedUrlsList = [];
+
+// Otomatik URL üretici fonksiyonları
+function generateUrls() {
+    const baseUrl = document.getElementById('baseUrlInput').value.trim();
+    if (!baseUrl) {
+        alert('⚠️ Lütfen bir base URL girin!');
+        return;
+    }
+    
+    generatedUrlsList = [];
+    for (let i = 1; i <= 15; i++) {
+        const url = `${baseUrl}${i}.jpg`;
+        generatedUrlsList.push(url);
+    }
+    
+    const urlListDiv = document.getElementById('urlList');
+    const generatedDiv = document.getElementById('generatedUrls');
+    
+    urlListDiv.innerHTML = generatedUrlsList.map((url, index) => 
+        `<div style="margin-bottom:5px;padding:5px;background:white;border-radius:4px;word-break:break-all;">
+            <strong>${index + 1}:</strong> ${url}
+        </div>`
+    ).join('');
+    
+    generatedDiv.style.display = 'block';
+}
+
+function copyGeneratedUrls() {
+    if (generatedUrlsList.length === 0) {
+        alert('⚠️ Önce URL\'leri üretin!');
+        return;
+    }
+    
+    const allUrls = generatedUrlsList.join('\n');
+    copyToClipboard(allUrls);
+    alert('✅ Tüm URL\'ler kopyalandı!');
+}
+
+for (let i = 1; i <= 15; i++) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+        <div class="card-title">🖼️ Görsel ${i}</div>
+        <div class="upload-area" id="upload${i}" onclick="document.getElementById('file${i}').click()">
+            <div class="upload-icon">📤</div>
+            <div class="upload-text">Görseli yükle</div>
+        </div>
+        <div class="preview-area" id="preview${i}">
+            <img id="img${i}" class="preview-img">
+            <div id="status${i}" class="status"></div>
+            <div class="link-box">
+                <div class="link-text" id="link${i}"></div>
+            </div>
+            <button class="btn btn-copy" onclick="copyLink(${i})">📋 Linki Kopyala</button>
+            <button class="btn btn-new" onclick="resetUpload(${i})">🔄 Yeni Görsel Yükle</button>
+            <button class="btn btn-delete" onclick="deleteImage(${i})">🗑️ Görseli Sil</button>
+        </div>
+        <input type="file" id="file${i}" accept="image/*">
+    `;
+    document.getElementById('grid').appendChild(card);
+    
+    const uploadArea = document.getElementById('upload' + i);
+    const fileInput = document.getElementById('file' + i);
+    
+    // File input
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) handleFile(file, i);
+    });
+    
+    // Drag & Drop
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+    });
+    
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+    });
+    
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+            handleFile(file, i);
+        }
+    });
+}
+
+function handleFile(file, num) {
+    const uploadArea = document.getElementById('upload' + num);
+    const previewArea = document.getElementById('preview' + num);
+    const img = document.getElementById('img' + num);
+    const status = document.getElementById('status' + num);
+    const linkDiv = document.getElementById('link' + num);
+    
+    // Önizleme
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        img.src = e.target.result;
+        uploadArea.style.display = 'none';
+        previewArea.classList.add('show');
+        status.className = 'status';
+        status.innerHTML = '<div class="spinner"></div>';
+    };
+    reader.readAsDataURL(file);
+    
+    // ImgBB'ye yükle
+    const formData = new FormData();
+    formData.append('image', file);
+    
+    fetch(`https://api.imgbb.com/1/upload?key=${API_KEY}`, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: API key geçersiz veya dosya çok büyük`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            const url = data.data.url;
+            links[num] = url;
+            
+            status.className = 'status success';
+            status.textContent = '✅ Yükleme başarılı!';
+            linkDiv.textContent = url;
+            
+            // Otomatik kopyala
+            copyToClipboard(url);
+            alert('✅ Link kopyalandı: ' + url.substring(0, 30) + '...');
+        } else {
+            throw new Error(data.error?.message || 'Bilinmeyen hata');
+        }
+    })
+    .catch(error => {
+        status.className = 'status error';
+        status.style.background = '#f8d7da';
+        status.style.color = '#721c24';
+        status.textContent = '❌ Hata: ' + error.message;
+        console.error('Upload error:', error);
+    });
+}
+
+function copyLink(num) {
+    const url = links[num];
+    if (url) {
+        copyToClipboard(url);
+        alert('✅ Link kopyalandı!');
+    }
+}
+
+function resetUpload(num) {
+    const uploadArea = document.getElementById('upload' + num);
+    const previewArea = document.getElementById('preview' + num);
+    const fileInput = document.getElementById('file' + num);
+    
+    uploadArea.style.display = 'block';
+    previewArea.classList.remove('show');
+    fileInput.value = '';
+    delete links[num];
+}
+
+function copyAllLinks() {
+    const allLinks = Object.values(links).join('\n');
+    if (allLinks) {
+        copyToClipboard(allLinks);
+        alert('✅ Tüm linkler kopyalandı!');
+    } else {
+        alert('⚠️ Henüz yüklenmiş görsel yok!');
+    }
+}
+
+function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            console.log('✅ Kopyalandı:', text);
+        }).catch(err => {
+            console.error('❌ Kopyalama hatası:', err);
+            // Fallback yöntemi
+            fallbackCopy(text);
+        });
+    } else {
+        // Eski tarayıcılar için fallback
+        fallbackCopy(text);
+    }
+}
+
+function fallbackCopy(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+        document.execCommand('copy');
+        console.log('✅ Fallback ile kopyalandı:', text);
+    } catch (err) {
+        console.error('❌ Fallback kopyalama hatası:', err);
+    }
+    document.body.removeChild(textarea);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,653 @@
+KANKA <!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📚 Site Dokümantasyonu</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 40px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.header p {
+    font-size: 20px;
+    opacity: 0.9;
+}
+
+.nav {
+    display: flex;
+    background: #f8f9fa;
+    border-bottom: 2px solid #e9ecef;
+    overflow-x: auto;
+}
+
+.nav-btn {
+    flex: 1;
+    padding: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: #495057;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.nav-btn:hover {
+    background: #e9ecef;
+}
+
+.nav-btn.active {
+    background: white;
+    color: #667eea;
+    border-bottom: 3px solid #667eea;
+}
+
+.content {
+    padding: 40px;
+}
+
+.doc-section {
+    display: none;
+}
+
+.doc-section.active {
+    display: block;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    border-left: 5px solid #667eea;
+}
+
+.card h2 {
+    color: #667eea;
+    margin-bottom: 20px;
+    font-size: 32px;
+}
+
+.card h3 {
+    color: #495057;
+    margin: 25px 0 15px 0;
+    font-size: 24px;
+}
+
+.card p {
+    color: #6c757d;
+    line-height: 1.8;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.card ul {
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+.card li {
+    color: #6c757d;
+    line-height: 1.8;
+    margin-bottom: 10px;
+}
+
+.step {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 2px solid #e9ecef;
+}
+
+.step-number {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background: #667eea;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 40px;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+.code {
+    background: #2d3748;
+    color: #68d391;
+    padding: 20px;
+    border-radius: 10px;
+    font-family: 'Courier New', monospace;
+    overflow-x: auto;
+    margin: 15px 0;
+}
+
+.warning {
+    background: #fff3cd;
+    border-left: 5px solid #ffc107;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.success {
+    background: #d4edda;
+    border-left: 5px solid #28a745;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: transform 0.3s;
+    margin: 10px 10px 10px 0;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: 2px solid #667eea;
+    padding: 12px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.back-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(102, 126, 234, 0.8);
+}
+
+.file-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.file-item {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.file-icon {
+    font-size: 32px;
+}
+</style>
+</head>
+<body>
+
+<!-- Geri Dön Butonu -->
+<a href="domain-bagla.html" class="back-button">⬅️ GERİ DÖN</a>
+
+<div class="container">
+    <div class="header">
+        <h1>📚 Site Dokümantasyonu</h1>
+        <p>E-Ticaret Sitesi Kurulum ve Kullanım Rehberi</p>
+    </div>
+
+    <div class="nav">
+        <button class="nav-btn active" onclick="showSection('basla')">🚀 Başla</button>
+        <button class="nav-btn" onclick="showSection('dosyalar')">📁 Dosyalar</button>
+        <button class="nav-btn" onclick="showSection('kurulum')">⚙️ Kurulum</button>
+        <button class="nav-btn" onclick="showSection('kullanim')">🎯 Kullanım</button>
+        <button class="nav-btn" onclick="showSection('sorun')">🐛 Sorun Giderme</button>
+    </div>
+
+    <div class="content">
+        <!-- BAŞLA -->
+        <div id="basla" class="doc-section active">
+            <div class="card">
+                <h2>🎁 Hoşgeldin!</h2>
+                <p>Bu site sana hediye edildi! Kendi ürünlerini satmak için hazır bir e-ticaret sitesi.</p>
+                
+                <div class="success">
+                    <h3>✅ İçinde Neler Var?</h3>
+                    <ul>
+                        <li>10 ürün sayfası (80 ürün kapasitesi)</li>
+                        <li>Admin paneli</li>
+                        <li>Sipariş yönetimi</li>
+                        <li>Stok takibi</li>
+                        <li>WhatsApp entegrasyonu</li>
+                        <li>AI asistan</li>
+                    </ul>
+                </div>
+
+                <h3>⚡ Hızlı Başlangıç (20 dakika)</h3>
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Firebase Kur</strong> (5 dakika)
+                    <p>firebase.google.com → Yeni proje → Database aç</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>GitHub'a Yükle</strong> (3 dakika)
+                    <p>github.com → Yeni repo → Dosyaları yükle</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Vercel'de Yayınla</strong> (2 dakika)
+                    <p>vercel.com → GitHub bağla → Deploy</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Ayarları Yap</strong> (5 dakika)
+                    <p>Şifre değiştir → WhatsApp ekle → Görselleri yükle</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <strong>Test Et</strong> (2 dakika)
+                    <p>Test siparişi ver → Kontrol et → Hazır!</p>
+                </div>
+
+                <a href="#" class="btn" onclick="showSection('kurulum'); return false;">📖 Detaylı Kurulum Rehberi</a>
+                <a href="index.html" class="btn">🏠 Siteyi Aç</a>
+            </div>
+        </div>
+
+        <!-- DOSYALAR -->
+        <div id="dosyalar" class="doc-section">
+            <div class="card">
+                <h2>📁 Dosya Yapısı</h2>
+                <p>Sitede toplam 4 dokümantasyon dosyası var:</p>
+
+                <div class="file-list">
+                    <div class="file-item">
+                        <span class="file-icon">📖</span>
+                        <div>
+                            <strong>KURULUM-KILAVUZU.md</strong>
+                            <p style="font-size:12px;color:#999;">Detaylı kurulum rehberi</p>
+                        </div>
+                    </div>
+
+                    <div class="file-item">
+                        <span class="file-icon">📄</span>
+                        <div>
+                            <strong>README.md</strong>
+                            <p style="font-size:12px;color:#999;">Teknik dokümantasyon</p>
+                        </div>
+                    </div>
+
+                    <div class="file-item">
+                        <span class="file-icon">⚡</span>
+                        <div>
+                            <strong>HIZLI-BASLANGIC.md</strong>
+                            <p style="font-size:12px;color:#999;">Kısa özet (5 adım)</p>
+                        </div>
+                    </div>
+
+                    <div class="file-item">
+                        <span class="file-icon">💝</span>
+                        <div>
+                            <strong>HEDİYE-NOTU.md</strong>
+                            <p style="font-size:12px;color:#999;">Kişisel mesaj</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>🗂️ Ana Dosyalar</h3>
+                <div class="file-list">
+                    <div class="file-item">
+                        <span class="file-icon">🏠</span>
+                        <div>
+                            <strong>index.html</strong>
+                            <p style="font-size:12px;color:#999;">Ana sayfa</p>
+                        </div>
+                    </div>
+
+                    <div class="file-item">
+                        <span class="file-icon">🎛️</span>
+                        <div>
+                            <strong>ana-sayfa.html</strong>
+                            <p style="font-size:12px;color:#999;">Admin ana sayfa</p>
+                        </div>
+                    </div>
+
+                    <div class="file-item">
+                        <span class="file-icon">⚙️</span>
+                        <div>
+                            <strong>admin-1.html ~ admin-10.html</strong>
+                            <p style="font-size:12px;color:#999;">Ürün yönetimi</p>
+                        </div>
+                    </div>
+
+                    <div class="file-item">
+                        <span class="file-icon">🛍️</span>
+                        <div>
+                            <strong>urunx-1.html ~ urunx-10.html</strong>
+                            <p style="font-size:12px;color:#999;">Ürün sayfaları</p>
+                        </div>
+                    </div>
+
+                    <div class="file-item">
+                        <span class="file-icon">📦</span>
+                        <div>
+                            <strong>siparis-takibi.html</strong>
+                            <p style="font-size:12px;color:#999;">Sipariş yönetimi</p>
+                        </div>
+                    </div>
+
+                    <div class="file-item">
+                        <span class="file-icon">🔧</span>
+                        <div>
+                            <strong>domain-bagla.html</strong>
+                            <p style="font-size:12px;color:#999;">Kurulum paneli</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning">
+                    <strong>⚠️ Önemli:</strong> .md dosyalarını Notepad veya VS Code ile açabilirsin. Tarayıcıda açmak için bu sayfayı kullan!
+                </div>
+            </div>
+        </div>
+
+        <!-- KURULUM -->
+        <div id="kurulum" class="doc-section">
+            <div class="card">
+                <h2>⚙️ Detaylı Kurulum</h2>
+
+                <h3>1️⃣ Firebase Kurulumu</h3>
+                <div class="step">
+                    <p><strong>Adım 1:</strong> firebase.google.com adresine git</p>
+                    <p><strong>Adım 2:</strong> "Get Started" → Gmail ile giriş yap</p>
+                    <p><strong>Adım 3:</strong> "Add Project" → Proje adı gir</p>
+                    <p><strong>Adım 4:</strong> Google Analytics'i KAPAT</p>
+                    <p><strong>Adım 5:</strong> "Create Project" tıkla</p>
+                </div>
+
+                <div class="step">
+                    <p><strong>Adım 6:</strong> Project Settings (⚙️) → "Your apps" → Web (&lt;/&gt;)</p>
+                    <p><strong>Adım 7:</strong> App nickname gir → "Register app"</p>
+                    <p><strong>Adım 8:</strong> Açılan kodda şu bilgileri KOPYALA:</p>
+                    <div class="code">
+apiKey: "AIza..."
+authDomain: "proje.firebaseapp.com"
+databaseURL: "https://proje.firebaseio.com"
+projectId: "proje-adi"
+storageBucket: "proje.appspot.com"
+messagingSenderId: "123456"
+appId: "1:123:web:abc"
+                    </div>
+                </div>
+
+                <div class="step">
+                    <p><strong>Adım 9:</strong> Sol menü → "Realtime Database" → "Create Database"</p>
+                    <p><strong>Adım 10:</strong> Location: "United States" → "Start in test mode"</p>
+                    <p><strong>Adım 11:</strong> "Enable" tıkla</p>
+                </div>
+
+                <div class="step">
+                    <p><strong>Adım 12:</strong> "Rules" sekmesi → Şu kodu yapıştır:</p>
+                    <div class="code">
+{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}
+                    </div>
+                    <p><strong>Adım 13:</strong> "Publish" tıkla</p>
+                </div>
+
+                <div class="success">
+                    <strong>✅ Firebase Hazır!</strong> Şimdi bilgileri siteye gir:
+                    <p>1. domain-bagla.html dosyasını aç</p>
+                    <p>2. "4. Firebase" sekmesine git</p>
+                    <p>3. Kopyaladığın bilgileri yapıştır</p>
+                    <p>4. "💾 KAYDET & TEST ET" tıkla</p>
+                </div>
+
+                <h3>2️⃣ GitHub Kurulumu</h3>
+                <div class="step">
+                    <p><strong>Adım 1:</strong> github.com → "Sign up"</p>
+                    <p><strong>Adım 2:</strong> Email, şifre, kullanıcı adı belirle</p>
+                    <p><strong>Adım 3:</strong> Email'ini doğrula</p>
+                    <p><strong>Adım 4:</strong> "+" → "New repository"</p>
+                    <p><strong>Adım 5:</strong> Repository adı gir → "Public" seç</p>
+                    <p><strong>Adım 6:</strong> "Create repository"</p>
+                    <p><strong>Adım 7:</strong> "uploading an existing file" → Tüm dosyaları sürükle</p>
+                    <p><strong>Adım 8:</strong> "Commit changes" tıkla</p>
+                </div>
+
+                <h3>3️⃣ Vercel Kurulumu</h3>
+                <div class="step">
+                    <p><strong>Adım 1:</strong> vercel.com → "Sign Up"</p>
+                    <p><strong>Adım 2:</strong> "Continue with GitHub"</p>
+                    <p><strong>Adım 3:</strong> "Add New..." → "Project"</p>
+                    <p><strong>Adım 4:</strong> Repository'ni seç → "Import"</p>
+                    <p><strong>Adım 5:</strong> "Deploy" tıkla (ayarları değiştirme)</p>
+                    <p><strong>Adım 6:</strong> Deploy tamamlanınca "Visit" tıkla</p>
+                </div>
+
+                <div class="success">
+                    <strong>🎉 Tebrikler!</strong> Siteniz canlıda!
+                    <p>Adres: https://proje-adi.vercel.app</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KULLANIM -->
+        <div id="kullanim" class="doc-section">
+            <div class="card">
+                <h2>🎯 Kullanım Rehberi</h2>
+
+                <h3>🔐 İlk Giriş</h3>
+                <div class="step">
+                    <p><strong>1.</strong> index.html dosyasını aç</p>
+                    <p><strong>2.</strong> Sağ üstteki "ADMIN" butonuna tıkla</p>
+                    <p><strong>3.</strong> Varsayılan şifre: <code>hayat123</code></p>
+                    <p><strong>4.</strong> Giriş yap</p>
+                </div>
+
+                <div class="warning">
+                    <strong>⚠️ Önemli:</strong> İlk iş olarak şifreyi değiştir!
+                    <p>Ana sayfa → "↓" butonu → "🔐 Şifre" → Yeni şifre gir</p>
+                </div>
+
+                <h3>💬 WhatsApp Numarası Ekle</h3>
+                <div class="step">
+                    <p><strong>1.</strong> Ana sayfada "URL" butonuna tıkla</p>
+                    <p><strong>2.</strong> WhatsApp numaranı gir (örn: 5551234567)</p>
+                    <p><strong>3.</strong> "💾 KAYDET" tıkla</p>
+                    <p><strong>4.</strong> "👁️ Butonu Göster/Gizle" ile aktif et</p>
+                </div>
+
+                <h3>📸 Ürün Görselleri Yükle</h3>
+                <div class="step">
+                    <p><strong>1.</strong> admin-1.html dosyasını aç (ilk ürün için)</p>
+                    <p><strong>2.</strong> "Dosya Seç" butonuna tıkla</p>
+                    <p><strong>3.</strong> Ürün görselini seç (JPG/PNG, max 5MB)</p>
+                    <p><strong>4.</strong> Otomatik yüklenir ve gösterilir</p>
+                    <p><strong>5.</strong> 16 görselin hepsini yükle</p>
+                </div>
+
+                <h3>💰 Fiyat ve İsim Gir</h3>
+                <div class="step">
+                    <p><strong>1.</strong> Her ürün için isim gir (örn: "Mavi Tişört - S")</p>
+                    <p><strong>2.</strong> "✓" butonuna tıkla</p>
+                    <p><strong>3.</strong> Fiyat gir (örn: 299)</p>
+                    <p><strong>4.</strong> "✓" butonuna tıkla</p>
+                    <p><strong>5.</strong> 8 ürünün hepsini gir</p>
+                </div>
+
+                <h3>📦 Siparişleri Görüntüle</h3>
+                <div class="step">
+                    <p><strong>1.</strong> Ana sayfada "Siparişler" butonuna tıkla</p>
+                    <p><strong>2.</strong> Tüm siparişler listelenir</p>
+                    <p><strong>3.</strong> Detayları görmek için tıkla</p>
+                    <p><strong>4.</strong> Stok güncellemek için "Stok Ekle" butonunu kullan</p>
+                </div>
+
+                <div class="success">
+                    <strong>✅ Hazırsın!</strong> Artık satışa başlayabilirsin!
+                </div>
+            </div>
+        </div>
+
+        <!-- SORUN GİDERME -->
+        <div id="sorun" class="doc-section">
+            <div class="card">
+                <h2>🐛 Sorun Giderme</h2>
+
+                <h3>❌ Firebase Bağlanamıyor</h3>
+                <div class="warning">
+                    <strong>Sorun:</strong> "Firebase bağlantı hatası" mesajı alıyorum
+                    <p><strong>Çözüm:</strong></p>
+                    <ul>
+                        <li>Firebase Console'da Realtime Database açık mı kontrol et</li>
+                        <li>Database URL doğru mu kontrol et (sonunda .firebaseio.com olmalı)</li>
+                        <li>Security rules "test mode" olmalı</li>
+                        <li>Tarayıcı önbelleğini temizle (Ctrl+Shift+Delete)</li>
+                    </ul>
+                </div>
+
+                <h3>❌ Görseller Yüklenmiyor</h3>
+                <div class="warning">
+                    <strong>Sorun:</strong> Görseller yüklenmiyor veya görünmüyor
+                    <p><strong>Çözüm:</strong></p>
+                    <ul>
+                        <li>Görsel boyutu 5MB'dan küçük olmalı</li>
+                        <li>Görsel formatı JPG veya PNG olmalı</li>
+                        <li>Tarayıcı localStorage'ı aktif olmalı</li>
+                        <li>Gizli mod kullanmıyorsan emin ol</li>
+                    </ul>
+                </div>
+
+                <h3>❌ Siparişler Kaydedilmiyor</h3>
+                <div class="warning">
+                    <strong>Sorun:</strong> Sipariş veriyorum ama Firebase'de görünmüyor
+                    <p><strong>Çözüm:</strong></p>
+                    <ul>
+                        <li>Firebase bağlantısını test et</li>
+                        <li>Database rules "write: true" olmalı</li>
+                        <li>Internet bağlantını kontrol et</li>
+                        <li>Tarayıcı console'da hata var mı bak (F12)</li>
+                    </ul>
+                </div>
+
+                <h3>❌ Admin Paneline Giremiyorum</h3>
+                <div class="warning">
+                    <strong>Sorun:</strong> Şifre kabul edilmiyor
+                    <p><strong>Çözüm:</strong></p>
+                    <ul>
+                        <li>Varsayılan şifre: hayat123</li>
+                        <li>Tarayıcı önbelleğini temizle</li>
+                        <li>localStorage'ı temizle (F12 → Application → Local Storage → Clear)</li>
+                        <li>Sayfayı yenile (F5)</li>
+                    </ul>
+                </div>
+
+                <h3>❌ WhatsApp Butonu Çalışmıyor</h3>
+                <div class="warning">
+                    <strong>Sorun:</strong> WhatsApp butonu tıklanmıyor
+                    <p><strong>Çözüm:</strong></p>
+                    <ul>
+                        <li>WhatsApp numarası doğru girilmiş mi kontrol et</li>
+                        <li>Numara başında 0 olmamalı (5551234567)</li>
+                        <li>"Butonu Göster/Gizle" toggle'ı açık olmalı</li>
+                        <li>Mobilde WhatsApp yüklü olmalı</li>
+                    </ul>
+                </div>
+
+                <div class="success">
+                    <strong>💡 İpucu:</strong> Sorun devam ederse tarayıcı console'unu aç (F12) ve hata mesajlarını kontrol et!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showSection(sectionId) {
+    // Tüm section'ları gizle
+    document.querySelectorAll('.doc-section').forEach(function(section) {
+        section.classList.remove('active')
+    })
+    
+    // Tüm butonları pasif yap
+    document.querySelectorAll('.nav-btn').forEach(function(btn) {
+        btn.classList.remove('active')
+    })
+    
+    // Seçili section'ı göster
+    document.getElementById(sectionId).classList.add('active')
+    
+    // Seçili butonu aktif yap
+    event.target.classList.add('active')
+    
+    // Sayfayı yukarı kaydır
+    window.scrollTo({top: 0, behavior: 'smooth'})
+}
+</script>
+
+</body>
+</html>
