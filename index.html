@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title id="pageTitle">�r�n Sayfas� 1</title>
-<meta name="description" content="�r�n a��klamas� y�kleniyor..." id="pageDescription">
+<title id="pageTitle">Ürün Sayfası 1</title>
+<meta name="description" content="Ürün açıklaması yükleniyor..." id="pageDescription">
 
 <!-- Meta Pixel Code -->
 <script>
@@ -12,30 +12,30 @@
 fbq('init', '960336256818177');
 fbq('track', 'PageView');
 
-// Meta Pixel Event Fonksiyonlar�
+// Meta Pixel Event Fonksiyonları
 function fireMetaLeadEvent(value) {
     if (typeof fbq !== 'undefined') {
         fbq('track', 'Lead', { value: value || 0, currency: 'TRY' });
         fbq('track', 'Purchase', { value: value || 0, currency: 'TRY' });
-        console.log('? Meta Lead/Purchase event - De�er:', value);
+        console.log('✅ Meta Lead/Purchase event - Değer:', value);
     }
 }
 
 function fireTikTokSubmitFormEvent(value) {
-    console.log('?? TikTok pixel yok, sadece Meta Pixel aktif');
+    console.log('ℹ️ TikTok pixel yok, sadece Meta Pixel aktif');
 }
 
 function fireAddToCart(contentName, contentId, value, quantity) {
     if (typeof fbq !== 'undefined') {
         fbq('track', 'AddToCart', {
-            content_name: contentName || '�r�n',
+            content_name: contentName || 'Ürün',
             content_ids: [contentId || '1'],
             content_type: 'product',
             value: value || 0,
             currency: 'TRY',
             quantity: quantity || 1
         });
-        console.log('? Meta AddToCart event');
+        console.log('✅ Meta AddToCart event');
     }
 }
 
@@ -45,59 +45,59 @@ function fireInitiateCheckout(value) {
             value: value || 0,
             currency: 'TRY'
         });
-        console.log('? Meta InitiateCheckout event');
+        console.log('✅ Meta InitiateCheckout event');
     }
 }
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=960336256818177&ev=PageView&noscript=1"/></noscript>
 <!-- End Meta Pixel Code -->
 
-<!-- PRELOAD - �LK G�RSELI SAYFA Y�KLENMEDEN �NCE BA�LAT -->
+<!-- PRELOAD - İLK GÖRSELI SAYFA YÜKLENMEDEN ÖNCE BAŞLAT -->
 <link rel="preload" as="image" href="" id="preloadImage1" fetchpriority="highest">
 
-<!-- D�NAM�K SEO - SAYFA Y�KLENMEDEN �NCE -->
+<!-- DİNAMİK SEO - SAYFA YÜKLENMEDEN ÖNCE -->
 <script>
-// Site ID i�in yard�mc� fonksiyon
+// Site ID için yardımcı fonksiyon
 function getAdminKey(key) {
     var SITE_ID = 'www_kargonburada_online';
     localStorage.setItem('__SITE_ID__', SITE_ID);
     return SITE_ID + '_admin1_' + key;
 }
 
-// SEO'yu hemen g�ncelle (Google bot i�in)
+// SEO'yu hemen güncelle (Google bot için)
 (function() {
-    // Firebase'den h�zl�ca �ek
-    var urunAdi = localStorage.getItem(getAdminKey('genel_urun_adi')) || '�r�n';
-    var seoAciklama = localStorage.getItem(getAdminKey('seo_aciklamasi')) || '�r�n a��klamas�';
+    // Firebase'den hızlıca çek
+    var urunAdi = localStorage.getItem(getAdminKey('genel_urun_adi')) || 'Ürün';
+    var seoAciklama = localStorage.getItem(getAdminKey('seo_aciklamasi')) || 'Ürün açıklaması';
     
-    // Title'� hemen de�i�tir
-    if (urunAdi && urunAdi !== '�r�n') {
-        document.title = urunAdi + ' - H�zl� Kargo | kargonburada.online';
+    // Title'ı hemen değiştir
+    if (urunAdi && urunAdi !== 'Ürün') {
+        document.title = urunAdi + ' - Hızlı Kargo | kargonburada.online';
     }
     
-    // Meta description'� hemen de�i�tir
+    // Meta description'ı hemen değiştir
     setTimeout(function() {
         var metaDesc = document.querySelector('meta[name="description"]');
-        if (metaDesc && seoAciklama && seoAciklama !== '�r�n a��klamas�') {
+        if (metaDesc && seoAciklama && seoAciklama !== 'Ürün açıklaması') {
             metaDesc.content = seoAciklama;
         }
     }, 100);
 })();
 </script>
 
-<!-- Posta Kodlar� -->
+<!-- Posta Kodları -->
 <script src="posta-kodlari-yeni.js"></script>
 
-<!-- TEMEL FONKS�YONLAR - SAYFA Y�KLENMEDEN �NCE -->
+<!-- TEMEL FONKSİYONLAR - SAYFA YÜKLENMEDEN ÖNCE -->
 <script>
-// Site ID i�in yard�mc� fonksiyon
+// Site ID için yardımcı fonksiyon
 function getAdminKey(key) {
     var SITE_ID = 'www_kargonburada_online';
     localStorage.setItem('__SITE_ID__', SITE_ID);
-    return SITE_ID + '_admin1_' + key; // ADM�N-1'DEN VER� OKU
+    return SITE_ID + '_admin1_' + key; // ADMİN-1'DEN VERİ OKU
 }
 
-// updateBorder fonksiyonu - hemen kullan�labilir olsun
+// updateBorder fonksiyonu - hemen kullanılabilir olsun
 function updateBorder(selectedId) {
     // Remove active border from all options
     for (let i = 1; i <= 8; i++) {
@@ -133,7 +133,7 @@ function updateBorder(selectedId) {
 body{font-family:Arial,sans-serif;background:#fff;min-height:100vh;overflow-x:hidden}
 html{overflow-x:hidden}
 #politikaScrollDiv::-webkit-scrollbar{display:none}
-/* Sayfa Kapal� Ekran� */
+/* Sayfa Kapalı Ekranı */
 #sayfaKapaliModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);z-index:99999;justify-content:center;align-items:center;flex-direction:column}
 #sayfaKapaliModal.show{display:flex}
 .kapaliBox{text-align:center;color:#fff;padding:40px}
@@ -193,24 +193,24 @@ input::placeholder{color:#A0AEC3 !important;opacity:1}
 <div id="sayfaKapaliModal">
 <div class="kapaliBox">
 <div class="kapaliIcon"></div>
-<div class="kapaliTitle">Bu Sayfa �u An Kullan�lam�yor</div>
-<div class="kapaliText">Sayfa bak�m modunda. L�tfen daha sonra tekrar deneyin.</div>
+<div class="kapaliTitle">Bu Sayfa Şu An Kullanılamıyor</div>
+<div class="kapaliText">Sayfa bakım modunda. Lütfen daha sonra tekrar deneyin.</div>
 </div>
 </div>
 
 <script>
-// SITE_ID'yi global olarak tan�mla (Firebase i�in)
+// SITE_ID'yi global olarak tanımla (Firebase için)
 var SITE_ID = 'www_kargonburada_online';
 
-// Site ID i�in yard�mc� fonksiyon
+// Site ID için yardımcı fonksiyon
 function getAdminKey(key) {
     // Sabit SITE_ID kullan
     localStorage.setItem('__SITE_ID__', SITE_ID);
-    return SITE_ID + '_admin1_' + key; // ADM�N-1'DEN VER� OKU
+    return SITE_ID + '_admin1_' + key; // ADMİN-1'DEN VERİ OKU
 }
 
 (function(){
-  var sayfaNo = 1; // Bu de�er kopyalan�rken de�i�ecek
+  var sayfaNo = 1; // Bu değer kopyalanırken değişecek
   var adminGiris = localStorage.getItem(getAdminKey('admin_giris'));
   var testMode = window.location.search.indexOf('test=1') > -1;
   if(!adminGiris || testMode){
@@ -228,36 +228,36 @@ function getAdminKey(key) {
 <div class="urunPage">
 <div style="width:100%;max-width:768px;margin:0 auto;">
 
-<!-- KAYAN YAZI �ER�D� -->
+<!-- KAYAN YAZI ŞERİDİ -->
 <script>
-// Banner renklerini HEMEN al ve HTML'i olu�tur
+// Banner renklerini HEMEN al ve HTML'i oluştur
 (function() {
     function getAdminKey(key) { 
         var siteId = 'www_kargonburada_online';
         return siteId + '_admin1_' + key; 
     }
     
-    // Banner'� ba�lang��ta gizli yap - Firebase'den gelince g�r�n�r olacak
+    // Banner'ı başlangıçta gizli yap - Firebase'den gelince görünür olacak
     var bgColor = localStorage.getItem('www_kargonburada_online_admin1_banner_bg_color') || '#ffffff';
     var textColor = localStorage.getItem('www_kargonburada_online_admin1_banner_text_color') || '#000000';
     var visibility = 'visible';
     
-    console.log('?? HTML direkt yaz�ld� (urunx-1) - Banner gizli, Firebase\'den gelecek');
+    console.log('🎨 HTML direkt yazıldı (urunx-1) - Banner gizli, Firebase\'den gelecek');
     
     document.write('<div id="bannerStrip" style="width:100%;background:' + bgColor + ';overflow:hidden;white-space:nowrap;padding:6px 0;visibility:' + visibility + ';">');
     document.write('<div id="bannerContent" style="display:inline-block;animation:kayanYazi 20s linear infinite;animation-delay:-3s;will-change:transform;transform:translateZ(0);">');
-    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">?? AYNI G�N KARGO</span>');
-    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">?? KAPIDA �DEME</span>');
-    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">?? HIZLI TESL�MAT</span>');
-    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">?? G�VENL� ALI�VER��</span>');
-    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">? %100 M��TER� MEMNUN�YET�</span>');
-    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">? �CRETS�Z KARGO</span>');
-    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">?? AYNI G�N KARGO</span>');
-    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">?? KAPIDA �DEME</span>');
-    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">?? HIZLI TESL�MAT</span>');
-    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">?? G�VENL� ALI�VER��</span>');
-    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">? %100 M��TER� MEMNUN�YET�</span>');
-    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">? �CRETS�Z KARGO</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">🚚 AYNI GÜN KARGO</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">💳 KAPIDA ÖDEME</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">📦 HIZLI TESLİMAT</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">🔒 GÜVENLİ ALIŞVERİŞ</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">⭐ %100 MÜŞTERİ MEMNUNİYETİ</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">✅ ÜCRETSİZ KARGO</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">🚚 AYNI GÜN KARGO</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">💳 KAPIDA ÖDEME</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">📦 HIZLI TESLİMAT</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">🔒 GÜVENLİ ALIŞVERİŞ</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">⭐ %100 MÜŞTERİ MEMNUNİYETİ</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">✅ ÜCRETSİZ KARGO</span>');
     document.write('</div>');
     document.write('</div>');
 })();
@@ -277,11 +277,11 @@ function getAdminKey(key) {
 }
 </style>
 
-<!-- �LK G�RSEL - ANLIK HIZLI (preload + eager + high priority) -->
+<!-- İLK GÖRSEL - ANLIK HIZLI (preload + eager + high priority) -->
 <div style="width:100%;margin:0;padding:0;line-height:0;cursor:pointer;" onclick="scrollToForm()">
 <img id="topImage1" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" onload="gorselYuklendi()" onerror="gorselYuklendi()" loading="eager" fetchpriority="high" decoding="sync">
 </div>
-<!-- 2. ve 3. G�RSEL - �OK HIZLI -->
+<!-- 2. ve 3. GÖRSEL - ÇOK HIZLI -->
 <div style="width:100%;margin:0;padding:0;line-height:0;cursor:pointer;" onclick="scrollToForm()">
 <img id="topImage2" src="" alt="" style="width:100%;height:auto;display:block;border-radius:0;" onload="gorselYuklendi()" onerror="gorselYuklendi()" loading="eager" fetchpriority="high">
 </div>
@@ -326,24 +326,24 @@ function getAdminKey(key) {
 </div>
 </div>
 <script>
-// D�NAM�K G�RSEL SAYIMI - Sadece �ST g�rselleri say
+// DİNAMİK GÖRSEL SAYIMI - Sadece ÜST görselleri say
 var toplamGorsel = 0;
 var yuklenenGorsel = 0;
 var formGosterildi = false;
 
-// Sayfa y�klenince �ST g�rselleri say (bottomImage hari�)
+// Sayfa yüklenince ÜST görselleri say (bottomImage hariç)
 window.addEventListener('DOMContentLoaded', function() {
   toplamGorsel = document.querySelectorAll('img[id^="topImage"]').length;
-  console.log('?? Toplam ' + toplamGorsel + ' �ST g�rsel bulundu');
+  console.log('📊 Toplam ' + toplamGorsel + ' ÜST görsel bulundu');
 });
 
 function gorselYuklendi() {
   yuklenenGorsel++;
-  console.log('? ' + yuklenenGorsel + ' / ' + toplamGorsel + ' g�rsel y�klendi');
+  console.log('✅ ' + yuklenenGorsel + ' / ' + toplamGorsel + ' görsel yüklendi');
   
-  // T�m �ST g�rseller y�klendi mi?
+  // Tüm ÜST görseller yüklendi mi?
   if(yuklenenGorsel >= toplamGorsel && toplamGorsel > 0) {
-    console.log('?? T�m �ST g�rseller y�klendi, HER �EY� g�steriyorum!');
+    console.log('🎉 Tüm ÜST görseller yüklendi, HER ŞEYİ gösteriyorum!');
     herSeyiGoster();
   }
 }
@@ -351,50 +351,50 @@ function gorselYuklendi() {
 function herSeyiGoster() {
   if(formGosterildi) return;
   formGosterildi = true;
-  console.log('?? Form + Alt G�rsel + Politikalar g�steriliyor');
+  console.log('📋 Form + Alt Görsel + Politikalar gösteriliyor');
   
-  // FORMU G�STER
+  // FORMU GÖSTER
   var formWrapper = document.querySelector('.formWrapper');
   if(formWrapper) {
     formWrapper.style.display = 'flex';
   }
   
-  // ALT G�RSEL� G�STER
+  // ALT GÖRSELİ GÖSTER
   var bottomImg = document.getElementById('bottomImage');
   if(bottomImg) {
     var container = bottomImg.parentElement;
     if(container && container.parentElement) {
-      // Alt g�rsel URL'si varsa g�ster
+      // Alt görsel URL'si varsa göster
       if(bottomImg.src && bottomImg.src.trim() !== '' && bottomImg.src !== window.location.href) {
         container.parentElement.style.display = 'block';
         container.style.display = 'block';
         bottomImg.style.display = 'block';
-        console.log('? Alt g�rsel g�sterildi');
+        console.log('✅ Alt görsel gösterildi');
       } else {
-        console.log('?? Alt g�rsel URL bo�, gizleniyor');
+        console.log('⚠️ Alt görsel URL boş, gizleniyor');
         container.parentElement.style.display = 'none';
       }
     }
   }
   
-  // POL�T�KALARI G�STER
+  // POLİTİKALARI GÖSTER
   var politikaDiv = document.querySelector('div[style*="border-top:1px solid #eee"]');
   if(politikaDiv) {
     politikaDiv.style.display = 'block';
   }
 }
 
-// G�VENL�K: G�rseller y�klenmese bile 1.5 saniye sonra her �eyi g�ster
+// GÜVENLİK: Görseller yüklenmese bile 1.5 saniye sonra her şeyi göster
 setTimeout(function() {
   if(!formGosterildi) {
-    console.log('? Timeout: Her �ey g�steriliyor (1.5 saniye ge�ti)');
+    console.log('⏰ Timeout: Her şey gösteriliyor (1.5 saniye geçti)');
     herSeyiGoster();
   }
 }, 1500);
 
-// YEDEK: Formu hemen g�ster (100ms sonra)
+// YEDEK: Formu hemen göster (100ms sonra)
 setTimeout(function() {
-  console.log('?? Formu hemen g�ster (yedek sistem)');
+  console.log('🚀 Formu hemen göster (yedek sistem)');
   var formWrapper = document.querySelector('.formWrapper');
   if(formWrapper) {
     formWrapper.style.display = 'flex';
@@ -403,15 +403,15 @@ setTimeout(function() {
 }, 100);
 
 // =============================================
-// KAYAN YAZI �ER�D� Y�NET�M�
+// KAYAN YAZI ŞERİDİ YÖNETİMİ
 // =============================================
 
 function loadBannerSettings() {
-    console.log('?? loadBannerSettings �a�r�ld� (urunx-1)');
+    console.log('🚀 loadBannerSettings çağrıldı (urunx-1)');
     
-    // ?? Firebase'den banner renklerini y�kle (Admin-1'den) - S�REKL� D�NLE
+    // 🔥 Firebase'den banner renklerini yükle (Admin-1'den) - SÜREKLİ DİNLE
     onFirebaseReady(function(db) {
-        console.log('?? Firebase haz�r, banner renkleri y�kleniyor (urunx-1)...');
+        console.log('🔥 Firebase hazır, banner renkleri yükleniyor (urunx-1)...');
         
         db.ref('www_kargonburada_online/admin1/bannerColors').on('value', function(snapshot) {
             var data = snapshot.val();
@@ -421,16 +421,16 @@ function loadBannerSettings() {
             if (data) {
                 bgColor = data.bgColor || '#000000';
                 textColor = data.textColor || '#ffffff';
-                console.log('?? Firebase\'den y�klendi (urunx-1) - BG:', bgColor, 'Text:', textColor);
+                console.log('🔥 Firebase\'den yüklendi (urunx-1) - BG:', bgColor, 'Text:', textColor);
                 
                 // localStorage'a kaydet
                 localStorage.setItem('www_kargonburada_online_admin1_banner_bg_color', bgColor);
                 localStorage.setItem('www_kargonburada_online_admin1_banner_text_color', textColor);
             } else {
-                console.log('?? Firebase\'de banner rengi yok (urunx-1)');
+                console.log('⚠️ Firebase\'de banner rengi yok (urunx-1)');
             }
             
-            // Banner �eridini g�ncelle
+            // Banner şeridini güncelle
             updateBannerDisplay(bgColor, textColor);
         });
     });
@@ -442,23 +442,23 @@ function updateBannerDisplay(bgColor, textColor) {
     var bannerContent = document.getElementById('bannerContent');
     
     if (bannerStrip && bannerContent) {
-        // Arkaplan rengini g�ncelle
+        // Arkaplan rengini güncelle
         bannerStrip.style.background = bgColor;
         
-        // ?? �eridi g�r�n�r yap (Firebase'den renk geldi)
+        // 🔥 Şeridi görünür yap (Firebase'den renk geldi)
         bannerStrip.style.visibility = 'visible';
         
-        // SAB�T MET�NLER� KULLAN
+        // SABİT METİNLERİ KULLAN
         var fixedTexts = [
-            '?? AYNI G�N KARGO',
-            '?? KAPIDA �DEME', 
-            '?? HIZLI TESL�MAT',
-            '?? G�VENL� ALI�VER��',
-            '? %100 M��TER� MEMNUN�YET�',
-            '? �CRETS�Z KARGO'
+            '🚚 AYNI GÜN KARGO',
+            '💳 KAPIDA ÖDEME', 
+            '📦 HIZLI TESLİMAT',
+            '🔒 GÜVENLİ ALIŞVERİŞ',
+            '⭐ %100 MÜŞTERİ MEMNUNİYETİ',
+            '✅ ÜCRETSİZ KARGO'
         ];
         
-        // ��eri�i olu�tur (2 kez tekrarla ki kesintisiz d�ns�n)
+        // İçeriği oluştur (2 kez tekrarla ki kesintisiz dönsün)
         var htmlContent = '';
         for (var i = 0; i < 2; i++) {
             fixedTexts.forEach(function(text) {
@@ -468,11 +468,11 @@ function updateBannerDisplay(bgColor, textColor) {
         
         bannerContent.innerHTML = htmlContent;
         
-        console.log('? Kayan yaz� �eridi g�ncellendi (sabit metinlerle)');
+        console.log('✅ Kayan yazı şeridi güncellendi (sabit metinlerle)');
     }
 }
 
-// Sayfa y�klenince banner ayarlar�n� y�kle
+// Sayfa yüklenince banner ayarlarını yükle
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
         loadBannerSettings();
@@ -481,43 +481,43 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <div class="formWrapper" style="position:relative;">
 
-<!-- HIZLI S�PAR�� FORMU �UBU�U -->
+<!-- HIZLI SİPARİŞ FORMU ÇUBUĞU -->
 <script>
-// HEMEN HTML'e yaz - hi� beklemeden
+// HEMEN HTML'e yaz - hiç beklemeden
 var bgColor = localStorage.getItem('kargonburada_online_admin1_siparis_seridi_bg_color') || '#ffffff';
 var textColor = localStorage.getItem('kargonburada_online_admin1_siparis_seridi_text_color') || '#000000';
 
 document.write('<div id="siparisSeridi" style="width:100%;background:' + bgColor + ';padding:10px 0;text-align:center;border-radius:8px 8px 0 0;margin-bottom:10px;">');
-document.write('<span id="siparisSeridiText" style="color:' + textColor + ';font-size:20px;font-weight:900;letter-spacing:2px;display:inline-block;animation:buyukKucul 0.8s ease-in-out infinite;">?? HIZLI S�PAR�� FORMU</span>');
+document.write('<span id="siparisSeridiText" style="color:' + textColor + ';font-size:20px;font-weight:900;letter-spacing:2px;display:inline-block;animation:buyukKucul 0.8s ease-in-out infinite;">📋 HIZLI SİPARİŞ FORMU</span>');
 document.write('</div>');
 
-console.log('?? HTML direkt yaz�ld� (urunx-1) - BG:', bgColor, 'Text:', textColor);
+console.log('🎨 HTML direkt yazıldı (urunx-1) - BG:', bgColor, 'Text:', textColor);
 </script>
 
-<label class="formLabel" style="margin-top:0">�deme Y�ntemi:</label>
+<label class="formLabel" style="margin-top:0">Ödeme Yöntemi:</label>
 <div class="radioBox" style="border:2px solid #000 !important;">
 <div class="radioOption" onclick="this.querySelector('input').checked=true;" style="cursor:pointer;">
 <input type="radio" name="odeme" value="nakit" checked>
-<span>Kap�da Nakit �deme</span>
+<span>Kapıda Nakit Ödeme</span>
 </div>
 <div class="radioOption" onclick="this.querySelector('input').checked=true;" style="cursor:pointer;">
 <input type="radio" name="odeme" value="kredi">
-<span>Kap�da Kredi Kart� �le �deme</span>
+<span>Kapıda Kredi Kartı İle Ödeme</span>
 </div>
 </div>
 
-<label class="formLabel">�r�n Se�iniz:</label>
+<label class="formLabel">Ürün Seçiniz:</label>
 
-<!-- 1 ��FT AL -->
+<!-- 1 ÇİFT AL -->
 <div id="adetSecim1" onclick="document.getElementById('secim1').checked=true;updateBorder(1);" style="border: 2px solid #ddd; border-radius: 15px; padding: 20px; margin-bottom: 15px; background: white; position: relative; cursor: pointer;">
   <div style="position: absolute; top: -10px; right: 20px; background: #000; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; min-width: 150px; width: auto; text-align: center; white-space: nowrap;">
-    <span id="urun1EtiketDisplay">EKSTRA %20 �ND�R�M</span>
+    <span id="urun1EtiketDisplay">EKSTRA %20 İNDİRİM</span>
   </div>
   <div style="display: flex; align-items: center;">
     <div style="display: flex; align-items: center;">
       <input type="radio" name="urunSecim" value="1" id="secim1" onclick="updateBorder(1)" checked style="width: 20px; height: 20px; margin-right: 15px; accent-color: #333;">
       <div>
-        <div id="urun1IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">1 �ift Al</div>
+        <div id="urun1IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">1 Çift Al</div>
       </div>
     </div>
     <div style="margin-left: auto; text-align: right;">
@@ -527,17 +527,17 @@ console.log('?? HTML direkt yaz�ld� (urunx-1) - BG:', bgColor, 'Text:', text
   </div>
 </div>
 
-<!-- 2 ��FT AL -->
+<!-- 2 ÇİFT AL -->
 <div id="adetSecim2" onclick="document.getElementById('secim2').checked=true;updateBorder(2);" style="border: 2px solid #ddd; border-radius: 15px; padding: 20px; margin-bottom: 15px; background: white; position: relative; cursor: pointer;">
   <div style="position: absolute; top: -10px; right: 20px; background: #000; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; min-width: 150px; width: auto; text-align: center; white-space: nowrap;">
-    <span id="urun2EtiketDisplay">EKSTRA %20 �ND�R�M</span>
+    <span id="urun2EtiketDisplay">EKSTRA %20 İNDİRİM</span>
   </div>
   <div style="display: flex; align-items: center;">
     <div style="display: flex; align-items: center;">
       <input type="radio" name="urunSecim" value="2" id="secim2" onclick="updateBorder(2)" style="width: 20px; height: 20px; margin-right: 15px; accent-color: #333;">
       <div>
-        <div id="urun2IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">2 �ift Al</div>
-        <span id="urun2TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">?42.10 TASARRUF</span>
+        <div id="urun2IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">2 Çift Al</div>
+        <span id="urun2TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">₺42.10 TASARRUF</span>
       </div>
     </div>
     <div style="margin-left: auto; text-align: right;">
@@ -547,17 +547,17 @@ console.log('?? HTML direkt yaz�ld� (urunx-1) - BG:', bgColor, 'Text:', text
   </div>
 </div>
 
-<!-- 3 ��FT AL -->
+<!-- 3 ÇİFT AL -->
 <div id="adetSecim3" onclick="document.getElementById('secim3').checked=true;updateBorder(3);" style="border: 2px solid #ddd; border-radius: 15px; padding: 20px; margin-bottom: 15px; background: white; position: relative; cursor: pointer;">
   <div style="position: absolute; top: -10px; right: 20px; background: #000; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; min-width: 150px; width: auto; text-align: center; white-space: nowrap;">
-    <span id="urun3EtiketDisplay">EKSTRA %30 �ND�R�M + �CRETS�Z HED�YE</span>
+    <span id="urun3EtiketDisplay">EKSTRA %30 İNDİRİM + ÜCRETSİZ HEDİYE</span>
   </div>
   <div style="display: flex; align-items: center;">
     <div style="display: flex; align-items: center;">
       <input type="radio" name="urunSecim" value="3" id="secim3" onclick="updateBorder(3)" style="width: 20px; height: 20px; margin-right: 15px; accent-color: #333;">
       <div>
-        <div id="urun3IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">3 �ift Al</div>
-        <span id="urun3TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">?75.15 TASARRUF</span>
+        <div id="urun3IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">3 Çift Al</div>
+        <span id="urun3TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">₺75.15 TASARRUF</span>
       </div>
     </div>
     <div style="margin-left: auto; text-align: right;">
@@ -567,17 +567,17 @@ console.log('?? HTML direkt yaz�ld� (urunx-1) - BG:', bgColor, 'Text:', text
   </div>
 </div>
 
-<!-- 4 ��FT AL -->
+<!-- 4 ÇİFT AL -->
 <div id="adetSecim4" onclick="document.getElementById('secim4').checked=true;updateBorder(4);" style="border: 2px solid #ddd; border-radius: 15px; padding: 20px; margin-bottom: 15px; background: white; position: relative; cursor: pointer;">
   <div style="position: absolute; top: -10px; right: 20px; background: #000; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; min-width: 150px; width: auto; text-align: center; white-space: nowrap;">
-    <span id="urun4EtiketDisplay">EKSTRA %35 �ND�R�M</span>
+    <span id="urun4EtiketDisplay">EKSTRA %35 İNDİRİM</span>
   </div>
   <div style="display: flex; align-items: center;">
     <div style="display: flex; align-items: center;">
       <input type="radio" name="urunSecim" value="4" id="secim4" onclick="updateBorder(4)" style="width: 20px; height: 20px; margin-right: 15px; accent-color: #333;">
       <div>
-        <div id="urun4IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">4 �ift Al</div>
-        <span id="urun4TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">?95.20 TASARRUF</span>
+        <div id="urun4IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">4 Çift Al</div>
+        <span id="urun4TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">₺95.20 TASARRUF</span>
       </div>
     </div>
     <div style="margin-left: auto; text-align: right;">
@@ -587,17 +587,17 @@ console.log('?? HTML direkt yaz�ld� (urunx-1) - BG:', bgColor, 'Text:', text
   </div>
 </div>
 
-<!-- 5 ��FT AL -->
+<!-- 5 ÇİFT AL -->
 <div id="adetSecim5" onclick="document.getElementById('secim5').checked=true;updateBorder(5);" style="border: 2px solid #ddd; border-radius: 15px; padding: 20px; margin-bottom: 15px; background: white; position: relative; cursor: pointer;">
   <div style="position: absolute; top: -10px; right: 20px; background: #000; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; min-width: 150px; width: auto; text-align: center; white-space: nowrap;">
-    <span id="urun5EtiketDisplay">EKSTRA %40 �ND�R�M</span>
+    <span id="urun5EtiketDisplay">EKSTRA %40 İNDİRİM</span>
   </div>
   <div style="display: flex; align-items: center;">
     <div style="display: flex; align-items: center;">
       <input type="radio" name="urunSecim" value="5" id="secim5" onclick="updateBorder(5)" style="width: 20px; height: 20px; margin-right: 15px; accent-color: #333;">
       <div>
-        <div id="urun5IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">5 �ift Al</div>
-        <span id="urun5TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">?115.25 TASARRUF</span>
+        <div id="urun5IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">5 Çift Al</div>
+        <span id="urun5TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">₺115.25 TASARRUF</span>
       </div>
     </div>
     <div style="margin-left: auto; text-align: right;">
@@ -607,17 +607,17 @@ console.log('?? HTML direkt yaz�ld� (urunx-1) - BG:', bgColor, 'Text:', text
   </div>
 </div>
 
-<!-- 6 ��FT AL -->
+<!-- 6 ÇİFT AL -->
 <div id="adetSecim6" onclick="document.getElementById('secim6').checked=true;updateBorder(6);" style="border: 2px solid #ddd; border-radius: 15px; padding: 20px; margin-bottom: 15px; background: white; position: relative; cursor: pointer;">
   <div style="position: absolute; top: -10px; right: 20px; background: #000; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; min-width: 150px; width: auto; text-align: center; white-space: nowrap;">
-    <span id="urun6EtiketDisplay">EKSTRA %45 �ND�R�M</span>
+    <span id="urun6EtiketDisplay">EKSTRA %45 İNDİRİM</span>
   </div>
   <div style="display: flex; align-items: center;">
     <div style="display: flex; align-items: center;">
       <input type="radio" name="urunSecim" value="6" id="secim6" onclick="updateBorder(6)" style="width: 20px; height: 20px; margin-right: 15px; accent-color: #333;">
       <div>
-        <div id="urun6IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">6 �ift Al</div>
-        <span id="urun6TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">?135.30 TASARRUF</span>
+        <div id="urun6IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">6 Çift Al</div>
+        <span id="urun6TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">₺135.30 TASARRUF</span>
       </div>
     </div>
     <div style="margin-left: auto; text-align: right;">
@@ -627,17 +627,17 @@ console.log('?? HTML direkt yaz�ld� (urunx-1) - BG:', bgColor, 'Text:', text
   </div>
 </div>
 
-<!-- 7 ��FT AL -->
+<!-- 7 ÇİFT AL -->
 <div id="adetSecim7" onclick="document.getElementById('secim7').checked=true;updateBorder(7);" style="border: 2px solid #ddd; border-radius: 15px; padding: 20px; margin-bottom: 15px; background: white; position: relative; cursor: pointer;">
   <div style="position: absolute; top: -10px; right: 20px; background: #000; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; min-width: 150px; width: auto; text-align: center; white-space: nowrap;">
-    <span id="urun7EtiketDisplay">EKSTRA %50 �ND�R�M</span>
+    <span id="urun7EtiketDisplay">EKSTRA %50 İNDİRİM</span>
   </div>
   <div style="display: flex; align-items: center;">
     <div style="display: flex; align-items: center;">
       <input type="radio" name="urunSecim" value="7" id="secim7" onclick="updateBorder(7)" style="width: 20px; height: 20px; margin-right: 15px; accent-color: #333;">
       <div>
-        <div id="urun7IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">7 �ift Al</div>
-        <span id="urun7TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">?155.35 TASARRUF</span>
+        <div id="urun7IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">7 Çift Al</div>
+        <span id="urun7TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">₺155.35 TASARRUF</span>
       </div>
     </div>
     <div style="margin-left: auto; text-align: right;">
@@ -647,17 +647,17 @@ console.log('?? HTML direkt yaz�ld� (urunx-1) - BG:', bgColor, 'Text:', text
   </div>
 </div>
 
-<!-- 8 ��FT AL -->
+<!-- 8 ÇİFT AL -->
 <div id="adetSecim8" onclick="document.getElementById('secim8').checked=true;updateBorder(8);" style="border: 2px solid #ddd; border-radius: 15px; padding: 20px; margin-bottom: 15px; background: white; position: relative; cursor: pointer;">
   <div style="position: absolute; top: -10px; right: 20px; background: #000; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; min-width: 150px; width: auto; text-align: center; white-space: nowrap;">
-    <span id="urun8EtiketDisplay">EKSTRA %55 �ND�R�M</span>
+    <span id="urun8EtiketDisplay">EKSTRA %55 İNDİRİM</span>
   </div>
   <div style="display: flex; align-items: center;">
     <div style="display: flex; align-items: center;">
       <input type="radio" name="urunSecim" value="8" id="secim8" onclick="updateBorder(8)" style="width: 20px; height: 20px; margin-right: 15px; accent-color: #333;">
       <div>
-        <div id="urun8IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">8 �ift Al</div>
-        <span id="urun8TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">?175.40 TASARRUF</span>
+        <div id="urun8IsimDisplay" style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; word-wrap: break-word;">8 Çift Al</div>
+        <span id="urun8TasarrufDisplay" style="background: #dc3545; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; min-width: 120px; width: auto; text-align: center; display: inline-block; white-space: nowrap;">₺175.40 TASARRUF</span>
       </div>
     </div>
     <div style="margin-left: auto; text-align: right;">
@@ -667,94 +667,94 @@ console.log('?? HTML direkt yaz�ld� (urunx-1) - BG:', bgColor, 'Text:', text
   </div>
 </div>
 
-<label class="formLabel">Ad�n�z Soyad�n�z:</label>
-<input type="text" id="adInput" class="formInput" placeholder="Ad�n�z� ve Soyad�n�z� Yaz�n">
+<label class="formLabel">Adınız Soyadınız:</label>
+<input type="text" id="adInput" class="formInput" placeholder="Adınızı ve Soyadınızı Yazın">
 <span id="adError" style="color:#dc3545;font-size:12px;font-weight:600;display:none;margin-top:5px;margin-bottom:10px;display:block;"></span>
 
-<label class="formLabel">Telefon Numaran�z:</label>
-<input type="tel" id="telefonInput" class="formInput" placeholder="Cep Telefonu Numaran�z (10 hane)" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+<label class="formLabel">Telefon Numaranız:</label>
+<input type="tel" id="telefonInput" class="formInput" placeholder="Cep Telefonu Numaranız (10 hane)" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 <span id="telefonError" style="color:#dc3545;font-size:12px;font-weight:600;display:none;margin-top:5px;margin-bottom:10px;display:block;"></span>
 
-<label class="formLabel">Bulundu�unuz �l:</label>
+<label class="formLabel">Bulunduğunuz İl:</label>
 <select class="formSelect" id="il-select" onchange="updateIlceler()">
-<option value="">�ehir Se�iniz...</option>
+<option value="">Şehir Seçiniz...</option>
 <option value="adana">Adana</option>
-<option value="adiyaman">Ad�yaman</option>
+<option value="adiyaman">Adıyaman</option>
 <option value="afyonkarahisar">Afyonkarahisar</option>
-<option value="agri">A�r�</option>
+<option value="agri">Ağrı</option>
 <option value="aksaray">Aksaray</option>
 <option value="amasya">Amasya</option>
 <option value="ankara">Ankara</option>
 <option value="antalya">Antalya</option>
 <option value="ardahan">Ardahan</option>
 <option value="artvin">Artvin</option>
-<option value="aydin">Ayd�n</option>
-<option value="balikesir">Bal�kesir</option>
-<option value="bartin">Bart�n</option>
+<option value="aydin">Aydın</option>
+<option value="balikesir">Balıkesir</option>
+<option value="bartin">Bartın</option>
 <option value="batman">Batman</option>
 <option value="bayburt">Bayburt</option>
 <option value="bilecik">Bilecik</option>
-<option value="bingol">Bing�l</option>
+<option value="bingol">Bingöl</option>
 <option value="bitlis">Bitlis</option>
 <option value="bolu">Bolu</option>
 <option value="burdur">Burdur</option>
 <option value="bursa">Bursa</option>
-<option value="canakkale">�anakkale</option>
-<option value="cankiri">�ank�r�</option>
-<option value="corum">�orum</option>
+<option value="canakkale">Çanakkale</option>
+<option value="cankiri">Çankırı</option>
+<option value="corum">Çorum</option>
 <option value="denizli">Denizli</option>
-<option value="diyarbakir">Diyarbak�r</option>
-<option value="duzce">D�zce</option>
+<option value="diyarbakir">Diyarbakır</option>
+<option value="duzce">Düzce</option>
 <option value="edirne">Edirne</option>
-<option value="elazig">Elaz��</option>
+<option value="elazig">Elazığ</option>
 <option value="erzincan">Erzincan</option>
 <option value="erzurum">Erzurum</option>
-<option value="eskisehir">Eski�ehir</option>
+<option value="eskisehir">Eskişehir</option>
 <option value="gaziantep">Gaziantep</option>
 <option value="giresun">Giresun</option>
-<option value="gumushane">G�m��hane</option>
+<option value="gumushane">Gümüşhane</option>
 <option value="hakkari">Hakkari</option>
 <option value="hatay">Hatay</option>
-<option value="igdir">I�d�r</option>
+<option value="igdir">Iğdır</option>
 <option value="isparta">Isparta</option>
-<option value="istanbul">�stanbul</option>
-<option value="izmir">�zmir</option>
-<option value="kahramanmaras">Kahramanmara�</option>
-<option value="karabuk">Karab�k</option>
+<option value="istanbul">İstanbul</option>
+<option value="izmir">İzmir</option>
+<option value="kahramanmaras">Kahramanmaraş</option>
+<option value="karabuk">Karabük</option>
 <option value="karaman">Karaman</option>
 <option value="kars">Kars</option>
 <option value="kastamonu">Kastamonu</option>
 <option value="kayseri">Kayseri</option>
 <option value="kilis">Kilis</option>
-<option value="kirikkale">K�r�kkale</option>
-<option value="kirklareli">K�rklareli</option>
-<option value="kirsehir">K�r�ehir</option>
+<option value="kirikkale">Kırıkkale</option>
+<option value="kirklareli">Kırklareli</option>
+<option value="kirsehir">Kırşehir</option>
 <option value="kocaeli">Kocaeli</option>
 <option value="konya">Konya</option>
-<option value="kutahya">K�tahya</option>
+<option value="kutahya">Kütahya</option>
 <option value="malatya">Malatya</option>
 <option value="manisa">Manisa</option>
 <option value="mardin">Mardin</option>
 <option value="mersin">Mersin</option>
-<option value="mugla">Mu�la</option>
-<option value="mus">Mu�</option>
-<option value="nevsehir">Nev�ehir</option>
-<option value="nigde">Ni�de</option>
+<option value="mugla">Muğla</option>
+<option value="mus">Muş</option>
+<option value="nevsehir">Nevşehir</option>
+<option value="nigde">Niğde</option>
 <option value="ordu">Ordu</option>
 <option value="osmaniye">Osmaniye</option>
 <option value="rize">Rize</option>
 <option value="sakarya">Sakarya</option>
 <option value="samsun">Samsun</option>
-<option value="sanliurfa">�anl�urfa</option>
+<option value="sanliurfa">Şanlıurfa</option>
 <option value="siirt">Siirt</option>
 <option value="sinop">Sinop</option>
-<option value="sirnak">��rnak</option>
+<option value="sirnak">Şırnak</option>
 <option value="sivas">Sivas</option>
-<option value="tekirdag">Tekirda�</option>
+<option value="tekirdag">Tekirdağ</option>
 <option value="tokat">Tokat</option>
 <option value="trabzon">Trabzon</option>
 <option value="tunceli">Tunceli</option>
-<option value="usak">U�ak</option>
+<option value="usak">Uşak</option>
 <option value="van">Van</option>
 <option value="yalova">Yalova</option>
 <option value="yozgat">Yozgat</option>
@@ -762,29 +762,29 @@ console.log('?? HTML direkt yaz�ld� (urunx-1) - BG:', bgColor, 'Text:', text
 </select>
 <span id="ilError" style="color:#dc3545;font-size:12px;font-weight:600;display:none;margin-top:5px;margin-bottom:10px;display:block;"></span>
 
-<label class="formLabel">Bulundu�unuz �l�e:</label>
+<label class="formLabel">Bulunduğunuz İlçe:</label>
 <select class="formSelect" id="ilce-select">
-<option value="">�l�e Se�iniz</option>
+<option value="">İlçe Seçiniz</option>
 </select>
 <span id="ilceError" style="color:#dc3545;font-size:12px;font-weight:600;display:none;margin-top:5px;margin-bottom:10px;display:block;"></span>
 
-<label class="formLabel">A��k Adresiniz:</label>
-<textarea id="adresInput" class="formTextarea" placeholder="Mahalle, Sokak, Cadde, Bina No, Daire No yaz�n"></textarea>
+<label class="formLabel">Açık Adresiniz:</label>
+<textarea id="adresInput" class="formTextarea" placeholder="Mahalle, Sokak, Cadde, Bina No, Daire No yazın"></textarea>
 <span id="adresError" style="color:#dc3545;font-size:12px;font-weight:600;display:none;margin-top:5px;margin-bottom:10px;display:block;"></span>
 
 <!-- SPAM UYARI KUTUSU - POPUP -->
 <div id="spamUyari" class="spam-popup-overlay">
 <div class="spam-popup-box">
 <div class="spam-popup-header">
-<div class="spam-popup-icon">??</div>
-<div class="spam-popup-title">G�nl�k Limit Doldu!</div>
+<div class="spam-popup-icon">⚠️</div>
+<div class="spam-popup-title">Günlük Limit Doldu!</div>
 </div>
 <div class="spam-popup-content">
-<p>?? Ayn� telefon numaras� ile g�nde en fazla <strong>5 sipari�</strong> verilebilir.</p>
+<p>📱 Aynı telefon numarası ile günde en fazla <strong>5 sipariş</strong> verilebilir.</p>
 </div>
 <div class="spam-popup-footer">
-<span>??</span>
-<p>Yar�n tekrar sipari� verebilirsiniz!</p>
+<span>🕐</span>
+<p>Yarın tekrar sipariş verebilirsiniz!</p>
 </div>
 </div>
 </div>
@@ -806,21 +806,21 @@ console.log('?? HTML direkt yaz�ld� (urunx-1) - BG:', bgColor, 'Text:', text
 @media(max-width:480px){.spam-popup-box{padding:20px;}.spam-popup-icon{width:40px;height:40px;font-size:22px;}.spam-popup-title{font-size:17px;}.spam-popup-content p{font-size:14px;}.spam-popup-content strong{font-size:16px;}.spam-popup-footer p{font-size:13px;}}
 </style>
 
-<!-- S�PAR�� ONAY MESAJI - BUTONUN �ST�NDE -->
+<!-- SİPARİŞ ONAY MESAJI - BUTONUN ÜSTÜNDE -->
 <div id="successModal">
 <div class="success-box">
 <div class="checkmark">
 <svg viewBox="0 0 52 52"><path d="M14 27l7.5 7.5L38 18"/></svg>
 </div>
-<div class="success-title">? Sipari�iniz Al�nd�!</div>
-<div class="success-text"><strong>�deme kap�da yap�lacakt�r.</strong> �u an sizden hi�bir �cret al�nmam��t�r.</div>
-<div class="success-info">?? Haz�rlan�p kargoya verilecek</div>
-<div class="success-info">?? Teslim: 1�3 i� g�n�</div>
-<div class="success-footer">Te�ekk�r ederiz ??</div>
+<div class="success-title">✅ Siparişiniz Alındı!</div>
+<div class="success-text"><strong>Ödeme kapıda yapılacaktır.</strong> Şu an sizden hiçbir ücret alınmamıştır.</div>
+<div class="success-info">📦 Hazırlanıp kargoya verilecek</div>
+<div class="success-info">🚚 Teslim: 1–3 iş günü</div>
+<div class="success-footer">Teşekkür ederiz 💚</div>
 </div>
 </div>
 
-<button class="siparisBtn" style="background:#28a745 !important;color:#fff !important;" onmouseover="this.style.setProperty('background','#dc3545','important');this.style.setProperty('color','#fff','important')" onmouseout="this.style.setProperty('background','#28a745','important');this.style.setProperty('color','#fff','important')" onclick="validateForm(); return false;">?? Sipari� Ver</button>
+<button class="siparisBtn" style="background:#28a745 !important;color:#fff !important;" onmouseover="this.style.setProperty('background','#dc3545','important');this.style.setProperty('color','#fff','important')" onmouseout="this.style.setProperty('background','#28a745','important');this.style.setProperty('color','#fff','important')" onclick="validateForm(); return false;">🛒 Sipariş Ver</button>
 
 <!-- WHATSAPP BUTONU KALDIRILDI --></div>
 <div style="width:100%;max-width:768px;margin:0 auto;display:block;">
@@ -829,12 +829,12 @@ console.log('?? HTML direkt yaz�ld� (urunx-1) - BG:', bgColor, 'Text:', text
 </div>
 </div>
 
-<!-- POL�T�KALAR KALDIRILDI -->
+<!-- POLİTİKALAR KALDIRILDI -->
 
-<!-- POL�T�KA G�ZLEME S�STEM� -->
+<!-- POLİTİKA GİZLEME SİSTEMİ -->
 <script>
 (function() {
-    // Site ID i�in yard�mc� fonksiyon
+    // Site ID için yardımcı fonksiyon
     function getSiteKey(key) {
         var siteId = localStorage.getItem('__SITE_ID__');
         if (!siteId) {
@@ -856,7 +856,7 @@ console.log('?? HTML direkt yaz�ld� (urunx-1) - BG:', bgColor, 'Text:', text
         return siteId + '_' + key;
     }
 
-    // Politikalar� gizle/g�ster kontrol�
+    // Politikaları gizle/göster kontrolü
     function politikaGizliKontrol() {
         var gizli = localStorage.getItem(getSiteKey('politikalar_gizli')) === 'true';
         var politikaDiv = document.getElementById('politikaLinksDiv');
@@ -865,7 +865,7 @@ console.log('?? HTML direkt yaz�ld� (urunx-1) - BG:', bgColor, 'Text:', text
             if (gizli) {
                 politikaDiv.style.display = 'none';
             } else {
-                // Mobilde her zaman g�ster, desktop'ta form g�sterildiyse g�ster
+                // Mobilde her zaman göster, desktop'ta form gösterildiyse göster
                 if (window.innerWidth <= 768) {
                     politikaDiv.style.display = 'block';
                 } else {
@@ -878,14 +878,14 @@ console.log('?? HTML direkt yaz�ld� (urunx-1) - BG:', bgColor, 'Text:', text
         }
     }
 
-    // Sayfa y�klenince kontrol et
+    // Sayfa yüklenince kontrol et
     document.addEventListener('DOMContentLoaded', politikaGizliKontrol);
     
-    // Form g�sterildikten sonra da kontrol et
+    // Form gösterildikten sonra da kontrol et
     setTimeout(politikaGizliKontrol, 1000);
     setTimeout(politikaGizliKontrol, 1500);
     
-    // Storage de�i�ikliklerini dinle (di�er sekmelerden de�i�iklik olursa)
+    // Storage değişikliklerini dinle (diğer sekmelerden değişiklik olursa)
     window.addEventListener('storage', function(e) {
         if (e.key && e.key.includes('politikalar_gizli')) {
             politikaGizliKontrol();
@@ -894,94 +894,94 @@ console.log('?? HTML direkt yaz�ld� (urunx-1) - BG:', bgColor, 'Text:', text
 })();
 </script>
 
-<!-- POL�T�KA POPUP KALDIRILDI -->
+<!-- POLİTİKA POPUP KALDIRILDI -->
 </div>
 
 <script src="site-config.js"></script>
 <script>
 
 const ilceler = {
-    adana: ['Alada�', 'Ceyhan', '�ukurova', 'Feke', '�mamo�lu', 'Karaisal�', 'Karata�', 'Kozan', 'Pozant�', 'Saimbeyli', 'Sar��am', 'Seyhan', 'Tufanbeyli', 'Yumurtal�k', 'Y�re�ir'],
-    adiyaman: ['Besni', '�elikhan', 'Gerger', 'G�lba��', 'Kahta', 'Merkez', 'Samsat', 'Sincik', 'Tut'],
-    afyonkarahisar: ['Ba�mak��', 'Bayat', 'Bolvadin', '�ay', '�obanlar', 'Dazk�r�', 'Dinar', 'Emirda�', 'Evciler', 'Hocalar', '�hsaniye', '�scehisar', 'K�z�l�ren', 'Merkez', 'Sand�kl�', 'Sinanpa�a', 'Sultanda��', '�uhut'],
-    agri: ['Diyadin', 'Do�ubayaz�t', 'Ele�kirt', 'Hamur', 'Merkez', 'Patnos', 'Ta�l��ay', 'Tutak'],
-    aksaray: ['A�a��ren', 'Eskil', 'G�la�a�', 'G�zelyurt', 'Merkez', 'Ortak�y', 'Sar�yah�i'],
-    amasya: ['G�yn�cek', 'G�m��hac�k�y', 'Hamam�z�', 'Merkez', 'Merzifon', 'Suluova', 'Ta�ova'],
-    ankara: ['Akyurt', 'Alt�nda�', 'Aya�', 'Bala', 'Beypazar�', '�aml�dere', '�ankaya', '�ubuk', 'Elmada�', 'Etimesgut', 'Evren', 'G�lba��', 'G�d�l', 'Haymana', 'Kahramankazan', 'Kalecik', 'Ke�i�ren', 'K�z�lcahamam', 'Mamak', 'Nall�han', 'Polatl�', 'Pursaklar', 'Sincan', '�erefliko�hisar', 'Yenimahalle'],
-    antalya: ['Akseki', 'Aksu', 'Alanya', 'Demre', 'D��emealt�', 'Elmal�', 'Finike', 'Gazipa�a', 'G�ndo�mu�', '�brad�', 'Ka�', 'Kemer', 'Kepez', 'Konyaalt�', 'Korkuteli', 'Kumluca', 'Manavgat', 'Muratpa�a', 'Serik'],
-    ardahan: ['��ld�r', 'Damal', 'G�le', 'Hanak', 'Merkez', 'Posof'],
-    artvin: ['Ardanu�', 'Arhavi', 'Bor�ka', 'Hopa', 'Merkez', 'Murgul', '�av�at', 'Yusufeli'],
-    aydin: ['Bozdo�an', 'Buharkent', '�ine', 'Didim', 'Efeler', 'Germencik', '�ncirliova', 'Karacasu', 'Karpuzlu', 'Ko�arl�', 'K��k', 'Ku�adas�', 'Kuyucak', 'Nazilli', 'S�ke', 'Sultanhisar', 'Yenipazar'],
-    balikesir: ['Alt�eyl�l', 'Ayval�k', 'Balya', 'Band�rma', 'Bigadi�', 'Burhaniye', 'Dursunbey', 'Edremit', 'Erdek', 'G�me�', 'G�nen', 'Havran', '�vrindi', 'Karesi', 'Kepsut', 'Manyas', 'Marmara', 'Sava�tepe', 'S�nd�rg�', 'Susurluk'],
-    bartin: ['Amasra', 'Kuruca�ile', 'Merkez', 'Ulus'],
-    batman: ['Be�iri', 'Gerc��', 'Hasankeyf', 'Kozluk', 'Merkez', 'Sason'],
-    bayburt: ['Ayd�ntepe', 'Demir�z�', 'Merkez'],
-    bilecik: ['Boz�y�k', 'G�lpazar�', '�nhisar', 'Merkez', 'Osmaneli', 'Pazaryeri', 'S���t', 'Yenipazar'],
-    bingol: ['Adakl�', 'Gen�', 'Karl�ova', 'Ki��', 'Merkez', 'Solhan', 'Yayladere', 'Yedisu'],
-    bitlis: ['Adilcevaz', 'Ahlat', 'G�roymak', 'Hizan', 'Merkez', 'Mutki', 'Tatvan'],
-    bolu: ['D�rtdivan', 'Gerede', 'G�yn�k', 'K�br�sc�k', 'Mengen', 'Merkez', 'Mudurnu', 'Seben', 'Yeni�a�a'],
-    burdur: ['A�lasun', 'Alt�nyayla', 'Bucak', '�avd�r', '�eltik�i', 'G�lhisar', 'Karamanl�', 'Kemer', 'Merkez', 'Tefenni', 'Ye�ilova'],
-    bursa: ['B�y�korhan', 'Gemlik', 'G�rsu', 'Harmanc�k', '�neg�l', '�znik', 'Karacabey', 'Keles', 'Kestel', 'Mudanya', 'Mustafakemalpa�a', 'Nil�fer', 'Orhaneli', 'Orhangazi', 'Osmangazi', 'Yeni�ehir', 'Y�ld�r�m'],
-    canakkale: ['Ayvac�k', 'Bayrami�', 'Biga', 'Bozcaada', '�an', 'Eceabat', 'Ezine', 'Gelibolu', 'G�k�eada', 'Lapseki', 'Merkez', 'Yenice'],
-    cankiri: ['Atkaracalar', 'Bayram�ren', '�erke�', 'Eldivan', 'Ilgaz', 'K�z�l�rmak', 'Korgun', 'Kur�unlu', 'Merkez', 'Orta', '�aban�z�', 'Yaprakl�'],
-    corum: ['Alaca', 'Bayat', 'Bo�azkale', 'Dodurga', '�skilip', 'Karg�', 'La�in', 'Mecit�z�', 'Merkez', 'O�uzlar', 'Ortak�y', 'Osmanc�k', 'Sungurlu', 'U�urluda�'],
-    denizli: ['Ac�payam', 'Babada�', 'Baklan', 'Bekilli', 'Beya�a�', 'Bozkurt', 'Buldan', '�al', '�ameli', '�ardak', '�ivril', 'G�ney', 'Honaz', 'Kale', 'Merkezefendi', 'Pamukkale', 'Sarayk�y', 'Serinhisar', 'Tavas'],
-    diyarbakir: ['Ba�lar', 'Bismil', '�ermik', '��nar', '��ng��', 'Dicle', 'E�il', 'Ergani', 'Hani', 'Hazro', 'Kayap�nar', 'Kocak�y', 'Kulp', 'Lice', 'Silvan', 'Sur', 'Yeni�ehir'],
-    duzce: ['Ak�akoca', 'Cumayeri', '�ilimli', 'G�lyaka', 'G�m��ova', 'Kayna�l�', 'Merkez', 'Y���lca'],
-    edirne: ['Enez', 'Havsa', '�psala', 'Ke�an', 'Lalapa�a', 'Meri�', 'Merkez', 'S�lo�lu', 'Uzunk�pr�'],
-    elazig: ['A��n', 'Alacakaya', 'Ar�cak', 'Baskil', 'Karako�an', 'Keban', 'Kovanc�lar', 'Maden', 'Merkez', 'Palu', 'Sivrice'],
-    erzincan: ['�ay�rl�', '�li�', 'Kemah', 'Kemaliye', 'Merkez', 'Otlukbeli', 'Refahiye', 'Tercan', '�z�ml�'],
-    erzurum: ['A�kale', 'Aziziye', '�at', 'H�n�s', 'Horasan', '�spir', 'Kara�oban', 'Karayaz�', 'K�pr�k�y', 'Narman', 'Oltu', 'Olur', 'Paland�ken', 'Pasinler', 'Pazaryolu', '�enkaya', 'Tekman', 'Tortum', 'Uzundere', 'Yakutiye'],
-    eskisehir: ['Alpu', 'Beylikova', '�ifteler', 'G�ny�z�', 'Han', '�n�n�', 'Mahmudiye', 'Mihalgazi', 'Mihal����k', 'Odunpazar�', 'Sar�cakaya', 'Seyitgazi', 'Sivrihisar', 'Tepeba��'],
-    gaziantep: ['Araban', '�slahiye', 'Karkam��', 'Nizip', 'Nurda��', 'O�uzeli', '�ahinbey', '�ehitkamil', 'Yavuzeli'],
-    giresun: ['Alucra', 'Bulancak', '�amoluk', '�anak��', 'Dereli', 'Do�ankent', 'Espiye', 'Eynesil', 'G�rele', 'G�ce', 'Ke�ap', 'Merkez', 'Piraziz', '�ebinkarahisar', 'Tirebolu', 'Ya�l�dere'],
-    gumushane: ['Kelkit', 'K�se', 'K�rt�n', 'Merkez', '�iran', 'Torul'],
-    hakkari: ['�ukurca', 'Merkez', '�emdinli', 'Y�ksekova'],
-    hatay: ['Alt�n�z�', 'Antakya', 'Arsuz', 'Belen', 'Defne', 'D�rtyol', 'Erzin', 'Hassa', '�skenderun', 'K�r�khan', 'Kumlu', 'Payas', 'Reyhanl�', 'Samanda�', 'Yaylada��'],
-    igdir: ['Aral�k', 'Karakoyunlu', 'Merkez', 'Tuzluca'],
-    isparta: ['Aksu', 'Atabey', 'E�irdir', 'Gelendost', 'G�nen', 'Ke�iborlu', 'Merkez', 'Senirkent', 'S�t��ler', '�arkikaraa�a�', 'Uluborlu', 'Yalva�', 'Yeni�arbademli'],
-    istanbul: ['Adalar', 'Arnavutk�y', 'Ata�ehir', 'Avc�lar', 'Ba�c�lar', 'Bah�elievler', 'Bak�rk�y', 'Ba�ak�ehir', 'Bayrampa�a', 'Be�ikta�', 'Beykoz', 'Beylikd�z�', 'Beyo�lu', 'B�y�k�ekmece', '�atalca', '�ekmek�y', 'Esenler', 'Esenyurt', 'Ey�psultan', 'Fatih', 'Gaziosmanpa�a', 'G�ng�ren', 'Kad�k�y', 'Ka��thane', 'Kartal', 'K���k�ekmece', 'Maltepe', 'Pendik', 'Sancaktepe', 'Sar�yer', 'Silivri', 'Sultanbeyli', 'Sultangazi', '�ile', '�i�li', 'Tuzla', '�mraniye', '�sk�dar', 'Zeytinburnu'],
-    izmir: ['Alia�a', 'Bal�ova', 'Bay�nd�r', 'Bayrakl�', 'Bergama', 'Beyda�', 'Bornova', 'Buca', '�e�me', '�i�li', 'Dikili', 'Fo�a', 'Gaziemir', 'G�zelbah�e', 'Karaba�lar', 'Karaburun', 'Kar��yaka', 'Kemalpa�a', 'K�n�k', 'Kiraz', 'Konak', 'Menderes', 'Menemen', 'Narl�dere', '�demi�', 'Seferihisar', 'Sel�uk', 'Tire', 'Torbal�', 'Urla'],
-    kahramanmaras: ['Af�in', 'And�r�n', '�a�layancerit', 'Dulkadiro�lu', 'Ekin�z�', 'Elbistan', 'G�ksun', 'Nurhak', 'Oniki�ubat', 'Pazarc�k', 'T�rko�lu'],
-    karabuk: ['Eflani', 'Eskipazar', 'Merkez', 'Ovac�k', 'Safranbolu', 'Yenice'],
-    karaman: ['Ayranc�', 'Ba�yayla', 'Ermenek', 'Kaz�mkarabekir', 'Merkez', 'Sar�veliler'],
-    kars: ['Akyaka', 'Arpa�ay', 'Digor', 'Ka��zman', 'Merkez', 'Sar�kam��', 'Selim', 'Susuz'],
-    kastamonu: ['Abana', 'A�l�', 'Ara�', 'Azdavay', 'Bozkurt', 'Cide', '�atalzeytin', 'Daday', 'Devrekani', 'Do�anyurt', 'Han�n�', '�hsangazi', '�nebolu', 'K�re', 'Merkez', 'P�narba��', 'Seydiler', '�enpazar', 'Ta�k�pr�', 'Tosya'],
-    kayseri: ['Akk��la', 'B�nyan', 'Develi', 'Felahiye', 'Hac�lar', '�ncesu', 'Kocasinan', 'Melikgazi', '�zvatan', 'P�narba��', 'Sar�o�lan', 'Sar�z', 'Talas', 'Tomarza', 'Yahyal�', 'Ye�ilhisar'],
+    adana: ['Aladağ', 'Ceyhan', 'Çukurova', 'Feke', 'İmamoğlu', 'Karaisalı', 'Karataş', 'Kozan', 'Pozantı', 'Saimbeyli', 'Sarıçam', 'Seyhan', 'Tufanbeyli', 'Yumurtalık', 'Yüreğir'],
+    adiyaman: ['Besni', 'Çelikhan', 'Gerger', 'Gölbaşı', 'Kahta', 'Merkez', 'Samsat', 'Sincik', 'Tut'],
+    afyonkarahisar: ['Başmakçı', 'Bayat', 'Bolvadin', 'Çay', 'Çobanlar', 'Dazkırı', 'Dinar', 'Emirdağ', 'Evciler', 'Hocalar', 'İhsaniye', 'İscehisar', 'Kızılören', 'Merkez', 'Sandıklı', 'Sinanpaşa', 'Sultandağı', 'Şuhut'],
+    agri: ['Diyadin', 'Doğubayazıt', 'Eleşkirt', 'Hamur', 'Merkez', 'Patnos', 'Taşlıçay', 'Tutak'],
+    aksaray: ['Ağaçören', 'Eskil', 'Gülağaç', 'Güzelyurt', 'Merkez', 'Ortaköy', 'Sarıyahşi'],
+    amasya: ['Göynücek', 'Gümüşhacıköy', 'Hamamözü', 'Merkez', 'Merzifon', 'Suluova', 'Taşova'],
+    ankara: ['Akyurt', 'Altındağ', 'Ayaş', 'Bala', 'Beypazarı', 'Çamlıdere', 'Çankaya', 'Çubuk', 'Elmadağ', 'Etimesgut', 'Evren', 'Gölbaşı', 'Güdül', 'Haymana', 'Kahramankazan', 'Kalecik', 'Keçiören', 'Kızılcahamam', 'Mamak', 'Nallıhan', 'Polatlı', 'Pursaklar', 'Sincan', 'Şereflikoçhisar', 'Yenimahalle'],
+    antalya: ['Akseki', 'Aksu', 'Alanya', 'Demre', 'Döşemealtı', 'Elmalı', 'Finike', 'Gazipaşa', 'Gündoğmuş', 'İbradı', 'Kaş', 'Kemer', 'Kepez', 'Konyaaltı', 'Korkuteli', 'Kumluca', 'Manavgat', 'Muratpaşa', 'Serik'],
+    ardahan: ['Çıldır', 'Damal', 'Göle', 'Hanak', 'Merkez', 'Posof'],
+    artvin: ['Ardanuç', 'Arhavi', 'Borçka', 'Hopa', 'Merkez', 'Murgul', 'Şavşat', 'Yusufeli'],
+    aydin: ['Bozdoğan', 'Buharkent', 'Çine', 'Didim', 'Efeler', 'Germencik', 'İncirliova', 'Karacasu', 'Karpuzlu', 'Koçarlı', 'Köşk', 'Kuşadası', 'Kuyucak', 'Nazilli', 'Söke', 'Sultanhisar', 'Yenipazar'],
+    balikesir: ['Altıeylül', 'Ayvalık', 'Balya', 'Bandırma', 'Bigadiç', 'Burhaniye', 'Dursunbey', 'Edremit', 'Erdek', 'Gömeç', 'Gönen', 'Havran', 'İvrindi', 'Karesi', 'Kepsut', 'Manyas', 'Marmara', 'Savaştepe', 'Sındırgı', 'Susurluk'],
+    bartin: ['Amasra', 'Kurucaşile', 'Merkez', 'Ulus'],
+    batman: ['Beşiri', 'Gercüş', 'Hasankeyf', 'Kozluk', 'Merkez', 'Sason'],
+    bayburt: ['Aydıntepe', 'Demirözü', 'Merkez'],
+    bilecik: ['Bozüyük', 'Gölpazarı', 'İnhisar', 'Merkez', 'Osmaneli', 'Pazaryeri', 'Söğüt', 'Yenipazar'],
+    bingol: ['Adaklı', 'Genç', 'Karlıova', 'Kiğı', 'Merkez', 'Solhan', 'Yayladere', 'Yedisu'],
+    bitlis: ['Adilcevaz', 'Ahlat', 'Güroymak', 'Hizan', 'Merkez', 'Mutki', 'Tatvan'],
+    bolu: ['Dörtdivan', 'Gerede', 'Göynük', 'Kıbrıscık', 'Mengen', 'Merkez', 'Mudurnu', 'Seben', 'Yeniçağa'],
+    burdur: ['Ağlasun', 'Altınyayla', 'Bucak', 'Çavdır', 'Çeltikçi', 'Gölhisar', 'Karamanlı', 'Kemer', 'Merkez', 'Tefenni', 'Yeşilova'],
+    bursa: ['Büyükorhan', 'Gemlik', 'Gürsu', 'Harmancık', 'İnegöl', 'İznik', 'Karacabey', 'Keles', 'Kestel', 'Mudanya', 'Mustafakemalpaşa', 'Nilüfer', 'Orhaneli', 'Orhangazi', 'Osmangazi', 'Yenişehir', 'Yıldırım'],
+    canakkale: ['Ayvacık', 'Bayramiç', 'Biga', 'Bozcaada', 'Çan', 'Eceabat', 'Ezine', 'Gelibolu', 'Gökçeada', 'Lapseki', 'Merkez', 'Yenice'],
+    cankiri: ['Atkaracalar', 'Bayramören', 'Çerkeş', 'Eldivan', 'Ilgaz', 'Kızılırmak', 'Korgun', 'Kurşunlu', 'Merkez', 'Orta', 'Şabanözü', 'Yapraklı'],
+    corum: ['Alaca', 'Bayat', 'Boğazkale', 'Dodurga', 'İskilip', 'Kargı', 'Laçin', 'Mecitözü', 'Merkez', 'Oğuzlar', 'Ortaköy', 'Osmancık', 'Sungurlu', 'Uğurludağ'],
+    denizli: ['Acıpayam', 'Babadağ', 'Baklan', 'Bekilli', 'Beyağaç', 'Bozkurt', 'Buldan', 'Çal', 'Çameli', 'Çardak', 'Çivril', 'Güney', 'Honaz', 'Kale', 'Merkezefendi', 'Pamukkale', 'Sarayköy', 'Serinhisar', 'Tavas'],
+    diyarbakir: ['Bağlar', 'Bismil', 'Çermik', 'Çınar', 'Çüngüş', 'Dicle', 'Eğil', 'Ergani', 'Hani', 'Hazro', 'Kayapınar', 'Kocaköy', 'Kulp', 'Lice', 'Silvan', 'Sur', 'Yenişehir'],
+    duzce: ['Akçakoca', 'Cumayeri', 'Çilimli', 'Gölyaka', 'Gümüşova', 'Kaynaşlı', 'Merkez', 'Yığılca'],
+    edirne: ['Enez', 'Havsa', 'İpsala', 'Keşan', 'Lalapaşa', 'Meriç', 'Merkez', 'Süloğlu', 'Uzunköprü'],
+    elazig: ['Ağın', 'Alacakaya', 'Arıcak', 'Baskil', 'Karakoçan', 'Keban', 'Kovancılar', 'Maden', 'Merkez', 'Palu', 'Sivrice'],
+    erzincan: ['Çayırlı', 'İliç', 'Kemah', 'Kemaliye', 'Merkez', 'Otlukbeli', 'Refahiye', 'Tercan', 'Üzümlü'],
+    erzurum: ['Aşkale', 'Aziziye', 'Çat', 'Hınıs', 'Horasan', 'İspir', 'Karaçoban', 'Karayazı', 'Köprüköy', 'Narman', 'Oltu', 'Olur', 'Palandöken', 'Pasinler', 'Pazaryolu', 'Şenkaya', 'Tekman', 'Tortum', 'Uzundere', 'Yakutiye'],
+    eskisehir: ['Alpu', 'Beylikova', 'Çifteler', 'Günyüzü', 'Han', 'İnönü', 'Mahmudiye', 'Mihalgazi', 'Mihalıççık', 'Odunpazarı', 'Sarıcakaya', 'Seyitgazi', 'Sivrihisar', 'Tepebaşı'],
+    gaziantep: ['Araban', 'İslahiye', 'Karkamış', 'Nizip', 'Nurdağı', 'Oğuzeli', 'Şahinbey', 'Şehitkamil', 'Yavuzeli'],
+    giresun: ['Alucra', 'Bulancak', 'Çamoluk', 'Çanakçı', 'Dereli', 'Doğankent', 'Espiye', 'Eynesil', 'Görele', 'Güce', 'Keşap', 'Merkez', 'Piraziz', 'Şebinkarahisar', 'Tirebolu', 'Yağlıdere'],
+    gumushane: ['Kelkit', 'Köse', 'Kürtün', 'Merkez', 'Şiran', 'Torul'],
+    hakkari: ['Çukurca', 'Merkez', 'Şemdinli', 'Yüksekova'],
+    hatay: ['Altınözü', 'Antakya', 'Arsuz', 'Belen', 'Defne', 'Dörtyol', 'Erzin', 'Hassa', 'İskenderun', 'Kırıkhan', 'Kumlu', 'Payas', 'Reyhanlı', 'Samandağ', 'Yayladağı'],
+    igdir: ['Aralık', 'Karakoyunlu', 'Merkez', 'Tuzluca'],
+    isparta: ['Aksu', 'Atabey', 'Eğirdir', 'Gelendost', 'Gönen', 'Keçiborlu', 'Merkez', 'Senirkent', 'Sütçüler', 'Şarkikaraağaç', 'Uluborlu', 'Yalvaç', 'Yenişarbademli'],
+    istanbul: ['Adalar', 'Arnavutköy', 'Ataşehir', 'Avcılar', 'Bağcılar', 'Bahçelievler', 'Bakırköy', 'Başakşehir', 'Bayrampaşa', 'Beşiktaş', 'Beykoz', 'Beylikdüzü', 'Beyoğlu', 'Büyükçekmece', 'Çatalca', 'Çekmeköy', 'Esenler', 'Esenyurt', 'Eyüpsultan', 'Fatih', 'Gaziosmanpaşa', 'Güngören', 'Kadıköy', 'Kağıthane', 'Kartal', 'Küçükçekmece', 'Maltepe', 'Pendik', 'Sancaktepe', 'Sarıyer', 'Silivri', 'Sultanbeyli', 'Sultangazi', 'Şile', 'Şişli', 'Tuzla', 'Ümraniye', 'Üsküdar', 'Zeytinburnu'],
+    izmir: ['Aliağa', 'Balçova', 'Bayındır', 'Bayraklı', 'Bergama', 'Beydağ', 'Bornova', 'Buca', 'Çeşme', 'Çiğli', 'Dikili', 'Foça', 'Gaziemir', 'Güzelbahçe', 'Karabağlar', 'Karaburun', 'Karşıyaka', 'Kemalpaşa', 'Kınık', 'Kiraz', 'Konak', 'Menderes', 'Menemen', 'Narlıdere', 'Ödemiş', 'Seferihisar', 'Selçuk', 'Tire', 'Torbalı', 'Urla'],
+    kahramanmaras: ['Afşin', 'Andırın', 'Çağlayancerit', 'Dulkadiroğlu', 'Ekinözü', 'Elbistan', 'Göksun', 'Nurhak', 'Onikişubat', 'Pazarcık', 'Türkoğlu'],
+    karabuk: ['Eflani', 'Eskipazar', 'Merkez', 'Ovacık', 'Safranbolu', 'Yenice'],
+    karaman: ['Ayrancı', 'Başyayla', 'Ermenek', 'Kazımkarabekir', 'Merkez', 'Sarıveliler'],
+    kars: ['Akyaka', 'Arpaçay', 'Digor', 'Kağızman', 'Merkez', 'Sarıkamış', 'Selim', 'Susuz'],
+    kastamonu: ['Abana', 'Ağlı', 'Araç', 'Azdavay', 'Bozkurt', 'Cide', 'Çatalzeytin', 'Daday', 'Devrekani', 'Doğanyurt', 'Hanönü', 'İhsangazi', 'İnebolu', 'Küre', 'Merkez', 'Pınarbaşı', 'Seydiler', 'Şenpazar', 'Taşköprü', 'Tosya'],
+    kayseri: ['Akkışla', 'Bünyan', 'Develi', 'Felahiye', 'Hacılar', 'İncesu', 'Kocasinan', 'Melikgazi', 'Özvatan', 'Pınarbaşı', 'Sarıoğlan', 'Sarız', 'Talas', 'Tomarza', 'Yahyalı', 'Yeşilhisar'],
     kilis: ['Elbeyli', 'Merkez', 'Musabeyli', 'Polateli'],
-    kirikkale: ['Bah��l�', 'Bal��eyh', '�elebi', 'Delice', 'Karake�ili', 'Keskin', 'Merkez', 'Sulakyurt', 'Yah�ihan'],
-    kirklareli: ['Babaeski', 'Demirk�y', 'Kof�az', 'L�leburgaz', 'Merkez', 'Pehlivank�y', 'P�narhisar', 'Vize'],
-    kirsehir: ['Ak�akent', 'Akp�nar', 'Boztepe', '�i�ekda��', 'Kaman', 'Merkez', 'Mucur'],
-    kocaeli: ['Ba�iskele', '�ay�rova', 'Dar�ca', 'Derince', 'Dilovas�', 'Gebze', 'G�lc�k', '�zmit', 'Kand�ra', 'Karam�rsel', 'Kartepe', 'K�rfez'],
-    konya: ['Ah�rl�', 'Ak�ren', 'Ak�ehir', 'Alt�nekin', 'Bey�ehir', 'Bozk�r', 'Cihanbeyli', '�eltik', '�umra', 'Derbent', 'Derebucak', 'Do�anhisar', 'Emirgazi', 'Ere�li', 'G�neys�n�r', 'Hadim', 'Halkap�nar', 'H�y�k', 'Ilg�n', 'Kad�nhan�', 'Karap�nar', 'Karatay', 'Kulu', 'Meram', 'Saray�n�', 'Sel�uklu', 'Seydi�ehir', 'Ta�kent', 'Tuzluk�u', 'Yal�h�y�k', 'Yunak'],
-    kutahya: ['Alt�nta�', 'Aslanapa', '�avdarhisar', 'Domani�', 'Dumlup�nar', 'Emet', 'Gediz', 'Hisarc�k', 'Merkez', 'Pazarlar', 'Simav', '�aphane', 'Tav�anl�'],
-    malatya: ['Ak�ada�', 'Arapgir', 'Arguvan', 'Battalgazi', 'Darende', 'Do�an�ehir', 'Do�anyol', 'Hekimhan', 'Kale', 'Kuluncak', 'P�t�rge', 'Yaz�han', 'Ye�ilyurt'],
-    manisa: ['Ahmetli', 'Akhisar', 'Ala�ehir', 'Demirci', 'G�lmarmara', 'G�rdes', 'K�rka�a�', 'K�pr�ba��', 'Kula', 'Salihli', 'Sar�g�l', 'Saruhanl�', 'Selendi', 'Soma', '�ehzadeler', 'Turgutlu', 'Yunusemre'],
-    mardin: ['Artuklu', 'Darge�it', 'Derik', 'K�z�ltepe', 'Maz�da��', 'Midyat', 'Nusaybin', '�merli', 'Savur', 'Ye�illi'],
-    mersin: ['Akdeniz', 'Anamur', 'Ayd�nc�k', 'Bozyaz�', '�aml�yayla', 'Erdemli', 'G�lnar', 'Mezitli', 'Mut', 'Silifke', 'Tarsus', 'Toroslar', 'Yeni�ehir'],
-    mugla: ['Bodrum', 'Dalaman', 'Dat�a', 'Fethiye', 'Kavakl�dere', 'K�yce�iz', 'Marmaris', 'Mente�e', 'Milas', 'Ortaca', 'Seydikemer', 'Ula', 'Yata�an'],
-    mus: ['Bulan�k', 'Hask�y', 'Korkut', 'Malazgirt', 'Merkez', 'Varto'],
-    nevsehir: ['Ac�g�l', 'Avanos', 'Derinkuyu', 'G�l�ehir', 'Hac�bekta�', 'Kozakl�', 'Merkez', '�rg�p'],
-    nigde: ['Altunhisar', 'Bor', '�amard�', '�iftlik', 'Merkez', 'Uluk��la'],
-    ordu: ['Akku�', 'Alt�nordu', 'Aybast�', '�ama�', '�atalp�nar', '�ayba��', 'Fatsa', 'G�lk�y', 'G�lyal�', 'G�rgentepe', '�kizce', 'Kabad�z', 'Kabata�', 'Korgan', 'Kumru', 'Mesudiye', 'Per�embe', 'Ulubey', '�nye'],
-    osmaniye: ['Bah�e', 'D�zi�i', 'Hasanbeyli', 'Kadirli', 'Merkez', 'Sumbas', 'Toprakkale'],
-    rize: ['Arde�en', '�aml�hem�in', '�ayeli', 'Derepazar�', 'F�nd�kl�', 'G�neysu', 'Hem�in', '�kizdere', '�yidere', 'Kalkandere', 'Merkez', 'Pazar'],
-    sakarya: ['Adapazar�', 'Akyaz�', 'Arifiye', 'Erenler', 'Ferizli', 'Geyve', 'Hendek', 'Karap�r�ek', 'Karasu', 'Kaynarca', 'Kocaali', 'Pamukova', 'Sapanca', 'Serdivan', 'S���tl�', 'Tarakl�'],
-    samsun: ['Ala�am', 'Asarc�k', 'Atakum', 'Ayvac�k', 'Bafra', 'Canik', '�ar�amba', 'Havza', '�lkad�m', 'Kavak', 'Ladik', 'Ondokuzmay�s', 'Sal�pazar�', 'Tekkek�y', 'Terme', 'Vezirk�pr�', 'Yakakent'],
-    sanliurfa: ['Ak�akale', 'Birecik', 'Bozova', 'Ceylanp�nar', 'Eyy�biye', 'Halfeti', 'Haliliye', 'Harran', 'Hilvan', 'Karak�pr�', 'Siverek', 'Suru�', 'Viran�ehir'],
-    siirt: ['Baykan', 'Eruh', 'Kurtalan', 'Merkez', 'Pervari', '�irvan', 'Tillo'],
-    sinop: ['Ayanc�k', 'Boyabat', 'Dikmen', 'Dura�an', 'Erfelek', 'Gerze', 'Merkez', 'Sarayd�z�', 'T�rkeli'],
-    sirnak: ['Beyt���ebap', 'Cizre', 'G��l�konak', '�dil', 'Merkez', 'Silopi', 'Uludere'],
-    sivas: ['Ak�nc�lar', 'Alt�nyayla', 'Divri�i', 'Do�an�ar', 'Gemerek', 'G�lova', 'G�r�n', 'Hafik', '�mranl�', 'Kangal', 'Koyulhisar', 'Merkez', 'Su�ehri', '�ark��la', 'Ula�', 'Y�ld�zeli', 'Zara'],
-    tekirdag: ['�erkezk�y', '�orlu', 'Ergene', 'Hayrabolu', 'Kapakl�', 'Malkara', 'Marmaraere�lisi', 'Muratl�', 'Saray', 'S�leymanpa�a', '�ark�y'],
-    tokat: ['Almus', 'Artova', 'Ba��iftlik', 'Erbaa', 'Merkez', 'Niksar', 'Pazar', 'Re�adiye', 'Sulusaray', 'Turhal', 'Ye�ilyurt', 'Zile'],
-    trabzon: ['Ak�aabat', 'Arakl�', 'Arsin', 'Be�ikd�z�', '�ar��ba��', '�aykara', 'Dernekpazar�', 'D�zk�y', 'Hayrat', 'K�pr�ba��', 'Ma�ka', 'Of', 'Ortahisar', '�alpazar�', 'S�rmene', 'Tonya', 'Vakf�kebir', 'Yomra'],
-    tunceli: ['�emi�gezek', 'Hozat', 'Mazgirt', 'Merkez', 'Naz�miye', 'Ovac�k', 'Pertek', 'P�l�m�r'],
-    usak: ['Banaz', 'E�me', 'Karahall�', 'Merkez', 'Sivasl�', 'Ulubey'],
-    van: ['Bah�esaray', 'Ba�kale', '�ald�ran', '�atak', 'Edremit', 'Erci�', 'Geva�', 'G�rp�nar', '�pekyolu', 'Muradiye', '�zalp', 'Saray', 'Tu�ba'],
-    yalova: ['Alt�nova', 'Armutlu', '��narc�k', '�iftlikk�y', 'Merkez', 'Termal'],
-    yozgat: ['Akda�madeni', 'Ayd�nc�k', 'Bo�azl�yan', '�and�r', '�ay�ralan', '�ekerek', 'Kad��ehri', 'Merkez', 'Saraykent', 'Sar�kaya', 'Sorgun', '�efaatli', 'Yenifak�l�', 'Yerk�y'],
-    zonguldak: ['Alapl�', '�aycuma', 'Devrek', 'Ere�li', 'G�k�ebey', 'Kilimli', 'Kozlu', 'Merkez']
+    kirikkale: ['Bahşılı', 'Balışeyh', 'Çelebi', 'Delice', 'Karakeçili', 'Keskin', 'Merkez', 'Sulakyurt', 'Yahşihan'],
+    kirklareli: ['Babaeski', 'Demirköy', 'Kofçaz', 'Lüleburgaz', 'Merkez', 'Pehlivanköy', 'Pınarhisar', 'Vize'],
+    kirsehir: ['Akçakent', 'Akpınar', 'Boztepe', 'Çiçekdağı', 'Kaman', 'Merkez', 'Mucur'],
+    kocaeli: ['Başiskele', 'Çayırova', 'Darıca', 'Derince', 'Dilovası', 'Gebze', 'Gölcük', 'İzmit', 'Kandıra', 'Karamürsel', 'Kartepe', 'Körfez'],
+    konya: ['Ahırlı', 'Akören', 'Akşehir', 'Altınekin', 'Beyşehir', 'Bozkır', 'Cihanbeyli', 'Çeltik', 'Çumra', 'Derbent', 'Derebucak', 'Doğanhisar', 'Emirgazi', 'Ereğli', 'Güneysınır', 'Hadim', 'Halkapınar', 'Hüyük', 'Ilgın', 'Kadınhanı', 'Karapınar', 'Karatay', 'Kulu', 'Meram', 'Sarayönü', 'Selçuklu', 'Seydişehir', 'Taşkent', 'Tuzlukçu', 'Yalıhüyük', 'Yunak'],
+    kutahya: ['Altıntaş', 'Aslanapa', 'Çavdarhisar', 'Domaniç', 'Dumlupınar', 'Emet', 'Gediz', 'Hisarcık', 'Merkez', 'Pazarlar', 'Simav', 'Şaphane', 'Tavşanlı'],
+    malatya: ['Akçadağ', 'Arapgir', 'Arguvan', 'Battalgazi', 'Darende', 'Doğanşehir', 'Doğanyol', 'Hekimhan', 'Kale', 'Kuluncak', 'Pütürge', 'Yazıhan', 'Yeşilyurt'],
+    manisa: ['Ahmetli', 'Akhisar', 'Alaşehir', 'Demirci', 'Gölmarmara', 'Gördes', 'Kırkağaç', 'Köprübaşı', 'Kula', 'Salihli', 'Sarıgöl', 'Saruhanlı', 'Selendi', 'Soma', 'Şehzadeler', 'Turgutlu', 'Yunusemre'],
+    mardin: ['Artuklu', 'Dargeçit', 'Derik', 'Kızıltepe', 'Mazıdağı', 'Midyat', 'Nusaybin', 'Ömerli', 'Savur', 'Yeşilli'],
+    mersin: ['Akdeniz', 'Anamur', 'Aydıncık', 'Bozyazı', 'Çamlıyayla', 'Erdemli', 'Gülnar', 'Mezitli', 'Mut', 'Silifke', 'Tarsus', 'Toroslar', 'Yenişehir'],
+    mugla: ['Bodrum', 'Dalaman', 'Datça', 'Fethiye', 'Kavaklıdere', 'Köyceğiz', 'Marmaris', 'Menteşe', 'Milas', 'Ortaca', 'Seydikemer', 'Ula', 'Yatağan'],
+    mus: ['Bulanık', 'Hasköy', 'Korkut', 'Malazgirt', 'Merkez', 'Varto'],
+    nevsehir: ['Acıgöl', 'Avanos', 'Derinkuyu', 'Gülşehir', 'Hacıbektaş', 'Kozaklı', 'Merkez', 'Ürgüp'],
+    nigde: ['Altunhisar', 'Bor', 'Çamardı', 'Çiftlik', 'Merkez', 'Ulukışla'],
+    ordu: ['Akkuş', 'Altınordu', 'Aybastı', 'Çamaş', 'Çatalpınar', 'Çaybaşı', 'Fatsa', 'Gölköy', 'Gülyalı', 'Gürgentepe', 'İkizce', 'Kabadüz', 'Kabataş', 'Korgan', 'Kumru', 'Mesudiye', 'Perşembe', 'Ulubey', 'Ünye'],
+    osmaniye: ['Bahçe', 'Düziçi', 'Hasanbeyli', 'Kadirli', 'Merkez', 'Sumbas', 'Toprakkale'],
+    rize: ['Ardeşen', 'Çamlıhemşin', 'Çayeli', 'Derepazarı', 'Fındıklı', 'Güneysu', 'Hemşin', 'İkizdere', 'İyidere', 'Kalkandere', 'Merkez', 'Pazar'],
+    sakarya: ['Adapazarı', 'Akyazı', 'Arifiye', 'Erenler', 'Ferizli', 'Geyve', 'Hendek', 'Karapürçek', 'Karasu', 'Kaynarca', 'Kocaali', 'Pamukova', 'Sapanca', 'Serdivan', 'Söğütlü', 'Taraklı'],
+    samsun: ['Alaçam', 'Asarcık', 'Atakum', 'Ayvacık', 'Bafra', 'Canik', 'Çarşamba', 'Havza', 'İlkadım', 'Kavak', 'Ladik', 'Ondokuzmayıs', 'Salıpazarı', 'Tekkeköy', 'Terme', 'Vezirköprü', 'Yakakent'],
+    sanliurfa: ['Akçakale', 'Birecik', 'Bozova', 'Ceylanpınar', 'Eyyübiye', 'Halfeti', 'Haliliye', 'Harran', 'Hilvan', 'Karaköprü', 'Siverek', 'Suruç', 'Viranşehir'],
+    siirt: ['Baykan', 'Eruh', 'Kurtalan', 'Merkez', 'Pervari', 'Şirvan', 'Tillo'],
+    sinop: ['Ayancık', 'Boyabat', 'Dikmen', 'Durağan', 'Erfelek', 'Gerze', 'Merkez', 'Saraydüzü', 'Türkeli'],
+    sirnak: ['Beytüşşebap', 'Cizre', 'Güçlükonak', 'İdil', 'Merkez', 'Silopi', 'Uludere'],
+    sivas: ['Akıncılar', 'Altınyayla', 'Divriği', 'Doğanşar', 'Gemerek', 'Gölova', 'Gürün', 'Hafik', 'İmranlı', 'Kangal', 'Koyulhisar', 'Merkez', 'Suşehri', 'Şarkışla', 'Ulaş', 'Yıldızeli', 'Zara'],
+    tekirdag: ['Çerkezköy', 'Çorlu', 'Ergene', 'Hayrabolu', 'Kapaklı', 'Malkara', 'Marmaraereğlisi', 'Muratlı', 'Saray', 'Süleymanpaşa', 'Şarköy'],
+    tokat: ['Almus', 'Artova', 'Başçiftlik', 'Erbaa', 'Merkez', 'Niksar', 'Pazar', 'Reşadiye', 'Sulusaray', 'Turhal', 'Yeşilyurt', 'Zile'],
+    trabzon: ['Akçaabat', 'Araklı', 'Arsin', 'Beşikdüzü', 'Çarşıbaşı', 'Çaykara', 'Dernekpazarı', 'Düzköy', 'Hayrat', 'Köprübaşı', 'Maçka', 'Of', 'Ortahisar', 'Şalpazarı', 'Sürmene', 'Tonya', 'Vakfıkebir', 'Yomra'],
+    tunceli: ['Çemişgezek', 'Hozat', 'Mazgirt', 'Merkez', 'Nazımiye', 'Ovacık', 'Pertek', 'Pülümür'],
+    usak: ['Banaz', 'Eşme', 'Karahallı', 'Merkez', 'Sivaslı', 'Ulubey'],
+    van: ['Bahçesaray', 'Başkale', 'Çaldıran', 'Çatak', 'Edremit', 'Erciş', 'Gevaş', 'Gürpınar', 'İpekyolu', 'Muradiye', 'Özalp', 'Saray', 'Tuşba'],
+    yalova: ['Altınova', 'Armutlu', 'Çınarcık', 'Çiftlikköy', 'Merkez', 'Termal'],
+    yozgat: ['Akdağmadeni', 'Aydıncık', 'Boğazlıyan', 'Çandır', 'Çayıralan', 'Çekerek', 'Kadışehri', 'Merkez', 'Saraykent', 'Sarıkaya', 'Sorgun', 'Şefaatli', 'Yenifakılı', 'Yerköy'],
+    zonguldak: ['Alaplı', 'Çaycuma', 'Devrek', 'Ereğli', 'Gökçebey', 'Kilimli', 'Kozlu', 'Merkez']
 };
 
 function updateIlceler() {
@@ -989,7 +989,7 @@ function updateIlceler() {
     const ilceSelect = document.getElementById('ilce-select');
     const selectedIl = ilSelect.value;
     
-    ilceSelect.innerHTML = '<option value="">�l�e Se�iniz</option>';
+    ilceSelect.innerHTML = '<option value="">İlçe Seçiniz</option>';
     
     if (selectedIl && ilceler[selectedIl]) {
         ilceler[selectedIl].forEach(ilce => {
@@ -1005,27 +1005,27 @@ window.onload = function() {
     loadSavedImages();
     loadSavedData();
     
-    // 1 saniye sonra tekrar y�kle (emin olmak i�in)
+    // 1 saniye sonra tekrar yükle (emin olmak için)
     setTimeout(function() {
         loadSavedData();
     }, 1000);
 };
 
-var pageId = getAdminKey('admin_1_sayfa'); // �R�N-1'�N SAYFA VER�LER�
+var pageId = getAdminKey('admin_1_sayfa'); // ÜRÜN-1'İN SAYFA VERİLERİ
 
-// ?? Migration: Eski format� yeni formata ta�� (bir kez �al���r)
+// 🔄 Migration: Eski formatı yeni formata taşı (bir kez çalışır)
 (function() {
     var migrationKey = '__migration_v1_done';
     if (!localStorage.getItem(migrationKey)) {
-        console.log('?? Migration ba�l�yor: Eski veriler yeni formata ta��n�yor...');
+        console.log('🔄 Migration başlıyor: Eski veriler yeni formata taşınıyor...');
         var siteId = localStorage.getItem('__SITE_ID__') || 'default';
         
-        // T�m sayfa numaralar� i�in
+        // Tüm sayfa numaraları için
         for (var pageNum = 1; pageNum <= 10; pageNum++) {
             var oldPrefix = 'sayfa' + pageNum;
             var newPrefix = siteId + '_sayfa' + pageNum;
             
-            // G�rseller i�in
+            // Görseller için
             for (var imgNum = 1; imgNum <= 15; imgNum++) {
                 var oldKey = oldPrefix + '_topImg' + imgNum;
                 var oldUrlKey = oldPrefix + '_topImg' + imgNum + '_url';
@@ -1037,9 +1037,9 @@ var pageId = getAdminKey('admin_1_sayfa'); // �R�N-1'�N SAYFA VER�LER�
                 if (oldData && !localStorage.getItem(newKey)) {
                     try {
                         localStorage.setItem(newKey, oldData);
-                        console.log('? Ta��nd�: ' + oldKey + ' � ' + newKey);
+                        console.log('✅ Taşındı: ' + oldKey + ' → ' + newKey);
                     } catch(e) {
-                        console.warn('?? Ta��namad�: ' + oldKey);
+                        console.warn('⚠️ Taşınamadı: ' + oldKey);
                     }
                 }
                 
@@ -1047,9 +1047,9 @@ var pageId = getAdminKey('admin_1_sayfa'); // �R�N-1'�N SAYFA VER�LER�
                 if (oldUrlData && !localStorage.getItem(newUrlKey)) {
                     try {
                         localStorage.setItem(newUrlKey, oldUrlData);
-                        console.log('? Ta��nd�: ' + oldUrlKey + ' � ' + newUrlKey);
+                        console.log('✅ Taşındı: ' + oldUrlKey + ' → ' + newUrlKey);
                     } catch(e) {
-                        console.warn('?? Ta��namad�: ' + oldUrlKey);
+                        console.warn('⚠️ Taşınamadı: ' + oldUrlKey);
                     }
                 }
             }
@@ -1064,7 +1064,7 @@ var pageId = getAdminKey('admin_1_sayfa'); // �R�N-1'�N SAYFA VER�LER�
             if (oldBottomData && !localStorage.getItem(newBottomKey)) {
                 try {
                     localStorage.setItem(newBottomKey, oldBottomData);
-                    console.log('? Ta��nd�: ' + oldBottomKey + ' � ' + newBottomKey);
+                    console.log('✅ Taşındı: ' + oldBottomKey + ' → ' + newBottomKey);
                 } catch(e) {}
             }
             
@@ -1072,34 +1072,34 @@ var pageId = getAdminKey('admin_1_sayfa'); // �R�N-1'�N SAYFA VER�LER�
             if (oldBottomUrlData && !localStorage.getItem(newBottomUrlKey)) {
                 try {
                     localStorage.setItem(newBottomUrlKey, oldBottomUrlData);
-                    console.log('? Ta��nd�: ' + oldBottomUrlKey + ' � ' + newBottomUrlKey);
+                    console.log('✅ Taşındı: ' + oldBottomUrlKey + ' → ' + newBottomUrlKey);
                 } catch(e) {}
             }
         }
         
         localStorage.setItem(migrationKey, 'true');
-        console.log('? Migration tamamland�!');
+        console.log('✅ Migration tamamlandı!');
     }
 })();
 
 function loadSavedImages() {
-    console.log('?? URUNX-1: loadSavedImages ba�lad�');
-    console.log('?? PageId: ' + pageId);
+    console.log('🔍 URUNX-1: loadSavedImages başladı');
+    console.log('🔑 PageId: ' + pageId);
     
-    // localStorage'dan oku (h�zl�)
+    // localStorage'dan oku (hızlı)
     for (var i = 1; i <= 15; i++) {
         var storageKey = pageId + '_topImg' + i;
         var urlKey = pageId + '_topImg' + i + '_url';
         
-        // �nce yeni format (site ID'li) key'i dene
+        // Önce yeni format (site ID'li) key'i dene
         var saved = localStorage.getItem(storageKey);
         
-        // E�er yeni format yoksa, _url key'ini dene
+        // Eğer yeni format yoksa, _url key'ini dene
         if (!saved) {
             saved = localStorage.getItem(urlKey);
         }
         
-        // E�er hala yoksa, eski format (site ID'siz) key'i dene
+        // Eğer hala yoksa, eski format (site ID'siz) key'i dene
         if (!saved) {
             var oldKey = 'sayfa1_topImg' + i;
             saved = localStorage.getItem(oldKey);
@@ -1108,25 +1108,25 @@ function loadSavedImages() {
             }
         }
         
-        console.log('?? G�rsel ' + i + ': Key=' + storageKey + ', Var m�? ' + (saved ? 'EVET (' + Math.round(saved.length/1024) + ' KB)' : 'HAYIR'));
+        console.log('📸 Görsel ' + i + ': Key=' + storageKey + ', Var mı? ' + (saved ? 'EVET (' + Math.round(saved.length/1024) + ' KB)' : 'HAYIR'));
         if (saved) {
-            // URL ise cache bypass i�in timestamp ekle
+            // URL ise cache bypass için timestamp ekle
             if (saved.startsWith('http')) {
                 var separator = saved.indexOf('?') > -1 ? '&' : '?';
                 document.getElementById('topImage' + i).src = saved + separator + 'v=' + Date.now();
             } else {
                 document.getElementById('topImage' + i).src = saved;
             }
-            console.log('? G�rsel ' + i + ' y�klendi');
+            console.log('✅ Görsel ' + i + ' yüklendi');
         }
     }
     
-    // Bottom image i�in de ayn� mant�k
+    // Bottom image için de aynı mantık
     var bottomSaved = localStorage.getItem(pageId + '_bottomImg1');
     if (!bottomSaved) {
         bottomSaved = localStorage.getItem(pageId + '_bottomImg1_url');
     }
-    // Eski format kontrol�
+    // Eski format kontrolü
     if (!bottomSaved) {
         bottomSaved = localStorage.getItem('sayfa1_bottomImg1');
         if (!bottomSaved) {
@@ -1134,45 +1134,45 @@ function loadSavedImages() {
         }
     }
     if (bottomSaved) {
-        // URL ise cache bypass i�in timestamp ekle
+        // URL ise cache bypass için timestamp ekle
         if (bottomSaved.startsWith('http')) {
             var separator = bottomSaved.indexOf('?') > -1 ? '&' : '?';
             document.getElementById('bottomImage').src = bottomSaved + separator + 'v=' + Date.now();
         } else {
             document.getElementById('bottomImage').src = bottomSaved;
         }
-        console.log('? Bottom image y�klendi');
+        console.log('✅ Bottom image yüklendi');
     }
     
-    // Arka planda Firebase'den de kontrol et (g�ncellemeler i�in)
-    // localStorage'da veri YOKSA veya BO� �SE Firebase'den y�kle
+    // Arka planda Firebase'den de kontrol et (güncellemeler için)
+    // localStorage'da veri YOKSA veya BOŞ İSE Firebase'den yükle
     if (typeof database !== 'undefined' && database) {
         database.ref(SITE_ID + '/urunAyarlari/urun1/gorseller').once('value', function(snapshot) {
             var gorseller = snapshot.val() || {};
             var updated = false;
             for (var i = 1; i <= 15; i++) {
                 var saved = localStorage.getItem(pageId + '_topImg' + i);
-                // localStorage'da veri YOKSA veya BO� �SE (0 KB) Firebase'den y�kle
+                // localStorage'da veri YOKSA veya BOŞ İSE (0 KB) Firebase'den yükle
                 if ((!saved || saved.length < 100) && gorseller['topImg' + i]) {
                     localStorage.setItem(pageId + '_topImg' + i, gorseller['topImg' + i]);
                     var gorselUrl = gorseller['topImg' + i];
-                    // URL ise cache bypass i�in timestamp ekle
+                    // URL ise cache bypass için timestamp ekle
                     if (gorselUrl.startsWith('http')) {
                         var separator = gorselUrl.indexOf('?') > -1 ? '&' : '?';
                         document.getElementById('topImage' + i).src = gorselUrl + separator + 'v=' + Date.now();
                     } else {
                         document.getElementById('topImage' + i).src = gorselUrl;
                     }
-                    console.log('?? G�rsel ' + i + ' Firebase\'den g�ncellendi');
+                    console.log('🔄 Görsel ' + i + ' Firebase\'den güncellendi');
                     updated = true;
                 }
             }
             var bottomSaved = localStorage.getItem(pageId + '_bottomImg1');
-            // localStorage'da veri YOKSA veya BO� �SE Firebase'den y�kle
+            // localStorage'da veri YOKSA veya BOŞ İSE Firebase'den yükle
             if ((!bottomSaved || bottomSaved.length < 100) && gorseller['bottomImg1']) {
                 localStorage.setItem(pageId + '_bottomImg1', gorseller['bottomImg1']);
                 document.getElementById('bottomImage').src = gorseller['bottomImg1'];
-                console.log('?? Bottom image Firebase\'den g�ncellendi');
+                console.log('🔄 Bottom image Firebase\'den güncellendi');
                 updated = true;
             }
         });
@@ -1180,7 +1180,7 @@ function loadSavedImages() {
 }
 
 function loadSavedData() {
-    // SADECE localStorage'dan y�kle - Firebase'i devre d��� b�rak
+    // SADECE localStorage'dan yükle - Firebase'i devre dışı bırak
     for(var i = 1; i <= 8; i++) {
         var savedIsim = localStorage.getItem(getAdminKey('urun' + i + '_isim'));
         
@@ -1214,7 +1214,7 @@ function loadSavedData() {
     }
     ilkGoruneniSec();
     
-    // Firebase k�sm� kald�r�ld� - sadece localStorage kullan
+    // Firebase kısmı kaldırıldı - sadece localStorage kullan
 }
 
 function ilkGoruneniSec() {
@@ -1231,14 +1231,14 @@ function ilkGoruneniSec() {
 }
 
 function scrollToForm() {
-    // Formu g�ster
+    // Formu göster
     var formWrapper = document.querySelector('.formWrapper');
     if(formWrapper) {
         formWrapper.style.display = 'flex';
         formWrapper.style.opacity = '1';
     }
     
-    // Form'a kayd�r
+    // Form'a kaydır
     const formLabel = document.querySelector('.formLabel');
     if (formLabel) {
         setTimeout(function() {
@@ -1250,12 +1250,12 @@ function scrollToForm() {
 function validateForm() {
     let isValid = true;
     
-    // Ad Soyad kontrol�
+    // Ad Soyad kontrolü
     const ad = document.getElementById('adInput').value.trim();
     const adError = document.getElementById('adError');
     const adInput = document.getElementById('adInput');
     if (ad === '') {
-        adError.textContent = 'L�tfen ad�n�z� ve soyad�n�z� girin';
+        adError.textContent = 'Lütfen adınızı ve soyadınızı girin';
         adError.style.display = 'block';
         adInput.classList.add('error');
         isValid = false;
@@ -1264,12 +1264,12 @@ function validateForm() {
         adInput.classList.remove('error');
     }
     
-    // Telefon kontrol�
+    // Telefon kontrolü
     const telefon = document.getElementById('telefonInput').value.trim();
     const telefonError = document.getElementById('telefonError');
     const telefonInput = document.getElementById('telefonInput');
     if (telefon === '' || telefon.length !== 10) {
-        telefonError.textContent = 'L�tfen 10 haneli telefon numaras� girin';
+        telefonError.textContent = 'Lütfen 10 haneli telefon numarası girin';
         telefonError.style.display = 'block';
         telefonInput.classList.add('error');
         isValid = false;
@@ -1278,12 +1278,12 @@ function validateForm() {
         telefonInput.classList.remove('error');
     }
     
-    // �l kontrol�
+    // İl kontrolü
     const il = document.getElementById('il-select').value;
     const ilError = document.getElementById('ilError');
     const ilSelect = document.getElementById('il-select');
     if (il === '') {
-        ilError.textContent = 'L�tfen bir �ehir se�in';
+        ilError.textContent = 'Lütfen bir şehir seçin';
         ilError.style.display = 'block';
         ilSelect.classList.add('error');
         isValid = false;
@@ -1292,12 +1292,12 @@ function validateForm() {
         ilSelect.classList.remove('error');
     }
     
-    // �l�e kontrol�
+    // İlçe kontrolü
     const ilce = document.getElementById('ilce-select').value;
     const ilceError = document.getElementById('ilceError');
     const ilceSelect = document.getElementById('ilce-select');
     if (ilce === '') {
-        ilceError.textContent = 'L�tfen bir il�e se�in';
+        ilceError.textContent = 'Lütfen bir ilçe seçin';
         ilceError.style.display = 'block';
         ilceSelect.classList.add('error');
         isValid = false;
@@ -1306,12 +1306,12 @@ function validateForm() {
         ilceSelect.classList.remove('error');
     }
     
-    // Adres kontrol�
+    // Adres kontrolü
     const adres = document.getElementById('adresInput').value.trim();
     const adresError = document.getElementById('adresError');
     const adresInput = document.getElementById('adresInput');
     if (adres === '') {
-        adresError.textContent = 'L�tfen a��k adresinizi girin';
+        adresError.textContent = 'Lütfen açık adresinizi girin';
         adresError.style.display = 'block';
         adresInput.classList.add('error');
         isValid = false;
@@ -1321,7 +1321,7 @@ function validateForm() {
     }
     
     if (isValid) {
-        // SPAM KORUMASI: Ayn� telefon g�nde max 5 sipari�
+        // SPAM KORUMASI: Aynı telefon günde max 5 sipariş
         var bugun = new Date();
         var bugunStr = bugun.getDate().toString().padStart(2,'0') + '.' + (bugun.getMonth()+1).toString().padStart(2,'0') + '.' + bugun.getFullYear();
         
@@ -1342,21 +1342,21 @@ function validateForm() {
                 return;
             }
             
-            // Sipari�i Firebase'e kaydet
+            // Siparişi Firebase'e kaydet
             var tarih = new Date();
             var tarihStr = tarih.getDate().toString().padStart(2,'0') + '.' + (tarih.getMonth()+1).toString().padStart(2,'0') + '.' + tarih.getFullYear();
             var secim = document.querySelector('input[name="urunSecim"]:checked').value;
             var secimNum = parseInt(secim);
-            var odemeYontemi = document.querySelector('input[name="odeme"]:checked').value === 'nakit' ? 'Kap�da Nakit' : 'Kap�da Kredi Kart�';
+            var odemeYontemi = document.querySelector('input[name="odeme"]:checked').value === 'nakit' ? 'Kapıda Nakit' : 'Kapıda Kredi Kartı';
             
-            // 8 adet i�in dinamik tutar, isim ve adet
+            // 8 adet için dinamik tutar, isim ve adet
             var tutar = document.getElementById('urun' + secimNum + 'FiyatDisplay').textContent;
             var adet = secimNum + ' Adet';
             var urunAdi = localStorage.getItem(getAdminKey('genel_urun_adi')) || document.getElementById('urun' + secimNum + 'IsimDisplay').textContent;
             var tutarSayisal = parseInt(tutar.replace(/[^0-9]/g,'')) || 0;
             var birimFiyat = Math.round(tutarSayisal / secimNum) + 'TL';
             
-            // Renk ve beden bilgilerini al - g�r�n�r dropdown'lardan E�LE�T�R�LM��
+            // Renk ve beden bilgilerini al - görünür dropdown'lardan EŞLEŞTİRİLMİŞ
             var renkler = [];
             var bedenler = [];
             var eslestirilmis = [];
@@ -1371,7 +1371,7 @@ function validateForm() {
                 if (select.offsetParent !== null) gorunurBedenler.push(select.value || '');
             });
             
-            // Her adet i�in renk-beden e�le�tir
+            // Her adet için renk-beden eşleştir
             var maxLen = Math.max(gorunurRenkler.length, gorunurBedenler.length);
             for (var idx = 0; idx < maxLen; idx++) {
                 var r = gorunurRenkler[idx] || '';
@@ -1414,11 +1414,11 @@ function validateForm() {
             
             database.ref(SITE_ID + '/siparisler').push(yeniSiparis);
             
-            // Te�ekk�r kart�n� hemen g�ster (webhook'u bekleme)
+            // Teşekkür kartını hemen göster (webhook'u bekleme)
             showSuccessModal();
             
             // ========== MAKE.COM WEBHOOK ==========
-            // Kargo �l��lerini Firebase'den al
+            // Kargo ölçülerini Firebase'den al
             database.ref(SITE_ID + '/kargoOlculeri/forum' + yeniSiparis.forum).once('value', function(kargoSnapshot) {
                 var kargoOlculeri = kargoSnapshot.val() || {
                     agirlik: 0,
@@ -1427,13 +1427,13 @@ function validateForm() {
                     yukseklik: 0
                 };
                 
-                // Ad ve soyad� ay�r
+                // Ad ve soyadı ayır
                 var fullName = yeniSiparis.musteri || '';
                 var nameParts = fullName.trim().split(' ');
                 var firstName = nameParts[0] || '';
-                var lastName = nameParts.slice(1).join(' ') || firstName; // E�er soyad yoksa, ad� tekrarla
+                var lastName = nameParts.slice(1).join(' ') || firstName; // Eğer soyad yoksa, adı tekrarla
                 
-                // �l�eyi adresin sonuna ekle (Shopify i�in)
+                // İlçeyi adresin sonuna ekle (Shopify için)
                 var district = yeniSiparis.ilce || '';
                 var baseAddress = yeniSiparis.adres || '';
                 var fullAddress = district ? (baseAddress + ', ' + district) : baseAddress;
@@ -1443,20 +1443,20 @@ function validateForm() {
                 var selectedIlce = document.getElementById('ilce-select').options[document.getElementById('ilce-select').selectedIndex].text;
                 var postalCode = getPostalCode(selectedIl, selectedIlce);
                 
-                // Shopify uyumlu fiyat format� (1.999TL � 1999.00)
+                // Shopify uyumlu fiyat formatı (1.999TL → 1999.00)
                 function formatPriceForShopify(priceStr) {
                     if (!priceStr) return "0.00";
-                    // "1.999TL" � "1999" � 1999.00 (Shopify TRY format�)
+                    // "1.999TL" → "1999" → 1999.00 (Shopify TRY formatı)
                     var numericPrice = parseFloat(priceStr.replace(/[^0-9]/g, '')) || 0;
                     return numericPrice.toFixed(2);
                 }
                 var shopifyPrice = formatPriceForShopify(yeniSiparis.tutar);
                 
-                // Birim fiyat hesapla (toplam fiyat � adet) - Ondal�k hata d�zeltmesi
+                // Birim fiyat hesapla (toplam fiyat ÷ adet) - Ondalık hata düzeltmesi
                 var birimFiyatHam = parseFloat(shopifyPrice) / secimNum;
                 var birimFiyat = (Math.round(birimFiyatHam * 100) / 100).toFixed(2);
                 
-                // Webhook verisi haz�rla
+                // Webhook verisi hazırla
                 var webhookData = {
                     first_name: firstName,
                     last_name: lastName,
@@ -1468,7 +1468,7 @@ function validateForm() {
                     product_name: yeniSiparis.urunAdi || '',
                     quantity: secimNum,
                     price: birimFiyat,
-                    tags: secimNum + " �r�n",
+                    tags: secimNum + " Ürün",
                     payment_type: yeniSiparis.odemeYontemi,
                     forum: yeniSiparis.forum || 1,
                     color: yeniSiparis.renk || '-',
@@ -1481,14 +1481,14 @@ function validateForm() {
                     tax_rate: yeniSiparis.kdvOrani || '20'
                 };
                 
-                console.log('?? Webhook verisi g�nderiliyor:', JSON.stringify(webhookData, null, 2));
-                console.log('?? Ad ayr�m� - Tam isim:', fullName);
-                console.log('?? Ad ayr�m� - �lk ad:', firstName);
-                console.log('?? Ad ayr�m� - Soyad:', lastName);
-                console.log('??? G�rsel URL:', document.getElementById('topImage1').src);
-                console.log('??? G�rsel element:', document.getElementById('topImage1'));
+                console.log('🚀 Webhook verisi gönderiliyor:', JSON.stringify(webhookData, null, 2));
+                console.log('👤 Ad ayrımı - Tam isim:', fullName);
+                console.log('👤 Ad ayrımı - İlk ad:', firstName);
+                console.log('👤 Ad ayrımı - Soyad:', lastName);
+                console.log('🖼️ Görsel URL:', document.getElementById('topImage1').src);
+                console.log('🖼️ Görsel element:', document.getElementById('topImage1'));
                 
-                // Zapier webhook'a g�nder
+                // Zapier webhook'a gönder
                 fetch('https://hooks.zapier.com/hooks/catch/27514482/4y644wa/', {
                     method: 'POST',
                     mode: 'no-cors',
@@ -1499,13 +1499,13 @@ function validateForm() {
                         return encodeURIComponent(key) + '=' + encodeURIComponent(webhookData[key]);
                     }).join('&')
                 }).then(function(response) {
-                    console.log('? Webhook g�nderildi');
-                    console.log('?? Kargo �l��leri:', kargoOlculeri);
+                    console.log('✅ Webhook gönderildi');
+                    console.log('📦 Kargo ölçüleri:', kargoOlculeri);
                 }).catch(function(error) {
-                    console.log('? Webhook hatas�:', error);
+                    console.log('❌ Webhook hatası:', error);
                 });
                 
-                // ========== ANLIK �STAT�ST�K G�NCELLE ==========
+                // ========== ANLIK İSTATİSTİK GÜNCELLE ==========
                 var tutarSayi = parseInt(tutar.replace(/[^0-9]/g, '')) || 0;
                 var bugunTarih = tarihStr;
                 
@@ -1531,10 +1531,10 @@ function validateForm() {
                     }
                 });
                 
-                // Aktivite kayd�
-                if(typeof aktiviteKaydet === 'function') aktiviteKaydet('siparis', 'Yeni sipari�: ' + ad + ' - ' + tutar);
+                // Aktivite kaydı
+                if(typeof aktiviteKaydet === 'function') aktiviteKaydet('siparis', 'Yeni sipariş: ' + ad + ' - ' + tutar);
                 
-                // Stok d���r - Forum 1
+                // Stok düşür - Forum 1
                 var adetSayi = secimNum;
                 database.ref(SITE_ID + '/forumStoklar/forum1').once('value', function(snapshot){
                     var mevcutStok = snapshot.val() || 0;
@@ -1543,7 +1543,7 @@ function validateForm() {
                     database.ref(SITE_ID + '/forumStoklar/forum1').set(yeniStok);
                 });
                 
-                // Pixel eventleri tetikle (sipari� ba�ar�yla kaydedildi)
+                // Pixel eventleri tetikle (sipariş başarıyla kaydedildi)
                 var fiyatNumeric = parseFloat(tutar.replace(/[^0-9]/g, '')) || 0;
                 
                 // Meta Pixel Lead eventi
@@ -1574,17 +1574,17 @@ function showSuccessModal() {
 }
 
 function createConfetti() {
-    // Confetti devre d��� - k���k modal i�in gereksiz
+    // Confetti devre dışı - küçük modal için gereksiz
 }
 </script>
 
 
 
-<!-- CANLI Z�YARET�� TAK�P -->
+<!-- CANLI ZİYARETÇİ TAKİP -->
 <script>
-// Firebase y�klendi�inde otomatik �al��acak
+// Firebase yüklendiğinde otomatik çalışacak
 (function(){
-  // Firebase y�klenene kadar bekle
+  // Firebase yüklenene kadar bekle
   var checkFirebase = setInterval(function(){
     if(typeof database !== 'undefined' && database) {
       clearInterval(checkFirebase);
@@ -1593,7 +1593,7 @@ function createConfetti() {
   }, 100);
   
   function initZiyaretciTakip() {
-  var sayfaNo = 1; // Bu de�er kopyalan�rken de�i�ecek
+  var sayfaNo = 1; // Bu değer kopyalanırken değişecek
   var visitorId = localStorage.getItem('visitor_id');
   if(!visitorId) {
     visitorId = 'v_' + Date.now() + '_' + Math.random().toString(36).substr(2,9);
@@ -1633,7 +1633,7 @@ function createConfetti() {
   }
   
   updatePresence();
-  setInterval(updatePresence, 5000); // 5 saniyede bir g�ncelle
+  setInterval(updatePresence, 5000); // 5 saniyede bir güncelle
   
   window.addEventListener('beforeunload', function() { visitorRef.remove(); });
   document.addEventListener('visibilitychange', function() {
@@ -1644,21 +1644,21 @@ function createConfetti() {
   var bugun = new Date().toLocaleDateString('tr-TR');
   var bugunPadded = new Date().getDate().toString().padStart(2,'0') + '.' + (new Date().getMonth()+1).toString().padStart(2,'0') + '.' + new Date().getFullYear();
   var ziyaretKey = visitorId + '_' + bugun.replace(/\./g, '-') + '_sayfa' + sayfaNo;
-  console.log('?? Ziyaret kontrol� ba�l�yor... Key:', ziyaretKey);
+  console.log('🔍 Ziyaret kontrolü başlıyor... Key:', ziyaretKey);
   database.ref(SITE_ID + '/ziyaretciler/' + ziyaretKey).once('value', function(snapshot) {
-    console.log('?? Ziyaret var m�:', snapshot.exists());
+    console.log('🔍 Ziyaret var mı:', snapshot.exists());
     if(!snapshot.exists()) {
-      console.log('? YEN� Z�YARET - Kaydediliyor...');
+      console.log('✅ YENİ ZİYARET - Kaydediliyor...');
       database.ref(SITE_ID + '/ziyaretciler/' + ziyaretKey).set({
         visitorId: visitorId, tarih: bugunPadded, sayfa: sayfaNo, timestamp: Date.now(),
         cihaz: cihaz, trafikKaynagi: trafikKaynagi, sehir: ''
       });
       
-      // ========== ANLIK Z�YARET�� �STAT�ST��� ==========
+      // ========== ANLIK ZİYARETÇİ İSTATİSTİĞİ ==========
       database.ref(SITE_ID + '/istatistikler').once('value', function(istatSnap) {
         var istat = istatSnap.val() || {};
         var kayitliTarih = istat.bugunTarih || '';
-        console.log('?? �statistik g�ncelleniyor... urun1Ziyaret:', (istat.urun1Ziyaret || 0) + 1);
+        console.log('📊 İstatistik güncelleniyor... urun1Ziyaret:', (istat.urun1Ziyaret || 0) + 1);
         
         if(kayitliTarih !== bugunPadded) {
           database.ref(SITE_ID + '/istatistikler').update({
@@ -1668,18 +1668,18 @@ function createConfetti() {
             bugunCiro: 0,
             toplamZiyaretci: (istat.toplamZiyaretci || 0) + 1,
             urun1Ziyaret: (istat.urun1Ziyaret || 0) + 1
-          }).then(function() { console.log('? urun1Ziyaret g�ncellendi!'); });
+          }).then(function() { console.log('✅ urun1Ziyaret güncellendi!'); });
         } else {
           database.ref(SITE_ID + '/istatistikler').update({
             bugunZiyaretci: (istat.bugunZiyaretci || 0) + 1,
             toplamZiyaretci: (istat.toplamZiyaretci || 0) + 1,
             urun1Ziyaret: (istat.urun1Ziyaret || 0) + 1
-          }).then(function() { console.log('? urun1Ziyaret g�ncellendi!'); });
+          }).then(function() { console.log('✅ urun1Ziyaret güncellendi!'); });
         }
       });
       // ================================================
     } else {
-      console.log('?? Bu ziyaret�i bug�n zaten bu sayfay� ziyaret etmi�');
+      console.log('⚠️ Bu ziyaretçi bugün zaten bu sayfayı ziyaret etmiş');
     }
   });
   
@@ -1689,7 +1689,7 @@ function createConfetti() {
   window.aktiviteKaydet = function(tip, mesaj) {
     database.ref(SITE_ID + '/aktiviteler').push({ tip: tip, mesaj: mesaj, sayfa: sayfaNo, tarih: bugun, timestamp: Date.now() });
   };
-  aktiviteKaydet('ziyaret', '�r�n ' + sayfaNo + ' sayfas� g�r�nt�lendi');
+  aktiviteKaydet('ziyaret', 'Ürün ' + sayfaNo + ' sayfası görüntülendi');
   }
 })();
 </script>
@@ -1699,8 +1699,8 @@ document.addEventListener('DOMContentLoaded', function(){
   if(siparisBtn){
     var orig = siparisBtn.onclick;
     siparisBtn.onclick = function(e){
-      if(typeof tiklamaKaydet === 'function') tiklamaKaydet('siparis_btn', '�r�n 1');
-      if(typeof aktiviteKaydet === 'function') aktiviteKaydet('tiklama', 'Sipari� butonu t�kland� - �r�n 1');
+      if(typeof tiklamaKaydet === 'function') tiklamaKaydet('siparis_btn', 'Ürün 1');
+      if(typeof aktiviteKaydet === 'function') aktiviteKaydet('tiklama', 'Sipariş butonu tıklandı - Ürün 1');
       if(orig) return orig.call(this, e);
     };
   }
@@ -1718,7 +1718,7 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 
 <script>
-// G�rsellerin y�klenmesini bekle, sonra formu g�ster
+// Görsellerin yüklenmesini bekle, sonra formu göster
 var gorselSayisi = 15;
 var yuklenenGorsel = 0;
 
@@ -1732,11 +1732,11 @@ function gorselYuklendi() {
   }
 }
 
-// G�rselleri y�kle - Firebase �ncelikli
+// Görselleri yükle - Firebase öncelikli
 function gorselleriYukle() {
   var pageId = getAdminKey('admin_1_sayfa');
   
-  // �nce localStorage'dan h�zl� y�kle (anl�k g�r�nt� i�in)
+  // Önce localStorage'dan hızlı yükle (anlık görüntü için)
   for(var i = 1; i <= 15; i++) {
     var img = document.getElementById('topImage' + i);
     var saved = localStorage.getItem(pageId + '_topImg' + i);
@@ -1753,7 +1753,7 @@ function gorselleriYukle() {
   if (!bottomSaved) bottomSaved = localStorage.getItem('sayfa1_bottomImg1_url');
   if(bottomImg && bottomSaved) bottomImg.src = bottomSaved;
   
-  // Firebase'den g�ncel g�rselleri �ek ve localStorage'� g�ncelle
+  // Firebase'den güncel görselleri çek ve localStorage'ı güncelle
   if (typeof database !== 'undefined' && database) {
     database.ref(SITE_ID + '/urunAyarlari/urun1/gorseller').once('value', function(snapshot) {
       var gorseller = snapshot.val() || {};
@@ -1782,7 +1782,7 @@ function gorselleriYukle() {
           localStorage.removeItem(pageId + '_bottomImg1_url');
         }
       }
-      console.log('? G�rseller Firebase\'den g�ncellendi');
+      console.log('✅ Görseller Firebase\'den güncellendi');
     });
   } else if (typeof onFirebaseReady === 'function') {
     onFirebaseReady(function() {
@@ -1812,16 +1812,16 @@ function gorselleriYukle() {
             localStorage.removeItem(pageId + '_bottomImg1_url');
           }
         }
-        console.log('? G�rseller Firebase\'den g�ncellendi (gecikme)');
+        console.log('✅ Görseller Firebase\'den güncellendi (gecikme)');
       });
     });
   }
 }
 
-// Sayfa y�klenince g�rselleri y�kle
+// Sayfa yüklenince görselleri yükle
 document.addEventListener('DOMContentLoaded', gorselleriYukle);
 
-// Fallback: 1.5 saniye sonra formu g�ster (veya t�m g�rseller y�klendikten sonra)
+// Fallback: 1.5 saniye sonra formu göster (veya tüm görseller yüklendikten sonra)
 var allImagesLoaded = false;
 var formShowTimeout = null;
 
@@ -1832,7 +1832,7 @@ function showForm() {
   }
 }
 
-// T�m g�rsellerin y�klenmesini kontrol et
+// Tüm görsellerin yüklenmesini kontrol et
 function checkAllImagesLoaded() {
   var images = document.querySelectorAll('img[id^="topImage"], img[id="bottomImage"]');
   var loadedCount = 0;
@@ -1850,7 +1850,7 @@ function checkAllImagesLoaded() {
   }
 }
 
-// G�rsellerin y�klenmesini dinle
+// Görsellerin yüklenmesini dinle
 document.querySelectorAll('img[id^="topImage"], img[id="bottomImage"]').forEach(function(img) {
   img.addEventListener('load', checkAllImagesLoaded);
   img.addEventListener('error', checkAllImagesLoaded);
@@ -1864,107 +1864,107 @@ formShowTimeout = setTimeout(function() {
 }, 1500);
 </script>
 
-<!-- F�REBASE SCRIPTLER - SIRAYLA Y�KLEN�YOR -->
+<!-- FİREBASE SCRIPTLER - SIRAYLA YÜKLENİYOR -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <script src="firebase-config.js"></script>
 
 <script>
-// RENK/BEDEN Y�NET�M S�STEM� - M��TER� SAYFASI
+// RENK/BEDEN YÖNETİM SİSTEMİ - MÜŞTERİ SAYFASI
 function loadCustomerRenkBedenSettings() {
-    console.log('?? loadCustomerRenkBedenSettings ba�lad� (urunx-1)');
+    console.log('🚀 loadCustomerRenkBedenSettings başladı (urunx-1)');
     
-    // �nce localStorage'dan h�zl� y�kle (cache)
+    // Önce localStorage'dan hızlı yükle (cache)
     try {
         var aktifRenklerStr = localStorage.getItem(getAdminKey('aktif_renkler'));
         var aktifBedenlerStr = localStorage.getItem(getAdminKey('aktif_bedenler'));
         
-        console.log('?? localStorage\'dan okunan - aktif_renkler:', aktifRenklerStr);
-        console.log('?? localStorage\'dan okunan - aktif_bedenler:', aktifBedenlerStr);
+        console.log('📦 localStorage\'dan okunan - aktif_renkler:', aktifRenklerStr);
+        console.log('📦 localStorage\'dan okunan - aktif_bedenler:', aktifBedenlerStr);
         
         var aktifRenkler = JSON.parse(aktifRenklerStr || '[]');
         var aktifBedenler = JSON.parse(aktifBedenlerStr || '[]');
         
-        console.log('?? Parse edilmi� - Renkler:', aktifRenkler, 'Bedenler:', aktifBedenler);
+        console.log('🎨 Parse edilmiş - Renkler:', aktifRenkler, 'Bedenler:', aktifBedenler);
         
         updateCustomerDropdowns(aktifRenkler, aktifBedenler);
     } catch(e) {
-        console.log('? Renk/Beden ayarlar� y�klenemedi:', e);
+        console.log('❌ Renk/Beden ayarları yüklenemedi:', e);
     }
     
-    // Sonra Firebase'den g�ncel veriyi al (telefon senkronizasyonu i�in)
+    // Sonra Firebase'den güncel veriyi al (telefon senkronizasyonu için)
     if (typeof database !== 'undefined' && database) {
         database.ref(SITE_ID + '/urunAyarlari/urun1/aktifSecenekler').once('value', function(snapshot) {
             var data = snapshot.val();
             if (data && data.aktif_renkler && data.aktif_bedenler) {
-                console.log('?? Firebase\'den al�nan - Renkler:', data.aktif_renkler, 'Bedenler:', data.aktif_bedenler);
+                console.log('🔥 Firebase\'den alınan - Renkler:', data.aktif_renkler, 'Bedenler:', data.aktif_bedenler);
                 
-                // localStorage'� g�ncelle
+                // localStorage'ı güncelle
                 localStorage.setItem(getAdminKey('aktif_renkler'), JSON.stringify(data.aktif_renkler));
                 localStorage.setItem(getAdminKey('aktif_bedenler'), JSON.stringify(data.aktif_bedenler));
                 
-                // Dropdown'lar� g�ncelle
+                // Dropdown'ları güncelle
                 updateCustomerDropdowns(data.aktif_renkler, data.aktif_bedenler);
                 
-                console.log('? Renk/Beden Firebase\'den g�ncellendi ve localStorage\'a kaydedildi');
+                console.log('✅ Renk/Beden Firebase\'den güncellendi ve localStorage\'a kaydedildi');
             }
         });
     }
 }
 
-// �R�N SE�ENEKLER�N� KONTROL ET - M��TER� SAYFASI
+// ÜRÜN SEÇENEKLERİNİ KONTROL ET - MÜŞTERİ SAYFASI
 function loadUrunSecenekleri() {
-    console.log('?? �R�N-1: loadUrunSecenekleri ba�lad�');
+    console.log('🔍 ÜRÜN-1: loadUrunSecenekleri başladı');
     
-    // DEBUG: localStorage de�erlerini kontrol et
+    // DEBUG: localStorage değerlerini kontrol et
     for (var j = 1; j <= 8; j++) {
         var debugKey = getAdminKey('urun' + j + '_aktif');
         var debugValue = localStorage.getItem(debugKey);
-        console.log('?? DEBUG �r�n ' + j + ': Key=' + debugKey + ', Value=' + debugValue);
+        console.log('🔍 DEBUG Ürün ' + j + ': Key=' + debugKey + ', Value=' + debugValue);
     }
     
-    // HER ADET'� KENDI BUTONUNA G�RE KONTROL ET - DO�RU MANTIK
+    // HER ADET'İ KENDI BUTONUNA GÖRE KONTROL ET - DOĞRU MANTIK
     var ilkAktifUrun = null;
     
     for (var i = 1; i <= 8; i++) {
         var key = getAdminKey('urun' + i + '_aktif');
         var aktif = localStorage.getItem(key) !== 'false'; // Default true
         
-        console.log('?? �r�n ' + i + ': Key=' + key + ', Aktif=' + aktif + ', LocalStorage=' + localStorage.getItem(key));
+        console.log('🔍 Ürün ' + i + ': Key=' + key + ', Aktif=' + aktif + ', LocalStorage=' + localStorage.getItem(key));
         
-        // �r�n se�ene�i container'�n� bul
+        // Ürün seçeneği container'ını bul
         var urunRadio = document.querySelector('input[name="urunSecim"][value="' + i + '"]');
         
         if (urunRadio) {
-            console.log('? �r�n ' + i + ' radio bulundu');
-            // En d�� container'� bul (border: 2px solid olan div)
+            console.log('✅ Ürün ' + i + ' radio bulundu');
+            // En dış container'ı bul (border: 2px solid olan div)
             var container = urunRadio.closest('div[style*="border: 2px solid"]');
             
             if (container) {
-                console.log('? �r�n ' + i + ' container bulundu');
+                console.log('✅ Ürün ' + i + ' container bulundu');
                 if (aktif) {
                     container.style.display = 'block';
-                    console.log('? �r�n ' + i + ' g�sterildi (display: block)');
+                    console.log('✅ Ürün ' + i + ' gösterildi (display: block)');
                     if (ilkAktifUrun === null) {
                         ilkAktifUrun = i;
                     }
                 } else {
                     container.style.display = 'none';
-                    console.log('? �r�n ' + i + ' gizlendi (display: none)');
-                    // E�er se�ili olan �r�n kapat�ld�ysa, se�imi kald�r
+                    console.log('❌ Ürün ' + i + ' gizlendi (display: none)');
+                    // Eğer seçili olan ürün kapatıldıysa, seçimi kaldır
                     if (urunRadio.checked) {
                         urunRadio.checked = false;
                     }
                 }
             } else {
-                console.log('? �r�n ' + i + ' container bulunamad�!');
+                console.log('❌ Ürün ' + i + ' container bulunamadı!');
             }
         } else {
-            console.log('? �r�n ' + i + ' radio bulunamad�!');
+            console.log('❌ Ürün ' + i + ' radio bulunamadı!');
         }
     }
     
-    // �lk aktif �r�n� se� (e�er hi�biri se�ili de�ilse)
+    // İlk aktif ürünü seç (eğer hiçbiri seçili değilse)
     if (ilkAktifUrun !== null) {
         var mevcutSecim = document.querySelector('input[name="urunSecim"]:checked');
         if (!mevcutSecim) {
@@ -1978,7 +1978,7 @@ function loadUrunSecenekleri() {
         }
     }
     
-    console.log('? �R�N-1: M��teri �r�n se�enekleri y�klendi, ilk aktif: ' + ilkAktifUrun);
+    console.log('✅ ÜRÜN-1: Müşteri ürün seçenekleri yüklendi, ilk aktif: ' + ilkAktifUrun);
 }
 
 // RENK VE BEDEN DROPDOWN'LARINI KONTROL ET
@@ -1987,9 +1987,9 @@ function loadRenkBedenDropdowns() {
     var herhangiRenkAktif = localStorage.getItem(getAdminKey('renk_ana_aktif')) === 'true';
     var herhangiBedenAktif = localStorage.getItem(getAdminKey('beden_ana_aktif')) === 'true';
     
-    console.log('M��teri - Renk aktif: ' + herhangiRenkAktif + ', Beden aktif: ' + herhangiBedenAktif);
+    console.log('Müşteri - Renk aktif: ' + herhangiRenkAktif + ', Beden aktif: ' + herhangiBedenAktif);
     
-    // Renk dropdown'lar�n� kontrol et
+    // Renk dropdown'larını kontrol et
     var renkDropdowns = document.querySelectorAll('.renk-dropdown');
     renkDropdowns.forEach(function(select) {
         if (herhangiRenkAktif) {
@@ -2003,7 +2003,7 @@ function loadRenkBedenDropdowns() {
         }
     });
     
-    // Beden dropdown'lar�n� kontrol et
+    // Beden dropdown'larını kontrol et
     var bedenDropdowns = document.querySelectorAll('.beden-dropdown');
     bedenDropdowns.forEach(function(select) {
         if (herhangiBedenAktif) {
@@ -2017,20 +2017,20 @@ function loadRenkBedenDropdowns() {
         }
     });
     
-    // Eski y�ntemle de kontrol et (class's�z select'ler)
+    // Eski yöntemle de kontrol et (class'sız select'ler)
     var allSelects = document.querySelectorAll('select');
     allSelects.forEach(function(select) {
         if (!select.classList.contains('renk-dropdown') && !select.classList.contains('beden-dropdown')) {
-            if (select.innerHTML.includes('Renk Se�iniz') || select.innerHTML.includes('? Renk Se�iniz')) {
+            if (select.innerHTML.includes('Renk Seçiniz') || select.innerHTML.includes('● Renk Seçiniz')) {
                 select.style.display = herhangiRenkAktif ? 'block' : 'none';
             }
-            if (select.innerHTML.includes('Beden Se�iniz')) {
+            if (select.innerHTML.includes('Beden Seçiniz')) {
                 select.style.display = herhangiBedenAktif ? 'block' : 'none';
             }
         }
     });
     
-    // Renk, Beden ba�l���n� kontrol et
+    // Renk, Beden başlığını kontrol et
     var allElements = document.querySelectorAll('.product-options > div:first-child');
     allElements.forEach(function(element) {
         if (element.textContent && element.textContent.trim() === 'Renk, Beden') {
@@ -2051,55 +2051,55 @@ function loadRenkBedenDropdowns() {
 }
 
 function updateCustomerDropdowns(aktifRenkler, aktifBedenler) {
-    console.log('?? updateCustomerDropdowns �a�r�ld� (urunx-1) - Renkler:', aktifRenkler, 'Bedenler:', aktifBedenler);
+    console.log('🎨 updateCustomerDropdowns çağrıldı (urunx-1) - Renkler:', aktifRenkler, 'Bedenler:', aktifBedenler);
     
     var renkIsimleri = {
-        'siyah': '? Siyah',
-        'beyaz': '? Beyaz', 
-        'gri': '?? Gri',
-        'lacivert': '?? Lacivert',
-        'kahverengi': '?? Kahverengi',
-        'kirmizi': '?? K�rm�z�',
-        'mavi': '?? Mavi',
-        'yesil': '?? Ye�il',
-        'sari': '?? Sar�',
-        'turuncu': '?? Turuncu',
-        'mor': '?? Mor',
-        'pembe': '?? Pembe',
-        'bordo': '?? Bordo',
-        'haki': '?? Haki',
-        'bej': '?? Bej',
-        'krem': '?? Krem',
-        'fume': '?? F�me',
-        'antrasit': '? Antrasit'
+        'siyah': '⚫ Siyah',
+        'beyaz': '⚪ Beyaz', 
+        'gri': '🔘 Gri',
+        'lacivert': '🔵 Lacivert',
+        'kahverengi': '🤎 Kahverengi',
+        'kirmizi': '🔴 Kırmızı',
+        'mavi': '🔵 Mavi',
+        'yesil': '🟢 Yeşil',
+        'sari': '🟡 Sarı',
+        'turuncu': '🟠 Turuncu',
+        'mor': '🟣 Mor',
+        'pembe': '🩷 Pembe',
+        'bordo': '🔴 Bordo',
+        'haki': '🟫 Haki',
+        'bej': '🟤 Bej',
+        'krem': '🟡 Krem',
+        'fume': '🔘 Füme',
+        'antrasit': '⚫ Antrasit'
     };
     
     var bedenIsimleri = {
-        // Ayakkab� Bedenleri - de�i�mez
+        // Ayakkabı Bedenleri - değişmez
         '35': '35', '36': '36', '37': '37', '38': '38', '39': '39', '40': '40',
         '41': '41', '42': '42', '43': '43', '44': '44', '45': '45', '46': '46',
-        // Giyim Bedenleri - g�ncellendi
-        'xs-dar': 'XS (Dar Kal�p)', 's-kucuk': 'S (K���k)', 'm-orta': 'M (Orta)',
-        'l-buyuk': 'L (B�y�k)', 'xl-cok': 'XL (�ok B�y�k)', 'xxl-ekstra': 'XXL (Ekstra B�y�k)',
-        'XS': 'XS (Yeti�kin)', 'S': 'S (Yeti�kin)', 'M': 'M (Yeti�kin)', 'L': 'L (Yeti�kin)', 'XL': 'XL (Yeti�kin)', 'XXL': 'XXL (Yeti�kin)',
-        // Bebek Bedenleri - de�i�mez
-        '0-3ay': '0�3 Ay', '3-6ay': '3�6 Ay', '6-9ay': '6�9 Ay',
-        '9-12ay': '9�12 Ay', '12-18ay': '12�18 Ay', '18-24ay': '18�24 Ay',
-        // �ocuk Bedenleri - g�ncellendi
-        '2-3yas': '2�3 Ya�', '3-4yas': '3�4 Ya�', '4-5yas': '4�5 Ya�',
-        'cocuk-xs': 'XS (5�7 Ya�)', 'cocuk-s': 'S (7�10 Ya�)', 'cocuk-m': 'M (10�12 Ya�)',
-        'cocuk-l': 'L (12�14 Ya�)', 'cocuk-xl': 'XL (14�16 Ya�)',
-        // Kad�n Bedenleri - g�ncellendi
+        // Giyim Bedenleri - güncellendi
+        'xs-dar': 'XS (Dar Kalıp)', 's-kucuk': 'S (Küçük)', 'm-orta': 'M (Orta)',
+        'l-buyuk': 'L (Büyük)', 'xl-cok': 'XL (Çok Büyük)', 'xxl-ekstra': 'XXL (Ekstra Büyük)',
+        'XS': 'XS (Yetişkin)', 'S': 'S (Yetişkin)', 'M': 'M (Yetişkin)', 'L': 'L (Yetişkin)', 'XL': 'XL (Yetişkin)', 'XXL': 'XXL (Yetişkin)',
+        // Bebek Bedenleri - değişmez
+        '0-3ay': '0–3 Ay', '3-6ay': '3–6 Ay', '6-9ay': '6–9 Ay',
+        '9-12ay': '9–12 Ay', '12-18ay': '12–18 Ay', '18-24ay': '18–24 Ay',
+        // Çocuk Bedenleri - güncellendi
+        '2-3yas': '2–3 Yaş', '3-4yas': '3–4 Yaş', '4-5yas': '4–5 Yaş',
+        'cocuk-xs': 'XS (5–7 Yaş)', 'cocuk-s': 'S (7–10 Yaş)', 'cocuk-m': 'M (10–12 Yaş)',
+        'cocuk-l': 'L (12–14 Yaş)', 'cocuk-xl': 'XL (14–16 Yaş)',
+        // Kadın Bedenleri - güncellendi
         'k-34': '(XS)', 'k-36': '(S)', 'k-38': '(M)', 'k-40': '(L)', 'k-42': '(XL)', 'k-44': '(XXL)',
-        // Erkek Bedenleri - g�ncellendi
+        // Erkek Bedenleri - güncellendi
         'e-46': '(S)', 'e-48': '(M)', 'e-50': '(L)', 'e-52': '(XL)', 'e-54': '(XXL)', 'e-56': '(XXXL)'
     };
     
-    // Renk dropdown'lar�n� g�ncelle - sadece admin'den eklenen renkler g�sterilsin
+    // Renk dropdown'larını güncelle - sadece admin'den eklenen renkler gösterilsin
     var renkDropdowns = document.querySelectorAll('.renk-dropdown');
     if (aktifRenkler && aktifRenkler.length > 0) {
         renkDropdowns.forEach(function(select) {
-            select.innerHTML = '<option value="">? Renk Se�iniz �</option>';
+            select.innerHTML = '<option value="">● Renk Seçiniz ▼</option>';
             aktifRenkler.forEach(function(renk) {
                 var option = document.createElement('option');
                 option.value = renk;
@@ -2108,17 +2108,17 @@ function updateCustomerDropdowns(aktifRenkler, aktifBedenler) {
             });
         });
     } else {
-        // Aktif renk yoksa dropdown'� temizle
+        // Aktif renk yoksa dropdown'ı temizle
         renkDropdowns.forEach(function(select) {
-            select.innerHTML = '<option value="">? Renk Se�iniz �</option>';
+            select.innerHTML = '<option value="">● Renk Seçiniz ▼</option>';
         });
     }
     
-    // Beden dropdown'lar�n� g�ncelle - sadece admin'den eklenen bedenler g�sterilsin
+    // Beden dropdown'larını güncelle - sadece admin'den eklenen bedenler gösterilsin
     var bedenDropdowns = document.querySelectorAll('.beden-dropdown');
     if (aktifBedenler && aktifBedenler.length > 0) {
         bedenDropdowns.forEach(function(select) {
-            select.innerHTML = '<option value="">Beden Se�iniz �</option>';
+            select.innerHTML = '<option value="">Beden Seçiniz ▼</option>';
             aktifBedenler.forEach(function(beden) {
                 var option = document.createElement('option');
                 option.value = beden;
@@ -2127,19 +2127,19 @@ function updateCustomerDropdowns(aktifRenkler, aktifBedenler) {
             });
         });
     } else {
-        // Aktif beden yoksa dropdown'� temizle
+        // Aktif beden yoksa dropdown'ı temizle
         bedenDropdowns.forEach(function(select) {
-            select.innerHTML = '<option value="">Beden Se�iniz �</option>';
+            select.innerHTML = '<option value="">Beden Seçiniz ▼</option>';
         });
     }
     
-    // G�r�n�rl�k kontrol�
+    // Görünürlük kontrolü
     loadRenkBedenDropdowns();
 }
 
-// Sayfa y�klenince renk/beden ayarlar�n� y�kle
+// Sayfa yüklenince renk/beden ayarlarını yükle
 window.addEventListener('DOMContentLoaded', function() {
-    // Firebase haz�r olunca toggle durumlar�n� �ek
+    // Firebase hazır olunca toggle durumlarını çek
     if (typeof onFirebaseReady === 'function') {
         onFirebaseReady(function() {
             database.ref(SITE_ID + '/urunAyarlari/urun1/toggleDurumlari').once('value', function(snapshot) {
@@ -2148,19 +2148,19 @@ window.addEventListener('DOMContentLoaded', function() {
                     for (var key in data) {
                         localStorage.setItem(getAdminKey(key), data[key].toString());
                     }
-                    console.log('? Toggle durumlar� Firebase\'den y�klendi');
+                    console.log('✅ Toggle durumları Firebase\'den yüklendi');
                 }
-                // Firebase'den veri geldikten sonra her �eyi g�ncelle
+                // Firebase'den veri geldikten sonra her şeyi güncelle
                 loadCustomerRenkBedenSettings();
                 loadUrunSecenekleri();
                 loadRenkBedenDropdowns();
                 gorselleriYukle();
                 
-                // toggleOptions fonksiyonu zaten do�ru kontrol yap�yor
+                // toggleOptions fonksiyonu zaten doğru kontrol yapıyor
             });
         });
     }
-    // localStorage'dan da hemen y�kle (h�z i�in)
+    // localStorage'dan da hemen yükle (hız için)
     setTimeout(function() {
         loadCustomerRenkBedenSettings();
         loadUrunSecenekleri();
@@ -2168,7 +2168,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }, 500);
 });
 
-// Sayfa tamamen y�klenince de bir kez daha kontrol et
+// Sayfa tamamen yüklenince de bir kez daha kontrol et
 window.addEventListener('load', function() {
     setTimeout(function() {
         loadCustomerRenkBedenSettings();
@@ -2177,17 +2177,17 @@ window.addEventListener('load', function() {
     }, 1000);
 });
 
-// Form g�sterildikten sonra da kontrol et
+// Form gösterildikten sonra da kontrol et
 setTimeout(function() {
     loadCustomerRenkBedenSettings();
     loadUrunSecenekleri();
     loadRenkBedenDropdowns();
 }, 2000);
 
-// localStorage de�i�ikliklerini dinle (admin panelinden de�i�iklik olursa)
+// localStorage değişikliklerini dinle (admin panelinden değişiklik olursa)
 window.addEventListener('storage', function(e) {
     if (e.key && (e.key.includes('_urun') || e.key.includes('_renk') || e.key.includes('_beden')) && e.key.includes('_aktif')) {
-        console.log('Ayar de�i�ti, yeniden y�kleniyor...');
+        console.log('Ayar değişti, yeniden yükleniyor...');
         setTimeout(function() {
             loadUrunSecenekleri();
             loadRenkBedenDropdowns();
@@ -2195,7 +2195,7 @@ window.addEventListener('storage', function(e) {
     }
 });
 
-// Periyodik kontrol kald�r�ld� - performans i�in
+// Periyodik kontrol kaldırıldı - performans için
 // setInterval(function() {
 //     loadUrunSecenekleri();
 //     loadRenkBedenDropdowns();
@@ -2242,9 +2242,9 @@ function toggleOptions(selectedId) {
         }
     }
     
-    // Renk VEYA beden a��ksa options b�l�m� g�ster
+    // Renk VEYA beden açıksa options bölümü göster
     if (herhangiRenkAktif || herhangiBedenAktif) {
-        console.log(selectedId + ' ADET: Renk veya beden a��k, options g�steriliyor');
+        console.log(selectedId + ' ADET: Renk veya beden açık, options gösteriliyor');
         const selectedOptionsDiv = document.getElementById('options' + selectedId);
         if (selectedOptionsDiv) {
             selectedOptionsDiv.style.display = 'block';
@@ -2252,7 +2252,7 @@ function toggleOptions(selectedId) {
             createOptionsDiv(selectedId);
         }
     } else {
-        console.log(selectedId + ' ADET: Renk ve beden kapal�, options g�sterilmiyor');
+        console.log(selectedId + ' ADET: Renk ve beden kapalı, options gösterilmiyor');
     }
 }
 
@@ -2261,13 +2261,13 @@ function createOptionsDiv(id) {
     var herhangiRenkAktif = localStorage.getItem(getAdminKey('renk_ana_aktif')) === 'true';
     var herhangiBedenAktif = localStorage.getItem(getAdminKey('beden_ana_aktif')) === 'true';
     
-    // Renk ve beden ikisi de kapal�ysa dropdown olu�turma
+    // Renk ve beden ikisi de kapalıysa dropdown oluşturma
     if (!herhangiRenkAktif && !herhangiBedenAktif) {
-        console.log(id + ' ADET: Renk ve beden kapal� - dropdown olu�turulmuyor');
+        console.log(id + ' ADET: Renk ve beden kapalı - dropdown oluşturulmuyor');
         return;
     }
     
-    // 1 ADET i�in kontrol ge�ti VEYA 2,3,4,5,6,7,8 ADET (normal davran��)
+    // 1 ADET için kontrol geçti VEYA 2,3,4,5,6,7,8 ADET (normal davranış)
     const selectedElement = document.getElementById('secim' + id);
     if (selectedElement) {
         const container = selectedElement.closest('div[style*="border: 2px solid"]');
@@ -2290,29 +2290,29 @@ function createOptionsDiv(id) {
                             <div style="font-weight: bold; color: #333; margin-bottom: 8px; font-size: 16px;">#${i}</div>
                             <div style="display: flex; gap: 10px;">
                                 <select class="renk-dropdown" style="flex: 1; padding: 8px 12px; border: 2px solid #ddd; border-radius: 6px; font-size: 14px; background: white;">
-                                    <option value="">? Renk Se�iniz �</option>
-                                    <option value="siyah">? Siyah</option>
-                                    <option value="beyaz">? Beyaz</option>
-                                    <option value="gri">?? Gri</option>
-                                    <option value="lacivert">?? Lacivert</option>
-                                    <option value="kahverengi">?? Kahverengi</option>
-                                    <option value="kirmizi">?? K�rm�z�</option>
-                                    <option value="mavi">?? Mavi</option>
-                                    <option value="yesil">?? Ye�il</option>
-                                    <option value="sari">?? Sar�</option>
-                                    <option value="turuncu">?? Turuncu</option>
-                                    <option value="mor">?? Mor</option>
-                                    <option value="pembe">?? Pembe</option>
-                                    <option value="bordo">?? Bordo</option>
-                                    <option value="haki">?? Haki</option>
-                                    <option value="bej">?? Bej</option>
-                                    <option value="krem">?? Krem</option>
-                                    <option value="fume">?? F�me</option>
-                                    <option value="antrasit">? Antrasit</option>
+                                    <option value="">● Renk Seçiniz ▼</option>
+                                    <option value="siyah">⚫ Siyah</option>
+                                    <option value="beyaz">⚪ Beyaz</option>
+                                    <option value="gri">🔘 Gri</option>
+                                    <option value="lacivert">🔵 Lacivert</option>
+                                    <option value="kahverengi">🤎 Kahverengi</option>
+                                    <option value="kirmizi">🔴 Kırmızı</option>
+                                    <option value="mavi">🔵 Mavi</option>
+                                    <option value="yesil">🟢 Yeşil</option>
+                                    <option value="sari">🟡 Sarı</option>
+                                    <option value="turuncu">🟠 Turuncu</option>
+                                    <option value="mor">🟣 Mor</option>
+                                    <option value="pembe">🩷 Pembe</option>
+                                    <option value="bordo">🔴 Bordo</option>
+                                    <option value="haki">🟫 Haki</option>
+                                    <option value="bej">🟤 Bej</option>
+                                    <option value="krem">🟡 Krem</option>
+                                    <option value="fume">🔘 Füme</option>
+                                    <option value="antrasit">⚫ Antrasit</option>
                                 </select>
                                 <select class="beden-dropdown" style="flex: 1; padding: 8px 12px; border: 2px solid #ddd; border-radius: 6px; font-size: 14px; background: white;">
-                                    <option value="">Beden Se�iniz �</option>
-                                    <optgroup label="?? Bebek Bedenleri">
+                                    <option value="">Beden Seçiniz ▼</option>
+                                    <optgroup label="👶 Bebek Bedenleri">
                                         <option value="0-3ay">0-3 Ay</option>
                                         <option value="3-6ay">3-6 Ay</option>
                                         <option value="6-9ay">6-9 Ay</option>
@@ -2320,17 +2320,17 @@ function createOptionsDiv(id) {
                                         <option value="12-18ay">12-18 Ay</option>
                                         <option value="18-24ay">18-24 Ay</option>
                                     </optgroup>
-                                    <optgroup label="?? �ocuk Bedenleri">
-                                        <option value="2-3yas">2-3 Ya�</option>
-                                        <option value="3-4yas">3-4 Ya�</option>
-                                        <option value="4-5yas">4-5 Ya�</option>
-                                        <option value="cocuk-xs">�ocuk XS</option>
-                                        <option value="cocuk-s">�ocuk S</option>
-                                        <option value="cocuk-m">�ocuk M</option>
-                                        <option value="cocuk-l">�ocuk L</option>
-                                        <option value="cocuk-xl">�ocuk XL</option>
+                                    <optgroup label="👧 Çocuk Bedenleri">
+                                        <option value="2-3yas">2-3 Yaş</option>
+                                        <option value="3-4yas">3-4 Yaş</option>
+                                        <option value="4-5yas">4-5 Yaş</option>
+                                        <option value="cocuk-xs">Çocuk XS</option>
+                                        <option value="cocuk-s">Çocuk S</option>
+                                        <option value="cocuk-m">Çocuk M</option>
+                                        <option value="cocuk-l">Çocuk L</option>
+                                        <option value="cocuk-xl">Çocuk XL</option>
                                     </optgroup>
-                                    <optgroup label="?? Ayakkab� Numaralar�">
+                                    <optgroup label="👟 Ayakkabı Numaraları">
                                         <option value="35">35</option>
                                         <option value="36">36</option>
                                         <option value="37">37</option>
@@ -2344,7 +2344,7 @@ function createOptionsDiv(id) {
                                         <option value="45">45</option>
                                         <option value="46">46</option>
                                     </optgroup>
-                                    <optgroup label="?? Giyim Bedenleri">
+                                    <optgroup label="👕 Giyim Bedenleri">
                                         <option value="XS">XS</option>
                                         <option value="S">S</option>
                                         <option value="M">M</option>
@@ -2352,7 +2352,7 @@ function createOptionsDiv(id) {
                                         <option value="XL">XL</option>
                                         <option value="XXL">XXL</option>
                                     </optgroup>
-                                    <optgroup label="?? Kad�n Bedenleri">
+                                    <optgroup label="👩 Kadın Bedenleri">
                                         <option value="k-34">K-34</option>
                                         <option value="k-36">K-36</option>
                                         <option value="k-38">K-38</option>
@@ -2360,7 +2360,7 @@ function createOptionsDiv(id) {
                                         <option value="k-42">K-42</option>
                                         <option value="k-44">K-44</option>
                                     </optgroup>
-                                    <optgroup label="?? Erkek Bedenleri">
+                                    <optgroup label="👨 Erkek Bedenleri">
                                         <option value="e-46">E-46</option>
                                         <option value="e-48">E-48</option>
                                         <option value="e-50">E-50</option>
@@ -2376,7 +2376,7 @@ function createOptionsDiv(id) {
                 optionsDiv.innerHTML = optionsHTML;
                 container.appendChild(optionsDiv);
                 
-                // Dropdown'lar� hemen g�ncelle
+                // Dropdown'ları hemen güncelle
                 setTimeout(function() {
                     loadCustomerRenkBedenSettings();
                 }, 100);
@@ -2389,52 +2389,52 @@ function createOptionsDiv(id) {
 
 // Initialize the first option as selected on page load
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('?? �R�N-1: Sayfa y�klendi, forum ayarlar� yap�l�yor...');
+    console.log('🚀 ÜRÜN-1: Sayfa yüklendi, forum ayarları yapılıyor...');
     
-    // �R�N FORUM AYARLARINI ZORLA TRUE YAP - HEPS�N� AKT�F ET
+    // ÜRÜN FORUM AYARLARINI ZORLA TRUE YAP - HEPSİNİ AKTİF ET
     for (var i = 1; i <= 8; i++) {
         var urunKey = getAdminKey('urun' + i + '_aktif');
         localStorage.setItem(urunKey, 'true'); // ZORLA TRUE YAP
-        console.log('? �r�n ' + i + ' aktif edildi: ' + urunKey);
+        console.log('✅ Ürün ' + i + ' aktif edildi: ' + urunKey);
     }
     
-    // RENK ve BEDEN toggle durumlar�n� kontrol et (admin'den gelir)
-    console.log('? Renk/Beden toggle durumlar� admin ayarlar�ndan okunacak');
+    // RENK ve BEDEN toggle durumlarını kontrol et (admin'den gelir)
+    console.log('✅ Renk/Beden toggle durumları admin ayarlarından okunacak');
     
-    // �lk se�ene�i se�ili yap
+    // İlk seçeneği seçili yap
     const firstElement = document.getElementById('secim1');
     if (firstElement) {
         const container = firstElement.closest('div[style*="border: 2px solid"]');
         if (container) {
             container.style.border = '2px solid #000';
             container.style.backgroundColor = '#f8fff8';
-            console.log('? �lk se�enek border ayarland�');
+            console.log('✅ İlk seçenek border ayarlandı');
         }
     }
     
-    // Renk/beden se�eneklerini g�ster
+    // Renk/beden seçeneklerini göster
     if (typeof toggleOptions === 'function') {
         toggleOptions(1);
-        console.log('? toggleOptions(1) �a�r�ld�');
+        console.log('✅ toggleOptions(1) çağrıldı');
     }
     
-    // FORUM AYARLARINI HEMEN Y�KLE
+    // FORUM AYARLARINI HEMEN YÜKLE
     setTimeout(function() {
-        console.log('?? loadUrunSecenekleri �a�r�l�yor...');
+        console.log('🔄 loadUrunSecenekleri çağrılıyor...');
         if (typeof loadUrunSecenekleri === 'function') {
             loadUrunSecenekleri();
         }
     }, 100);
     
-    // toggleOptions fonksiyonu zaten do�ru kontrol yap�yor - ek temizlik gerekmez
+    // toggleOptions fonksiyonu zaten doğru kontrol yapıyor - ek temizlik gerekmez
     
-    // �R�N B�LG�LER�N� Y�KLE
+    // ÜRÜN BİLGİLERİNİ YÜKLE
     yukleUrunBilgileriCustomer();
     
-    // H�zl� temizlik kald�r�ld� - toggleOptions fonksiyonu zaten do�ru kontrol yap�yor
+    // Hızlı temizlik kaldırıldı - toggleOptions fonksiyonu zaten doğru kontrol yapıyor
     
-    // Periyodik kontrol - SADECE 1 ADET i�in options b�l�m�n� kontrol et
-    // Periyodik kontrol kald�r�ld� - performans i�in
+    // Periyodik kontrol - SADECE 1 ADET için options bölümünü kontrol et
+    // Periyodik kontrol kaldırıldı - performans için
     // setInterval(function() {
     //     var renkKey = getAdminKey('renk_siyah_aktif');
     //     var renkAktif = localStorage.getItem(renkKey) !== 'false';
@@ -2443,13 +2443,13 @@ document.addEventListener('DOMContentLoaded', function() {
     //     var bedenAktif = localStorage.getItem(bedenKey) !== 'false';
     //     
     //     if (!renkAktif || !bedenAktif) {
-    //         // SADECE options1 kald�r
+    //         // SADECE options1 kaldır
     //         const options1Div = document.getElementById('options1');
     //         if (options1Div) {
     //             options1Div.remove();
     //         }
     //         
-    //         // SADECE 1 ADET container'�ndaki product-options kald�r
+    //         // SADECE 1 ADET container'ındaki product-options kaldır
     //         const firstElement = document.getElementById('secim1');
     //         if (firstElement) {
     //             const container = firstElement.closest('div[style*="border: 2px solid"]');
@@ -2465,7 +2465,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function yukleUrunBilgileriCustomer() {
-    // �nce Firebase'den oku, sonra localStorage'dan g�ncelle
+    // Önce Firebase'den oku, sonra localStorage'dan güncelle
     if (typeof database !== 'undefined' && database) {
         database.ref(SITE_ID + '/urunAyarlari/urun1/urunBilgileri').once('value', function(snapshot) {
             var data = snapshot.val();
@@ -2473,24 +2473,24 @@ function yukleUrunBilgileriCustomer() {
                 for (var key in data) {
                     localStorage.setItem(getAdminKey(key), data[key]);
                 }
-                console.log('? �r�n bilgileri Firebase\'den y�klendi');
+                console.log('✅ Ürün bilgileri Firebase\'den yüklendi');
             }
             urunBilgileriEkranaYaz();
         });
-        // Genel �r�n ad�n� da Firebase'den �ek
+        // Genel ürün adını da Firebase'den çek
         database.ref(SITE_ID + '/urunAyarlari/urun1/genel_urun_adi').once('value', function(snapshot) {
             var urunAdi = snapshot.val();
             if (urunAdi) {
                 localStorage.setItem(getAdminKey('genel_urun_adi'), urunAdi);
-                console.log('? Genel �r�n ad� Firebase\'den y�klendi: ' + urunAdi);
+                console.log('✅ Genel ürün adı Firebase\'den yüklendi: ' + urunAdi);
                 
-                // D�NAM�K BA�LIK G�NCELLEMES�
-                document.title = urunAdi + ' | H�zl� Kargo - kargonburada.online';
-                document.getElementById('pageTitle').textContent = urunAdi + ' | H�zl� Kargo - kargonburada.online';
+                // DİNAMİK BAŞLIK GÜNCELLEMESİ
+                document.title = urunAdi + ' | Hızlı Kargo - kargonburada.online';
+                document.getElementById('pageTitle').textContent = urunAdi + ' | Hızlı Kargo - kargonburada.online';
             }
         });
         
-        // SEO a��klamas�n� da Firebase'den �ek
+        // SEO açıklamasını da Firebase'den çek
         database.ref(SITE_ID + '/urunAyarlari/urun1/seo_aciklamasi').once('value', function(snapshot) {
             var seoAciklama = snapshot.val();
             if (seoAciklama) {
@@ -2534,11 +2534,11 @@ function urunBilgileriEkranaYaz() {
 
 <script>
 // =============================================
-// HIZLI S�PAR�� �ER�D� AYARLARINI Y�KLE (ADM�N-1'DEN)
+// HIZLI SİPARİŞ ŞERİDİ AYARLARINI YÜKLE (ADMİN-1'DEN)
 // =============================================
 
 function loadSiparisSeridiSettingsFromAdmin() {
-    // ?? Firebase'den renkleri y�kle (t�m cihazlarda ayn�)
+    // 🔥 Firebase'den renkleri yükle (tüm cihazlarda aynı)
     onFirebaseReady(function(db) {
         db.ref('www_kargonburada_online/siparisSeridiColors').on('value', function(snapshot) {
             var data = snapshot.val();
@@ -2548,20 +2548,20 @@ function loadSiparisSeridiSettingsFromAdmin() {
             if (data) {
                 bgColor = data.bgColor || '#000000';
                 textColor = data.textColor || '#ffffff';
-                console.log('?? Firebase\'den y�klendi (urunx-1):', data);
+                console.log('🔥 Firebase\'den yüklendi (urunx-1):', data);
             } else {
-                console.log('?? Firebase\'de renk yok, varsay�lan kullan�l�yor');
+                console.log('⚠️ Firebase\'de renk yok, varsayılan kullanılıyor');
             }
             
-            // DEBUG: Konsola yazd�r
-            console.log('?? DEBUG - H�zl� Sipari� �eridi (urunx-1.html):');
+            // DEBUG: Konsola yazdır
+            console.log('🔍 DEBUG - Hızlı Sipariş Şeridi (urunx-1.html):');
             console.log('BG Color Value:', bgColor);
             console.log('Text Color Value:', textColor);
             
-            // H�zl� sipari� �eridini g�ncelle
+            // Hızlı sipariş şeridini güncelle
             updateSiparisSeridiDisplayFromAdmin(bgColor, textColor);
             
-            console.log('? H�zl� sipari� �eridi ayarlar� y�klendi (urunx-1.html)');
+            console.log('✅ Hızlı sipariş şeridi ayarları yüklendi (urunx-1.html)');
         });
     });
 }
@@ -2570,48 +2570,48 @@ function updateSiparisSeridiDisplayFromAdmin(bgColor, textColor) {
     var siparisSeridi = document.getElementById('siparisSeridi');
     var siparisSeridiText = document.getElementById('siparisSeridiText');
     
-    console.log('?? �erit elementleri (urunx-1):', siparisSeridi, siparisSeridiText);
+    console.log('🎨 Şerit elementleri (urunx-1):', siparisSeridi, siparisSeridiText);
     
     if (siparisSeridi && siparisSeridiText) {
-        // Arkaplan rengini g�ncelle
+        // Arkaplan rengini güncelle
         siparisSeridi.style.background = bgColor;
         siparisSeridi.style.backgroundColor = bgColor;
         
-        // Yaz� rengini g�ncelle
+        // Yazı rengini güncelle
         siparisSeridiText.style.color = textColor;
         
-        console.log('? H�zl� sipari� �eridi g�r�n�m� g�ncellendi (urunx-1):', bgColor, textColor);
+        console.log('✅ Hızlı sipariş şeridi görünümü güncellendi (urunx-1):', bgColor, textColor);
     } else {
-        console.log('? H�zl� sipari� �eridi elementleri bulunamad� (urunx-1)!');
+        console.log('❌ Hızlı sipariş şeridi elementleri bulunamadı (urunx-1)!');
     }
 }
 
-// Sayfa y�klenince
+// Sayfa yüklenince
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('?? urunx-1.html y�klendi, h�zl� sipari� �eridi kontrol ediliyor...');
+    console.log('📄 urunx-1.html yüklendi, hızlı sipariş şeridi kontrol ediliyor...');
     
-    // Firebase'den renkleri y�kle
+    // Firebase'den renkleri yükle
     loadSiparisSeridiSettingsFromAdmin();
 });
 
-// Window focus oldu�unda
+// Window focus olduğunda
 window.addEventListener('focus', function() {
     setTimeout(loadSiparisSeridiSettingsFromAdmin, 200);
 });
 
-// Sayfa g�r�n�r oldu�unda
+// Sayfa görünür olduğunda
 document.addEventListener('visibilitychange', function() {
     if (!document.hidden) {
         setTimeout(loadSiparisSeridiSettingsFromAdmin, 300);
     }
 });
 
-// Window focus oldu�unda
+// Window focus olduğunda
 window.addEventListener('focus', function() {
     setTimeout(loadSiparisSeridiSettingsFromAdmin, 200);
 });
 
-// Sayfa g�r�n�r oldu�unda
+// Sayfa görünür olduğunda
 document.addEventListener('visibilitychange', function() {
     if (!document.hidden) {
         setTimeout(loadSiparisSeridiSettingsFromAdmin, 300);
