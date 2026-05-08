@@ -27,11 +27,14 @@ function fireTikTokSubmitFormEvent(value) {
             value: value || 0,
             currency: 'TRY'
         });
-        ttq.track('CompletePayment', {
+        ttq.track('Purchase', {
+            contents: [{
+                currency: 'TRY'
+            }],
             value: value || 0,
             currency: 'TRY'
         });
-        console.log('✅ TikTok SubmitForm/CompletePayment event - Değer:', value);
+        console.log('✅ TikTok SubmitForm/Purchase event - Değer:', value);
     }
 }
 
