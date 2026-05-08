@@ -38,7 +38,7 @@ function getUserFirebaseConfig() {
 }
 
 
-// VARSAYILAN FIREBASE AYARLARI
+// VARSAYILAN FIREBASE AYARLARI - TikTok Reklamları İçin
 // Müşteri domain-bagla.html'den kendi Firebase bilgilerini girerse, o kullanılır (öncelik)
 // Girmezse bu varsayılan Firebase kullanılır (telefonda çalışması için)
 var firebaseConfig = {

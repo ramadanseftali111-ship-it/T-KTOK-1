@@ -22,7 +22,17 @@ function fireMetaLeadEvent(value) {
 }
 
 function fireTikTokSubmitFormEvent(value) {
-    console.log('ℹ️ TikTok pixel yok, sadece Meta Pixel aktif');
+    if (typeof ttq !== 'undefined') {
+        ttq.track('SubmitForm', {
+            value: value || 0,
+            currency: 'TRY'
+        });
+        ttq.track('CompletePayment', {
+            value: value || 0,
+            currency: 'TRY'
+        });
+        console.log('✅ TikTok SubmitForm/CompletePayment event - Değer:', value);
+    }
 }
 
 function fireAddToCart(contentName, contentId, value, quantity) {
@@ -52,6 +62,17 @@ function fireInitiateCheckout(value) {
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=960336256818177&ev=PageView&noscript=1"/></noscript>
 <!-- End Meta Pixel Code -->
 
+<!-- TikTok Pixel Code -->
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+  
+  ttq.load('D3V0ND3C77U1N95EAVUG');
+  ttq.page();
+}(window, document, 'ttq');
+</script>
+<!-- TikTok Pixel Code End -->
+
 <!-- PRELOAD - İLK GÖRSELI SAYFA YÜKLENMEDEN ÖNCE BAŞLAT -->
 <link rel="preload" as="image" href="" id="preloadImage1" fetchpriority="highest">
 
@@ -62,7 +83,7 @@ function fireInitiateCheckout(value) {
 <script>
 // Site ID için yardımcı fonksiyon
 function getAdminKey(key) {
-    var SITE_ID = 'www_kargonburada_online';
+    var SITE_ID = 'kargonburada_online';
     localStorage.setItem('__SITE_ID__', SITE_ID);
     return SITE_ID + '_admin9_' + key; // ADMİN-9'DEN VERİ OKU
 }
@@ -170,7 +191,7 @@ input::placeholder{color:#A0AEC3 !important;opacity:1}
 
 <script>
 // SITE_ID'yi global olarak tanımla (Firebase için)
-var SITE_ID = 'www_kargonburada_online';
+var SITE_ID = 'kargonburada_online';
 
 // Site ID için yardımcı fonksiyon
 function getAdminKey(key) {
@@ -203,19 +224,37 @@ function getAdminKey(key) {
 // Banner renklerini HEMEN al ve HTML'i oluştur
 (function() {
     function getAdminKey(key) { 
-        var siteId = 'www_kargonburada_online';
+        var siteId = 'kargonburada_online';
         return siteId + '_admin9_' + key; 
     }
     
     // Banner'ı başlangıçta gizli yap - Firebase'den gelince görünür olacak
-    var bgColor = localStorage.getItem('www_kargonburada_online_admin9_banner_bg_color') || '#ffffff';
-    var textColor = localStorage.getItem('www_kargonburada_online_admin9_banner_text_color') || '#000000';
+    var bgColor = localStorage.getItem('kargonburada_online_admin9_banner_bg_color') || '#ffffff';
+    var textColor = localStorage.getItem('kargonburada_online_admin9_banner_text_color') || '#000000';
     var visibility = 'visible';
     
     console.log('🎨 HTML direkt yazıldı (urunx-9) - Banner gizli, Firebase\'den gelecek');
     
     document.write('<div id="bannerStrip" style="width:100%;background:' + bgColor + ';overflow:hidden;white-space:nowrap;padding:6px 0;visibility:' + visibility + ';">');
     document.write('<div id="bannerContent" style="display:inline-block;animation:kayanYazi 20s linear infinite;animation-delay:-3s;will-change:transform;transform:translateZ(0);">');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">🚚 AYNI GÜN KARGO</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">💳 KAPIDA ÖDEME</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">📦 HIZLI TESLİMAT</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">🔒 GÜVENLİ ALIŞVERİŞ</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">⭐ %100 MÜŞTERİ MEMNUNİYETİ</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">✅ ÜCRETSİZ KARGO</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">🚚 AYNI GÜN KARGO</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">💳 KAPIDA ÖDEME</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">📦 HIZLI TESLİMAT</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">🔒 GÜVENLİ ALIŞVERİŞ</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">⭐ %100 MÜŞTERİ MEMNUNİYETİ</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">✅ ÜCRETSİZ KARGO</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">🚚 AYNI GÜN KARGO</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">💳 KAPIDA ÖDEME</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">📦 HIZLI TESLİMAT</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">🔒 GÜVENLİ ALIŞVERİŞ</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">⭐ %100 MÜŞTERİ MEMNUNİYETİ</span>');
+    document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">✅ ÜCRETSİZ KARGO</span>');
     document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">🚚 AYNI GÜN KARGO</span>');
     document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">💳 KAPIDA ÖDEME</span>');
     document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">📦 HIZLI TESLİMAT</span>');
@@ -373,7 +412,7 @@ function loadBannerSettings() {
     onFirebaseReady(function(db) {
         console.log('🔥 Firebase hazır, banner renkleri yükleniyor (urunx-9)...');
         
-        db.ref('www_kargonburada_online/admin9/bannerColors').on('value', function(snapshot) {
+        db.ref('kargonburada_online/admin9/bannerColors').on('value', function(snapshot) {
             var data = snapshot.val();
             var bgColor = '#000000';
             var textColor = '#ffffff';
@@ -384,8 +423,8 @@ function loadBannerSettings() {
                 console.log('🔥 Firebase\'den yüklendi (urunx-9) - BG:', bgColor, 'Text:', textColor);
                 
                 // localStorage'a kaydet
-                localStorage.setItem('www_kargonburada_online_admin9_banner_bg_color', bgColor);
-                localStorage.setItem('www_kargonburada_online_admin9_banner_text_color', textColor);
+                localStorage.setItem('kargonburada_online_admin9_banner_bg_color', bgColor);
+                localStorage.setItem('kargonburada_online_admin9_banner_text_color', textColor);
             } else {
                 console.log('⚠️ Firebase\'de banner rengi yok (urunx-9)');
             }
@@ -417,9 +456,9 @@ function updateBannerDisplay(bgColor, textColor) {
             '✅ ÜCRETSİZ KARGO'
         ];
         
-        // İçeriği oluştur (2 kez tekrarla ki kesintisiz dönsün)
+        // İçeriği oluştur (5 kez tekrarla - admin-1 gibi)
         var htmlContent = '';
-        for (var i = 0; i < 2; i++) {
+        for (var i = 0; i < 5; i++) {
             fixedTexts.forEach(function(text) {
                 htmlContent += '<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">' + text + '</span>';
             });
@@ -439,9 +478,17 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="formWrapper" style="position:relative;">
 
 <!-- HIZLI SİPARİŞ FORMU ÇUBUĞU -->
-<div id="siparisSeridi" style="width:100%;background:#000;padding:10px 0;text-align:center;border-radius:8px 8px 0 0;margin-bottom:10px;">
-<span id="siparisSeridiText" style="color:#fff;font-size:20px;font-weight:900;letter-spacing:2px;display:inline-block;animation:buyukKucul 0.8s ease-in-out infinite;">📋 HIZLI SİPARİŞ FORMU</span>
-</div>
+<script>
+// Hızlı Sipariş Şeridi renklerini HEMEN al ve HTML'i oluştur
+(function() {
+    var bgColor = localStorage.getItem('kargonburada_online_admin9_siparis_seridi_bg_color') || '#000';
+    var textColor = localStorage.getItem('kargonburada_online_admin9_siparis_seridi_text_color') || '#fff';
+    
+    document.write('<div id="siparisSeridi" style="width:100%;background:' + bgColor + ';padding:10px 0;text-align:center;border-radius:8px 8px 0 0;margin-bottom:10px;">');
+    document.write('<span id="siparisSeridiText" style="color:' + textColor + ';font-size:20px;font-weight:900;letter-spacing:2px;display:inline-block;animation:buyukKucul 0.8s ease-in-out infinite;">📋 HIZLI SİPARİŞ FORMU</span>');
+    document.write('</div>');
+})();
+</script>
 
 <label class="formLabel" style="margin-top:0">Ödeme Yöntemi:</label>
 <div class="radioBox" style="border:2px solid #000 !important;">
@@ -1180,11 +1227,7 @@ function loadSavedData() {
         if (savedFiyat) {
             var fiyatEl = document.getElementById('urun' + i + 'FiyatDisplay');
             if (fiyatEl) {
-                if (savedFiyat.indexOf('TL') === -1) {
-                    fiyatEl.textContent = savedFiyat + 'TL';
-                } else {
-                    fiyatEl.textContent = savedFiyat;
-                }
+                fiyatEl.textContent = savedFiyat;
             }
         }
         
@@ -1217,7 +1260,7 @@ function ilkGoruneniSec() {
 function scrollToForm() {
     const formLabel = document.querySelector('.formLabel');
     if (formLabel) {
-        formLabel.scrollIntoView({ behavior: 'auto', block: 'start' });
+        formLabel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 }
 
@@ -2076,7 +2119,7 @@ window.addEventListener('DOMContentLoaded', function() {
     // Firebase hazır olunca toggle durumlarını çek
     if (typeof onFirebaseReady === 'function') {
         onFirebaseReady(function() {
-            database.ref(SITE_ID + '/urunAyarlari/urun9/toggleDurumlari').once('value', function(snapshot) {
+            database.ref(SITE_ID + '/urunAyarlari/admin9/toggleDurumlari').once('value', function(snapshot) {
                 var data = snapshot.val();
                 if (data) {
                     for (var key in data) {
@@ -2332,8 +2375,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Renkleri kontrol et ve güncelle
     function checkColors() {
-        var bgColor = localStorage.getItem('www_kargonburada_online_admin9_siparis_seridi_bg_color') || '#000000';
-        var textColor = localStorage.getItem('www_kargonburada_online_admin9_siparis_seridi_text_color') || '#ffffff';
+        var bgColor = localStorage.getItem('kargonburada_online_admin9_siparis_seridi_bg_color') || '#000000';
+        var textColor = localStorage.getItem('kargonburada_online_admin9_siparis_seridi_text_color') || '#ffffff';
         
         if (bgColor !== lastBgColor && siparisSeridi) {
             siparisSeridi.style.background = bgColor;
@@ -2357,7 +2400,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('🔥 Firebase hazır - Admin-9 renk dinleyicisi başlatılıyor...');
             
             // Renk verilerini dinle - ADMIN-9'DAN OKU
-            db.ref('www_kargonburada_online/admin9/siparisSeridiColors').on('value', function(snapshot) {
+            db.ref('kargonburada_online/admin9/siparisSeridiColors').on('value', function(snapshot) {
                 var data = snapshot.val();
                 if (data && data.bgColor && data.textColor) {
                     console.log('🔥 Firebase\'den renk değişikliği geldi:', data);
@@ -2376,8 +2419,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     
                     // localStorage'a da kaydet (yedek olarak)
-                    localStorage.setItem('www_kargonburada_online_admin9_siparis_seridi_bg_color', data.bgColor);
-                    localStorage.setItem('www_kargonburada_online_admin9_siparis_seridi_text_color', data.textColor);
+                    localStorage.setItem('kargonburada_online_admin9_siparis_seridi_bg_color', data.bgColor);
+                    localStorage.setItem('kargonburada_online_admin9_siparis_seridi_text_color', data.textColor);
                 }
             });
             
@@ -2398,40 +2441,38 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 200);
     
-    // ÜRÜN FORUM AYARLARINI ZORLA TRUE YAP - HEPSİNİ AKTİF ET
-    for (var i = 1; i <= 8; i++) {
-        var urunKey = getAdminKey('urun' + i + '_aktif');
-        localStorage.setItem(urunKey, 'true'); // ZORLA TRUE YAP
-        console.log('✅ Ürün ' + i + ' aktif edildi: ' + urunKey);
-    }
+    // ÜRÜN AYARLARINI LOCALSTORAGE'DAN OKU - ZORLA TRUE YAPMA!
+    console.log('📋 Ürün ayarları localStorage\'dan okunuyor...');
     
     // RENK ve BEDEN toggle durumlarını kontrol et (admin'den gelir)
     console.log('✅ Renk/Beden toggle durumları admin ayarlarından okunacak');
     
-    // İlk seçeneği seçili yap
-    const firstElement = document.getElementById('secim1');
-    if (firstElement) {
-        const container = firstElement.closest('div[style*="border: 2px solid"]');
-        if (container) {
-            container.style.border = '2px solid #000';
-            container.style.backgroundColor = '#f8fff8';
-            console.log('✅ İlk seçenek border ayarlandı');
-        }
+    // FORUM AYARLARINI HEMEN YÜKLE - ÖNCE!
+    if (typeof loadUrunSecenekleri === 'function') {
+        loadUrunSecenekleri();
+        console.log('✅ loadUrunSecenekleri çağrıldı');
     }
     
-    // Renk/beden seçeneklerini göster
-    if (typeof toggleOptions === 'function') {
-        toggleOptions(1);
-        console.log('✅ toggleOptions(1) çağrıldı');
-    }
-    
-    // FORUM AYARLARINI HEMEN YÜKLE
+    // İlk aktif ürünü seçili yap
     setTimeout(function() {
-        console.log('🔄 loadUrunSecenekleri çağrılıyor...');
-        if (typeof loadUrunSecenekleri === 'function') {
-            loadUrunSecenekleri();
+        var ilkAktifUrun = null;
+        for (var i = 1; i <= 8; i++) {
+            var aktif = localStorage.getItem(getAdminKey('urun' + i + '_aktif')) !== 'false';
+            if (aktif) {
+                ilkAktifUrun = i;
+                break;
+            }
         }
-    }, 100);
+        
+        if (ilkAktifUrun) {
+            var firstRadio = document.getElementById('secim' + ilkAktifUrun);
+            if (firstRadio) {
+                firstRadio.checked = true;
+                updateBorder(ilkAktifUrun);
+                console.log('✅ İlk aktif ürün seçildi: ' + ilkAktifUrun);
+            }
+        }
+    }, 50);
     
     // toggleOptions fonksiyonu zaten doğru kontrol yapıyor - ek temizlik gerekmez
     

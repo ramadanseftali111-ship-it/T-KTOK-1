@@ -95,13 +95,13 @@ input::placeholder{color:#000000 !important;opacity:1}
 <script>
 function getAdminKey(key) { 
     // SABİT KEY KULLAN - ADMİN-7'NİN BAĞIMSIZ VERİLERİ
-    var siteId = 'www_kargonburada_online';
+    var siteId = 'kargonburada_online';
     localStorage.setItem('__SITE_ID__', siteId);
     return siteId + '_admin7_' + key; 
 }
 
 // SITE_ID'yi global olarak tanımla (Firebase için)
-var SITE_ID = 'www_kargonburada_online';
+var SITE_ID = 'kargonburada_online';
 
 // BANNER FONKSİYONLARI - GLOBAL SCOPE'DA TANIMLA
 function updateBannerFromColor(type) {
@@ -144,7 +144,7 @@ function updateBannerFromColor(type) {
             textColor: textColor,
             timestamp: Date.now()
         };
-        db.ref('www_kargonburada_online/admin7/bannerColors').set(bannerData).then(function() {
+        db.ref('kargonburada_online/admin7/bannerColors').set(bannerData).then(function() {
             console.log('🔥 Firebase\'e kaydedildi - Banner renkleri:', bannerData);
         }).catch(function(error) {
             console.error('❌ Firebase kayıt hatası:', error);
@@ -204,7 +204,7 @@ function updateBannerFromText(type) {
 // Banner renklerini HEMEN al ve HTML'i oluştur
 (function() {
     function getAdminKey(key) { 
-        var siteId = 'www_kargonburada_online';
+        var siteId = 'kargonburada_online';
         localStorage.setItem('__SITE_ID__', siteId);
         return siteId + '_admin7_' + key; 
     }
@@ -230,8 +230,8 @@ function updateBannerFromText(type) {
     document.write('<div id="bannerStrip" style="width:100%;background:' + bgColor + ';overflow:hidden;white-space:nowrap;padding:6px 0;">');
     document.write('<div id="bannerContent" style="display:inline-block;animation:kayanYazi 20s linear infinite;animation-delay:-3s;will-change:transform;transform:translateZ(0);">');
     
-    // Yazıları 2 kez tekrarla (hafif ve hızlı)
-    for (var j = 0; j < 2; j++) {
+    // Yazıları 5 kez tekrarla (admin-1 gibi)
+    for (var j = 0; j < 5; j++) {
         for (var i = 0; i < texts.length; i++) {
             document.write('<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">' + texts[i] + '</span>');
         }
@@ -510,7 +510,6 @@ function updateBannerFromText(type) {
 <div style="display:flex;gap:5px;margin-bottom:15px;">
 <input type="text" id="bottomImg1Url" placeholder="URL gir..." style="flex:1;height:35px;border:2px solid #ddd;border-radius:6px;padding:0 10px;font-size:12px;" onkeypress="if(event.key==='Enter') loadImageFromUrl('bottomImg1')">
 <button onclick="loadImageFromUrl('bottomImg1')" style="background:#000 !important;color:#fff;border:none;padding:0 15px;border-radius:6px;font-size:12px;font-weight:bold;cursor:pointer;margin-right:5px;">YÜKLE</button>
-
 </div>
 </div>
 </div>
@@ -897,8 +896,8 @@ function updateBannerFromText(type) {
 <!-- HIZLI SİPARİŞ FORMU ÇUBUĞU -->
 <script>
 // HEMEN HTML'e yaz - hiç beklemeden
-var bgColor = localStorage.getItem('www_kargonburada_online_admin7_siparis_seridi_bg_color') || '#4A90E2';
-var textColor = localStorage.getItem('www_kargonburada_online_admin7_siparis_seridi_text_color') || '#ffffff';
+var bgColor = localStorage.getItem('kargonburada_online_admin7_siparis_seridi_bg_color') || '#4A90E2';
+var textColor = localStorage.getItem('kargonburada_online_admin7_siparis_seridi_text_color') || '#ffffff';
 
 document.write('<div id="siparisSeridi" style="width:100%;background:' + bgColor + ';padding:10px 0;text-align:center;border-radius:8px 8px 0 0;margin-bottom:10px;">');
 document.write('<span id="siparisSeridiText" style="color:' + textColor + ';font-size:20px;font-weight:900;letter-spacing:2px;display:inline-block;animation:buyukKucul 0.8s ease-in-out infinite;">📋 HIZLI SİPARİŞ FORMU</span>');
@@ -1477,7 +1476,7 @@ function toggleLeftDrawer() {
     }
 }
 
-var pageId = getAdminKey('admin_1_sayfa');
+var pageId = getAdminKey('admin_7_sayfa');
 
 function loadImage(event, imgId) {
     const file = event.target.files[0];
@@ -1965,7 +1964,7 @@ function localStorageDanYukle() {
 function scrollToForm() {
     const formLabel = document.querySelector('.formLabel');
     if (formLabel) {
-        formLabel.scrollIntoView({ behavior: 'auto', block: 'start' });
+        formLabel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 }
 
@@ -2092,7 +2091,7 @@ function updateSiparisSeridiSettings() {
                 timestamp: Date.now()
             };
             
-            db.ref('www_kargonburada_online/admin7/siparisSeridiColors').set(colorData).then(function() {
+            db.ref('kargonburada_online/admin7/siparisSeridiColors').set(colorData).then(function() {
                 console.log('🔥 Firebase\'e kaydedildi (admin7/siparisSeridiColors):', colorData);
             }).catch(function(error) {
                 console.error('❌ Firebase kayıt hatası:', error);
@@ -2118,7 +2117,7 @@ function updateSiparisSeridiDisplay(bgColor, textColor) {
 
 function loadSiparisSeridiSettings() {
     onFirebaseReady(function(db) {
-        db.ref('www_kargonburada_online/admin7/siparisSeridiColors').once('value').then(function(snapshot) {
+        db.ref('kargonburada_online/admin7/siparisSeridiColors').once('value').then(function(snapshot) {
             var data = snapshot.val();
             var bgColor = '#4A90E2';
             var textColor = '#ffffff';
@@ -2935,14 +2934,14 @@ function toggleUrunSecenegi(urunNo) {
     if (typeof database !== 'undefined' && database) {
         var data = {};
         data['urun' + urunNo + '_aktif'] = aktif;
-        database.ref(SITE_ID + '/urunAyarlari/urun7/toggleDurumlari').update(data);
+        database.ref(SITE_ID + '/urunAyarlari/admin7/toggleDurumlari').update(data);
     } else if (typeof onFirebaseReady === 'function') {
         var savedUrunNo = urunNo;
         var savedAktif = aktif;
         onFirebaseReady(function(db) {
             var data = {};
             data['urun' + savedUrunNo + '_aktif'] = savedAktif;
-            db.ref(SITE_ID + '/urunAyarlari/urun7/toggleDurumlari').update(data);
+            db.ref(SITE_ID + '/urunAyarlari/admin7/toggleDurumlari').update(data);
         });
     }
     
@@ -2975,11 +2974,11 @@ function toggleRenkAnaSwitch() {
     
     // Firebase'e kaydet
     if (typeof database !== 'undefined' && database) {
-        database.ref(SITE_ID + '/urunAyarlari/urun7/toggleDurumlari').update({ renk_ana_aktif: aktif });
+        database.ref(SITE_ID + '/urunAyarlari/admin7/toggleDurumlari').update({ renk_ana_aktif: aktif });
     } else if (typeof onFirebaseReady === 'function') {
         var savedAktif = aktif;
         onFirebaseReady(function(db) {
-            db.ref(SITE_ID + '/urunAyarlari/urun7/toggleDurumlari').update({ renk_ana_aktif: savedAktif });
+            db.ref(SITE_ID + '/urunAyarlari/admin7/toggleDurumlari').update({ renk_ana_aktif: savedAktif });
         });
     }
     
@@ -3012,11 +3011,11 @@ function toggleBedenAnaSwitch() {
     
     // Firebase'e kaydet
     if (typeof database !== 'undefined' && database) {
-        database.ref(SITE_ID + '/urunAyarlari/urun7/toggleDurumlari').update({ beden_ana_aktif: aktif });
+        database.ref(SITE_ID + '/urunAyarlari/admin7/toggleDurumlari').update({ beden_ana_aktif: aktif });
     } else if (typeof onFirebaseReady === 'function') {
         var savedAktif = aktif;
         onFirebaseReady(function(db) {
-            db.ref(SITE_ID + '/urunAyarlari/urun7/toggleDurumlari').update({ beden_ana_aktif: savedAktif });
+            db.ref(SITE_ID + '/urunAyarlari/admin7/toggleDurumlari').update({ beden_ana_aktif: savedAktif });
         });
     }
     
@@ -3033,7 +3032,7 @@ function getBedenButtonId(bedenAdi) {
 function loadUrunDurumlari() {
     // Firebase'den toggle durumlarını çek
     if (typeof database !== 'undefined' && database) {
-        database.ref(SITE_ID + '/urunAyarlari/urun7/toggleDurumlari').once('value', function(snapshot) {
+        database.ref(SITE_ID + '/urunAyarlari/admin7/toggleDurumlari').once('value', function(snapshot) {
             var data = snapshot.val();
             if (data) {
                 // Firebase'den gelen verileri localStorage'a yaz
@@ -3366,7 +3365,7 @@ function updateBannerSettings() {
     localStorage.setItem('kargonburada_online_admin1_banner_text_color', textColor);
     
     onFirebaseReady(function(db) {
-        db.ref('www_kargonburada_online/admin7/bannerColors').set({
+        db.ref('kargonburada_online/admin7/bannerColors').set({
             bgColor: bgColor, textColor: textColor, texts: texts, timestamp: Date.now()
         });
     });
@@ -3383,8 +3382,8 @@ function updateAdminBannerDisplay(bgColor, textColor, texts) {
         // Eğer yazılar verilmişse, banner içeriğini tamamen yeniden oluştur
         if (texts && texts.length > 0) {
             var newContent = '';
-            // Yazıları 2 kez tekrarla (kayan efekt için)
-            for (var j = 0; j < 2; j++) {
+            // Yazıları 5 kez tekrarla (admin-1 gibi)
+            for (var j = 0; j < 5; j++) {
                 for (var i = 0; i < texts.length; i++) {
                     newContent += '<span style="color:' + textColor + ';font-size:12px;font-weight:bold;margin-right:50px;">' + texts[i] + '</span>';
                 }
