@@ -1,0 +1,36 @@
+﻿function loadImage(event, imgId) {
+    const file = event.target.files[0];
+    if (file) {
+        var urlInput = document.getElementById(imgId + 'Url');
+        if (urlInput) {
+            urlInput.value = '';
+            localStorage.removeItem(pageId + '_' + imgId + '_url');
+        }
+        const statusDiv = document.getElementById(imgId + 'Status');
+        statusDiv.innerHTML = '<span style="color:#667eea;font-size:12px;font-weight:900;">⏳ Yükleniyor...</span>';
+        statusDiv.onclick = null;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const url = e.target.result;
+            localStorage.setItem(pageId + '_' + imgId + '_url', url);
+            localStorage.setItem(pageId + '_' + imgId, url);
+            if (imgId === 'bottomImg1') {
+                document.getElementById('bottomImage').src = url;
+            } else if (imgId.startsWith('topImg')) {
+                const imgNum = imgId.replace('topImg', '');
+                document.getElementById('topImage' + imgNum).src = url;
+            }
+            statusDiv.innerHTML = '<span style="color:#000;font-size:16px;font-weight:900;margin-right:8px;">✓</span><span style="color:#000;font-size:12px;font-weight:900;">Görsel yüklendi</span><span onclick="deleteImage(event, \'' + imgId + '\\')" style="color:#dc3545;font-size:12px;font-weight:900;margin-left:8px;cursor:pointer;">Sil</span>';
+            if (urlInput) { urlInput.value = url.substring(0, 50) + '...'; }
+            if (typeof database !== 'undefined' && database) {
+                var gorselData = {}; gorselData[imgId] = url;
+                database.ref(SITE_ID + '/urunAyarlari/URUNX/gorseller').update(gorselData);
+            }
+        };
+        reader.onerror = function() {
+            statusDiv.innerHTML = '<span style="color:#dc3545;font-size:12px;font-weight:900;">❌ Yükleme başarısız!</span>';
+            statusDiv.onclick = function() { document.getElementById(imgId).click(); };
+        };
+        reader.readAsDataURL(file);
+    }
+}

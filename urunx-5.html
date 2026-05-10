@@ -1088,7 +1088,7 @@ function loadSavedImages() {
     console.log('🔍 URUNX-1: loadSavedImages başladı');
     console.log('🔑 PageId: ' + pageId);
     
-    // localStorage'dan oku (hızlı)
+    // localStorage'dan oku (hızlı) - SADECE HTTP URL'LER
     for (var i = 1; i <= 15; i++) {
         var storageKey = pageId + '_topImg' + i;
         var urlKey = pageId + '_topImg' + i + '_url';
@@ -1112,14 +1112,19 @@ function loadSavedImages() {
         
         console.log('📸 Görsel ' + i + ': Key=' + storageKey + ', Var mı? ' + (saved ? 'EVET (' + Math.round(saved.length/1024) + ' KB)' : 'HAYIR'));
         if (saved) {
-            // URL ise cache bypass için timestamp ekle
+            // Base64 görselleri atla, sadece HTTP URL'leri yükle
             if (saved.startsWith('http')) {
                 var separator = saved.indexOf('?') > -1 ? '&' : '?';
                 document.getElementById('topImage' + i).src = saved + separator + 'v=' + Date.now();
+                console.log('✅ Görsel ' + i + ' yüklendi (URL)');
             } else {
-                document.getElementById('topImage' + i).src = saved;
+                console.log('⚠️ Base64 görsel atlandı (localStorage): topImg' + i);
+                // Base64 verisini localStorage'dan temizle
+                localStorage.removeItem(storageKey);
+                localStorage.removeItem(urlKey);
+                localStorage.removeItem('sayfa5_topImg' + i);
+                localStorage.removeItem('sayfa5_topImg' + i + '_url');
             }
-            console.log('✅ Görsel ' + i + ' yüklendi');
         }
     }
     
@@ -1136,14 +1141,19 @@ function loadSavedImages() {
         }
     }
     if (bottomSaved) {
-        // URL ise cache bypass için timestamp ekle
+        // Base64 görselleri atla, sadece HTTP URL'leri yükle
         if (bottomSaved.startsWith('http')) {
             var separator = bottomSaved.indexOf('?') > -1 ? '&' : '?';
             document.getElementById('bottomImage').src = bottomSaved + separator + 'v=' + Date.now();
+            console.log('✅ Bottom image yüklendi (URL)');
         } else {
-            document.getElementById('bottomImage').src = bottomSaved;
+            console.log('⚠️ Base64 görsel atlandı (localStorage): bottomImg1');
+            // Base64 verisini localStorage'dan temizle
+            localStorage.removeItem(pageId + '_bottomImg1');
+            localStorage.removeItem(pageId + '_bottomImg1_url');
+            localStorage.removeItem('sayfa5_bottomImg1');
+            localStorage.removeItem('sayfa5_bottomImg1_url');
         }
-        console.log('✅ Bottom image yüklendi');
     }
     
     // Firebase'den HER ZAMAN yükle (telefon senkronizasyonu için)
@@ -1151,28 +1161,53 @@ function loadSavedImages() {
         database.ref(SITE_ID + '/urunAyarlari/urun5/gorseller').once('value', function(snapshot) {
             var gorseller = snapshot.val() || {};
             var updated = false;
+            var base64KeysToDelete = []; // Base64 key'lerini topla
             for (var i = 1; i <= 15; i++) {
-                // Firebase'de varsa HER ZAMAN yükle
+                // Firebase'de varsa HER ZAMAN yükle (SADECE HTTP URL'LER)
                 if (gorseller['topImg' + i]) {
-                    localStorage.setItem(pageId + '_topImg' + i, gorseller['topImg' + i]);
                     var gorselUrl = gorseller['topImg' + i];
-                    // URL ise cache bypass için timestamp ekle
+                    // Base64 görselleri atla, sadece Cloudinary URL'lerini yükle
                     if (gorselUrl.startsWith('http')) {
+                        localStorage.setItem(pageId + '_topImg' + i, gorselUrl);
+                        // URL ise cache bypass için timestamp ekle
                         var separator = gorselUrl.indexOf('?') > -1 ? '&' : '?';
                         document.getElementById('topImage' + i).src = gorselUrl + separator + 'v=' + Date.now();
+                        console.log('🔄 Görsel ' + i + ' Firebase\'den yüklendi');
+                        updated = true;
                     } else {
-                        document.getElementById('topImage' + i).src = gorselUrl;
+                        console.log('⚠️ Base64 görsel atlandı: topImg' + i);
+                        base64KeysToDelete.push('topImg' + i); // Silinecek listeye ekle
                     }
-                    console.log('🔄 Görsel ' + i + ' Firebase\'den yüklendi');
-                    updated = true;
                 }
             }
             // Bottom image için de aynı mantık
             if (gorseller['bottomImg1']) {
-                localStorage.setItem(pageId + '_bottomImg1', gorseller['bottomImg1']);
-                document.getElementById('bottomImage').src = gorseller['bottomImg1'];
-                console.log('🔄 Bottom image Firebase\'den yüklendi');
-                updated = true;
+                var bottomUrl = gorseller['bottomImg1'];
+                if (bottomUrl.startsWith('http')) {
+                    localStorage.setItem(pageId + '_bottomImg1', bottomUrl);
+                    document.getElementById('bottomImage').src = bottomUrl;
+                    console.log('🔄 Bottom image Firebase\'den yüklendi');
+                    updated = true;
+                } else {
+                    console.log('⚠️ Base64 görsel atlandı: bottomImg1');
+                    base64KeysToDelete.push('bottomImg1'); // Silinecek listeye ekle
+                }
+            }
+            
+            // Base64 key'lerini Firebase'den sil
+            if (base64KeysToDelete.length > 0) {
+                console.log('🗑️ Firebase\'den base64 görseller siliniyor:', base64KeysToDelete);
+                var updates = {};
+                for (var j = 0; j < base64KeysToDelete.length; j++) {
+                    updates[base64KeysToDelete[j]] = null; // null = sil
+                }
+                database.ref(SITE_ID + '/urunAyarlari/urun5/gorseller').update(updates)
+                    .then(function() {
+                        console.log('✅ Base64 görseller Firebase\'den silindi!');
+                    })
+                    .catch(function(error) {
+                        console.error('❌ Firebase silme hatası:', error);
+                    });
             }
         });
     }
@@ -1727,14 +1762,19 @@ function gorselYuklendi() {
 function gorselleriYukle() {
   var pageId = getAdminKey('admin_5_sayfa');
   
-  // Önce localStorage'dan hızlı yükle (anlık görüntü için)
+  // Önce localStorage'dan hızlı yükle (anlık görüntü için) - SADECE HTTP URL'LER
   for(var i = 1; i <= 15; i++) {
     var img = document.getElementById('topImage' + i);
     var saved = localStorage.getItem(pageId + '_topImg' + i);
     if (!saved) saved = localStorage.getItem(pageId + '_topImg' + i + '_url');
     if (!saved) saved = localStorage.getItem('sayfa5_topImg' + i);
     if (!saved) saved = localStorage.getItem('sayfa5_topImg' + i + '_url');
-    if(img && saved) img.src = saved;
+    // Base64 görselleri atla, sadece HTTP URL'leri yükle
+    if(img && saved && saved.startsWith('http')) {
+      img.src = saved;
+    } else if (saved && !saved.startsWith('http')) {
+      console.log('⚠️ Base64 görsel atlandı (gorselleriYukle): topImg' + i);
+    }
   }
   
   var bottomImg = document.getElementById('bottomImage');
@@ -1742,7 +1782,12 @@ function gorselleriYukle() {
   if (!bottomSaved) bottomSaved = localStorage.getItem(pageId + '_bottomImg1_url');
   if (!bottomSaved) bottomSaved = localStorage.getItem('sayfa5_bottomImg1');
   if (!bottomSaved) bottomSaved = localStorage.getItem('sayfa5_bottomImg1_url');
-  if(bottomImg && bottomSaved) bottomImg.src = bottomSaved;
+  // Base64 görselleri atla, sadece HTTP URL'leri yükle
+  if(bottomImg && bottomSaved && bottomSaved.startsWith('http')) {
+    bottomImg.src = bottomSaved;
+  } else if (bottomSaved && !bottomSaved.startsWith('http')) {
+    console.log('⚠️ Base64 görsel atlandı (gorselleriYukle): bottomImg1');
+  }
   
   // Firebase'den HER ZAMAN yükle (telefon senkronizasyonu için)
   if (typeof database !== 'undefined' && database) {
@@ -1751,16 +1796,27 @@ function gorselleriYukle() {
       for(var i = 1; i <= 15; i++) {
         var img = document.getElementById('topImage' + i);
         if(img && gorseller['topImg' + i]) {
-          img.src = gorseller['topImg' + i];
-          localStorage.setItem(pageId + '_topImg' + i, gorseller['topImg' + i]);
-          console.log('🔄 Görsel ' + i + ' Firebase\'den yüklendi');
+          var gorselUrl = gorseller['topImg' + i];
+          // Base64 görselleri atla, sadece Cloudinary URL'lerini yükle
+          if (gorselUrl.startsWith('http')) {
+            img.src = gorselUrl;
+            localStorage.setItem(pageId + '_topImg' + i, gorselUrl);
+            console.log('🔄 Görsel ' + i + ' Firebase\'den yüklendi');
+          } else {
+            console.log('⚠️ Base64 görsel atlandı: topImg' + i);
+          }
         }
       }
       var bottomImg = document.getElementById('bottomImage');
       if(bottomImg && gorseller['bottomImg1']) {
-        bottomImg.src = gorseller['bottomImg1'];
-        localStorage.setItem(pageId + '_bottomImg1', gorseller['bottomImg1']);
-        console.log('🔄 Bottom image Firebase\'den yüklendi');
+        var bottomUrl = gorseller['bottomImg1'];
+        if (bottomUrl.startsWith('http')) {
+          bottomImg.src = bottomUrl;
+          localStorage.setItem(pageId + '_bottomImg1', bottomUrl);
+          console.log('🔄 Bottom image Firebase\'den yüklendi');
+        } else {
+          console.log('⚠️ Base64 görsel atlandı: bottomImg1');
+        }
       }
       console.log('✅ Görseller Firebase\'den güncellendi');
     });
@@ -1771,16 +1827,27 @@ function gorselleriYukle() {
         for(var i = 1; i <= 15; i++) {
           var img = document.getElementById('topImage' + i);
           if(img && gorseller['topImg' + i]) {
-            img.src = gorseller['topImg' + i];
-            localStorage.setItem(pageId + '_topImg' + i, gorseller['topImg' + i]);
-            console.log('🔄 Görsel ' + i + ' Firebase\'den yüklendi (gecikme)');
+            var gorselUrl = gorseller['topImg' + i];
+            // Base64 görselleri atla, sadece Cloudinary URL'lerini yükle
+            if (gorselUrl.startsWith('http')) {
+              img.src = gorselUrl;
+              localStorage.setItem(pageId + '_topImg' + i, gorselUrl);
+              console.log('🔄 Görsel ' + i + ' Firebase\'den yüklendi (gecikme)');
+            } else {
+              console.log('⚠️ Base64 görsel atlandı: topImg' + i + ' (gecikme)');
+            }
           }
         }
         var bottomImg = document.getElementById('bottomImage');
         if(bottomImg && gorseller['bottomImg1']) {
-          bottomImg.src = gorseller['bottomImg1'];
-          localStorage.setItem(pageId + '_bottomImg1', gorseller['bottomImg1']);
-          console.log('🔄 Bottom image Firebase\'den yüklendi (gecikme)');
+          var bottomUrl = gorseller['bottomImg1'];
+          if (bottomUrl.startsWith('http')) {
+            bottomImg.src = bottomUrl;
+            localStorage.setItem(pageId + '_bottomImg1', bottomUrl);
+            console.log('🔄 Bottom image Firebase\'den yüklendi (gecikme)');
+          } else {
+            console.log('⚠️ Base64 görsel atlandı: bottomImg1 (gecikme)');
+          }
         }
         console.log('✅ Görseller Firebase\'den güncellendi (gecikme)');
       });

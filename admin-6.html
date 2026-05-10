@@ -198,6 +198,7 @@ function updateBannerFromText(type) {
 <button id="toggleTopBtn" onclick="toggleTopDrawer()">↓</button>
 <button id="geriBtn" onclick="window.location.href='ana-sayfa.html'" style="background:#000 !important;color:#fff;width:52px;height:52px;border:none;border-radius:50%;cursor:pointer;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;position:fixed;right:15px;top:165px;z-index:10000;">GERİ</button>
 <button id="adminBtn" onclick="toggleLeftDrawer()">ADMİN</button>
+<button id="clearAllBtn" onclick="clearAllImages()" style="background:#dc3545 !important;color:#fff;width:52px;height:52px;border:none;border-radius:50%;cursor:pointer;font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center;position:fixed;right:15px;top:305px;z-index:10000;line-height:1.2;">TEMİZ<br>LE</button>
 
 <!-- KAYAN YAZI ŞERİDİ - BASIT ÖNIZLEME -->
 <script>
@@ -1481,79 +1482,50 @@ var pageId = getAdminKey('urun_6_sayfa');
 function loadImage(event, imgId) {
     const file = event.target.files[0];
     if (file) {
-        // ÖNEMLİ: URL verisini temizle (bağımsız çalışsın)
         var urlInput = document.getElementById(imgId + 'Url');
         if (urlInput) {
             urlInput.value = '';
             localStorage.removeItem(pageId + '_' + imgId + '_url');
         }
-        
         const statusDiv = document.getElementById(imgId + 'Status');
-        
-        // Loading göster
         statusDiv.innerHTML = '<span style="color:#667eea;font-size:12px;font-weight:900;">⏳ Cloudinary\'ye yükleniyor...</span>';
         statusDiv.onclick = null;
-        
-        // 🔥 CLOUDINARY - Unsigned Upload (Sınırsız)
-        const CLOUD_NAME = 'dgunmi6v';
+        const CLOUD_NAME = 'dgunmii6v';
         const UPLOAD_PRESET = 'shop_unsigned';
-        
-        // FormData oluştur
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', UPLOAD_PRESET);
-        
-        // Cloudinary'ye yükle
         fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload', {
             method: 'POST',
             body: formData
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Cloudinary yanıtı:', data);
             if (data.secure_url) {
                 const url = data.secure_url;
-                console.log('✅ Cloudinary\'ye yüklendi:', url);
-                    
-                    // URL'i localStorage'a kaydet
-                    localStorage.setItem(pageId + '_' + imgId + '_url', url);
-                    localStorage.setItem(pageId + '_' + imgId, url);
-                    
-                    // Görseli göster
-                    if (imgId === 'bottomImg1') {
-                        document.getElementById('bottomImage').src = url;
-                    } else if (imgId.startsWith('topImg')) {
-                        const imgNum = imgId.replace('topImg', '');
-                        document.getElementById('topImage' + imgNum).src = url;
-                    }
-                    
-                    // Status güncelle
-                    statusDiv.innerHTML = '<span style="color:#000;font-size:16px;font-weight:900;margin-right:8px;">✓</span><span style="color:#000;font-size:12px;font-weight:900;">Görsel yüklendi (Imgur)</span><span onclick="deleteImage(event, \'' + imgId + '\')" style="color:#dc3545;font-size:12px;font-weight:900;margin-left:8px;cursor:pointer;">Sil</span>';
-                    
-                    // URL input'a da yaz
-                    if (urlInput) {
-                        urlInput.value = url;
-                    }
-                    
-                    console.log('✅ Görsel kaydedildi: ' + imgId);
-                    
-                    // Firebase'e kaydet
-                    if (typeof database !== 'undefined' && database) {
-                        var gorselData = {};
-                        gorselData[imgId] = url;
-                        database.ref(SITE_ID + '/urunAyarlari/urun6/gorseller').update(gorselData);
-                    }
-                } else {
-                    throw new Error('Imgur yükleme başarısız: ' + (data.data ? data.data.error : 'Bilinmeyen hata'));
+                localStorage.setItem(pageId + '_' + imgId + '_url', url);
+                localStorage.setItem(pageId + '_' + imgId, url);
+                if (imgId === 'bottomImg1') {
+                    document.getElementById('bottomImage').src = url;
+                } else if (imgId.startsWith('topImg')) {
+                    const imgNum = imgId.replace('topImg', '');
+                    document.getElementById('topImage' + imgNum).src = url;
                 }
-            })
-            .catch(error => {
-                console.error('❌ Imgur hatası:', error);
-                statusDiv.innerHTML = '<span style="color:#dc3545;font-size:12px;font-weight:900;">❌ Yükleme başarısız! Tekrar dene.</span>';
-                statusDiv.onclick = function() { document.getElementById(imgId).click(); };
-                alert('❌ HATA: Görsel Imgur\'a yüklenemedi!\n\n' + error.message);
-            });
-        }
+                statusDiv.innerHTML = '<span style="color:#000;font-size:16px;font-weight:900;margin-right:8px;">✓</span><span style="color:#000;font-size:12px;font-weight:900;">Görsel yüklendi</span><span onclick="deleteImage(event, \'' + imgId + '\')" style="color:#dc3545;font-size:12px;font-weight:900;margin-left:8px;cursor:pointer;">Sil</span>';
+                if (urlInput) { urlInput.value = url; }
+                if (typeof database !== 'undefined' && database) {
+                    var gorselData = {}; gorselData[imgId] = url;
+                    database.ref(SITE_ID + '/urunAyarlari/urun6/gorseller').update(gorselData);
+                }
+            } else {
+                throw new Error('Cloudinary hatası');
+            }
+        })
+        .catch(error => {
+            console.error('❌ Cloudinary hatası:', error);
+            statusDiv.innerHTML = '<span style="color:#dc3545;font-size:12px;font-weight:900;">❌ Yükleme başarısız!</span>';
+            statusDiv.onclick = function() { document.getElementById(imgId).click(); };
+        });
     }
 }
 
@@ -1598,6 +1570,80 @@ function deleteImage(event, imgId) {
             .catch(function(error) {
                 console.error('❌ Firebase silme hatası:', error);
             });
+    }
+}
+
+// TÜM GÖRSELLERİ TEMİZLE (localStorage + Firebase)
+function clearAllImages() {
+    if (!confirm('⚠️ UYARI!\n\nTÜM GÖRSELLERİ SİLMEK İSTEDİĞİNİZDEN EMİN MİSİNİZ?\n\nBu işlem geri alınamaz!')) {
+        return;
+    }
+    
+    console.log('🗑️ Tüm görseller temizleniyor...');
+    
+    // 1. localStorage'dan tüm görselleri sil
+    for (var i = 1; i <= 15; i++) {
+        var imgId = 'topImg' + i;
+        localStorage.removeItem(pageId + '_' + imgId);
+        localStorage.removeItem(pageId + '_' + imgId + '_url');
+        
+        // Görseli temizle
+        var imgNum = i;
+        var imgElement = document.getElementById('topImage' + imgNum);
+        if (imgElement) imgElement.src = '';
+        
+        // URL input temizle
+        var urlInput = document.getElementById(imgId + 'Url');
+        if (urlInput) urlInput.value = '';
+        
+        // Status güncelle
+        var statusDiv = document.getElementById(imgId + 'Status');
+        if (statusDiv) {
+            statusDiv.innerHTML = '<span style="color:#666;font-size:12px;font-weight:900;">Görsel yükle</span>';
+            statusDiv.onclick = function() { document.getElementById(imgId).click(); };
+        }
+    }
+    
+    // bottomImg1 temizle
+    localStorage.removeItem(pageId + '_bottomImg1');
+    localStorage.removeItem(pageId + '_bottomImg1_url');
+    var bottomImg = document.getElementById('bottomImage');
+    if (bottomImg) bottomImg.src = '';
+    var bottomUrlInput = document.getElementById('bottomImg1Url');
+    if (bottomUrlInput) bottomUrlInput.value = '';
+    var bottomStatus = document.getElementById('bottomImg1Status');
+    if (bottomStatus) {
+        bottomStatus.innerHTML = '<span style="color:#666;font-size:12px;font-weight:900;">Görsel yükle</span>';
+        bottomStatus.onclick = function() { document.getElementById('bottomImg1').click(); };
+    }
+    
+    console.log('✅ localStorage temizlendi');
+    
+    // 2. Firebase'den tüm görselleri sil
+    if (typeof database !== 'undefined' && database) {
+        database.ref(SITE_ID + '/urunAyarlari/urun6/gorseller').remove()
+            .then(function() {
+                console.log('✅ Firebase görseller tamamen silindi');
+                alert('✅ TÜM GÖRSELLER TEMİZLENDİ!\n\nHem localStorage hem de Firebase\'den tüm görseller silindi.');
+            })
+            .catch(function(error) {
+                console.error('❌ Firebase temizleme hatası:', error);
+                alert('⚠️ localStorage temizlendi ama Firebase\'de hata oluştu.\n\nSayfa yenilendikten sonra tekrar deneyin.');
+            });
+    } else if (typeof onFirebaseReady === 'function') {
+        onFirebaseReady(function(db) {
+            db.ref(SITE_ID + '/urunAyarlari/urun6/gorseller').remove()
+                .then(function() {
+                    console.log('✅ Firebase görseller tamamen silindi');
+                    alert('✅ TÜM GÖRSELLER TEMİZLENDİ!\n\nHem localStorage hem de Firebase\'den tüm görseller silindi.');
+                })
+                .catch(function(error) {
+                    console.error('❌ Firebase temizleme hatası:', error);
+                    alert('⚠️ localStorage temizlendi ama Firebase\'de hata oluştu.\n\nSayfa yenilendikten sonra tekrar deneyin.');
+                });
+        });
+    } else {
+        alert('✅ localStorage temizlendi!\n\nFirebase bağlantısı yok, sadece localStorage temizlendi.');
     }
 }
 
@@ -1746,31 +1792,40 @@ function loadSavedImages() {
                         var imgId = 'topImg' + i;
                         if (data[imgId]) {
                             var url = data[imgId];
-                            localStorage.setItem(pageId + '_' + imgId + '_url', url);
-                            localStorage.setItem(pageId + '_' + imgId, url);
-                            var imgElement = document.getElementById('topImage' + i);
-                            if (imgElement) imgElement.src = url;
-                            var urlInput = document.getElementById(imgId + 'Url');
-                            if (urlInput) urlInput.value = url;
-                            var statusDiv = document.getElementById(imgId + 'Status');
-                            if (statusDiv) {
-                                statusDiv.innerHTML = '<span style="color:#000;font-size:16px;font-weight:900;margin-right:8px;">✓</span><span style="color:#000;font-size:12px;font-weight:900;">Görsel yüklendi</span><span onclick="deleteImage(event, \'' + imgId + '\')" style="color:#dc3545;font-size:12px;font-weight:900;margin-left:8px;cursor:pointer;">Sil</span>';
-                                statusDiv.onclick = null;
+                            // Base64 görselleri yükleme, sadece Cloudinary URL'lerini yükle
+                            if (url.startsWith('http')) {
+                                localStorage.setItem(pageId + '_' + imgId + '_url', url);
+                                localStorage.setItem(pageId + '_' + imgId, url);
+                                var imgElement = document.getElementById('topImage' + i);
+                                if (imgElement) imgElement.src = url;
+                                var urlInput = document.getElementById(imgId + 'Url');
+                                if (urlInput) urlInput.value = url;
+                                var statusDiv = document.getElementById(imgId + 'Status');
+                                if (statusDiv) {
+                                    statusDiv.innerHTML = '<span style="color:#000;font-size:16px;font-weight:900;margin-right:8px;">✓</span><span style="color:#000;font-size:12px;font-weight:900;">Görsel yüklendi</span><span onclick="deleteImage(event, \'' + imgId + '\')" style="color:#dc3545;font-size:12px;font-weight:900;margin-left:8px;cursor:pointer;">Sil</span>';
+                                    statusDiv.onclick = null;
+                                }
+                            } else {
+                                console.log('⚠️ Base64 görsel atlandı:', imgId);
                             }
                         }
                     }
                     if (data['bottomImg1']) {
                         var url = data['bottomImg1'];
-                        localStorage.setItem(pageId + '_bottomImg1_url', url);
-                        localStorage.setItem(pageId + '_bottomImg1', url);
-                        var bottomImgElement = document.getElementById('bottomImage');
-                        if (bottomImgElement) bottomImgElement.src = url;
-                        var bottomUrlInput = document.getElementById('bottomImg1Url');
-                        if (bottomUrlInput) bottomUrlInput.value = url;
-                        var statusDiv = document.getElementById('bottomImg1Status');
-                        if (statusDiv) {
-                            statusDiv.innerHTML = '<span style="color:#000;font-size:16px;font-weight:900;margin-right:8px;">✓</span><span style="color:#000;font-size:12px;font-weight:900;">Görsel yüklendi</span><span onclick="deleteImage(event, \'bottomImg1\')" style="color:#dc3545;font-size:12px;font-weight:900;margin-left:8px;cursor:pointer;">Sil</span>';
-                            statusDiv.onclick = null;
+                        if (url.startsWith('http')) {
+                            localStorage.setItem(pageId + '_bottomImg1_url', url);
+                            localStorage.setItem(pageId + '_bottomImg1', url);
+                            var bottomImgElement = document.getElementById('bottomImage');
+                            if (bottomImgElement) bottomImgElement.src = url;
+                            var bottomUrlInput = document.getElementById('bottomImg1Url');
+                            if (bottomUrlInput) bottomUrlInput.value = url;
+                            var statusDiv = document.getElementById('bottomImg1Status');
+                            if (statusDiv) {
+                                statusDiv.innerHTML = '<span style="color:#000;font-size:16px;font-weight:900;margin-right:8px;">✓</span><span style="color:#000;font-size:12px;font-weight:900;">Görsel yüklendi</span><span onclick="deleteImage(event, \'bottomImg1\')" style="color:#dc3545;font-size:12px;font-weight:900;margin-left:8px;cursor:pointer;">Sil</span>';
+                                statusDiv.onclick = null;
+                            }
+                        } else {
+                            console.log('⚠️ Base64 görsel atlandı: bottomImg1');
                         }
                     }
                     console.log('✅ Firebase\'den görseller yüklendi (admin6)!');

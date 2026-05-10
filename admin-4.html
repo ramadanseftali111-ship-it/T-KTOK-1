@@ -1481,93 +1481,49 @@ var pageId = getAdminKey('urun_4_sayfa');
 function loadImage(event, imgId) {
     const file = event.target.files[0];
     if (file) {
-        // ÖNEMLİ: URL verisini temizle (bağımsız çalışsın)
         var urlInput = document.getElementById(imgId + 'Url');
         if (urlInput) {
             urlInput.value = '';
             localStorage.removeItem(pageId + '_' + imgId + '_url');
         }
-        
         const statusDiv = document.getElementById(imgId + 'Status');
-        
-        // Loading göster
         statusDiv.innerHTML = '<span style="color:#667eea;font-size:12px;font-weight:900;">⏳ Cloudinary\'ye yükleniyor...</span>';
         statusDiv.onclick = null;
-        
-        // 🔥 CLOUDINARY - Unsigned Upload (Sınırsız)
-        const CLOUD_NAME = 'dgunmi6v';
+        const CLOUD_NAME = 'dgunmii6v';
         const UPLOAD_PRESET = 'shop_unsigned';
-        
-        // FormData oluştur
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', UPLOAD_PRESET);
-        
-        // Cloudinary'ye yükle
         fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload', {
             method: 'POST',
             body: formData
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Cloudinary yanıtı:', data);
             if (data.secure_url) {
                 const url = data.secure_url;
-                console.log('✅ Cloudinary\'ye yüklendi:', url);
-                
-                // URL'i localStorage'a kaydet
                 localStorage.setItem(pageId + '_' + imgId + '_url', url);
                 localStorage.setItem(pageId + '_' + imgId, url);
-                
-                // Görseli göster
                 if (imgId === 'bottomImg1') {
                     document.getElementById('bottomImage').src = url;
                 } else if (imgId.startsWith('topImg')) {
                     const imgNum = imgId.replace('topImg', '');
                     document.getElementById('topImage' + imgNum).src = url;
                 }
-                
-                // Status güncelle
-                statusDiv.innerHTML = '<span style="color:#000;font-size:16px;font-weight:900;margin-right:8px;">✓</span><span style="color:#000;font-size:12px;font-weight:900;">Görsel yüklendi (Imgur)</span><span onclick="deleteImage(event, \'' + imgId + '\')" style="color:#dc3545;font-size:12px;font-weight:900;margin-left:8px;cursor:pointer;">Sil</span>';
-                
-                // URL input'a da yaz
-                if (urlInput) {
-                    urlInput.value = url;
-                }
-                
-                console.log('✅ Görsel kaydedildi: ' + imgId);
-                console.log('📦 Storage Key: ' + pageId + '_' + imgId + '_url');
-                console.log('🔗 URL: ' + url);
-                
-                // Firebase'e kaydet
+                statusDiv.innerHTML = '<span style="color:#000;font-size:16px;font-weight:900;margin-right:8px;">✓</span><span style="color:#000;font-size:12px;font-weight:900;">Görsel yüklendi</span><span onclick="deleteImage(event, \'' + imgId + '\')" style="color:#dc3545;font-size:12px;font-weight:900;margin-left:8px;cursor:pointer;">Sil</span>';
+                if (urlInput) { urlInput.value = url; }
                 if (typeof database !== 'undefined' && database) {
-                    var gorselData = {};
-                    gorselData[imgId] = url;
-                    database.ref(SITE_ID + '/urunAyarlari/urun4/gorseller').update(gorselData).then(function() {
-                        console.log('✅ Görsel Firebase\'e kaydedildi: ' + imgId);
-                    }).catch(function(error) {
-                        console.error('❌ Firebase kayıt hatası:', error);
-                    });
-                } else if (typeof onFirebaseReady === 'function') {
-                    var savedImgId = imgId;
-                    var savedUrl = url;
-                    onFirebaseReady(function(db) {
-                        var gorselData = {};
-                        gorselData[savedImgId] = savedUrl;
-                        db.ref(SITE_ID + '/urunAyarlari/urun4/gorseller').update(gorselData).then(function() {
-                            console.log('✅ Görsel Firebase\'e kaydedildi (gecikme): ' + savedImgId);
-                        });
-                    });
+                    var gorselData = {}; gorselData[imgId] = url;
+                    database.ref(SITE_ID + '/urunAyarlari/urun4/gorseller').update(gorselData);
                 }
             } else {
-                throw new Error('Imgur yükleme başarısız');
+                throw new Error('Cloudinary hatası');
             }
         })
         .catch(error => {
-            console.error('❌ Imgur hatası:', error);
-            statusDiv.innerHTML = '<span style="color:#dc3545;font-size:12px;font-weight:900;">❌ Yükleme başarısız! Tekrar dene.</span>';
+            console.error('❌ Cloudinary hatası:', error);
+            statusDiv.innerHTML = '<span style="color:#dc3545;font-size:12px;font-weight:900;">❌ Yükleme başarısız!</span>';
             statusDiv.onclick = function() { document.getElementById(imgId).click(); };
-            alert('❌ HATA: Görsel Imgur\'a yüklenemedi!\n\n' + error.message);
         });
     }
 }

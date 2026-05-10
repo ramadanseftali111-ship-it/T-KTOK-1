@@ -1481,7 +1481,6 @@ var pageId = getAdminKey('admin_2_sayfa');
 function loadImage(event, imgId) {
     const file = event.target.files[0];
     if (file) {
-        // ÖNEMLİ: URL verisini temizle (bağımsız çalışsın)
         var urlInput = document.getElementById(imgId + 'Url');
         if (urlInput) {
             urlInput.value = '';
@@ -1489,37 +1488,33 @@ function loadImage(event, imgId) {
         }
         
         const statusDiv = document.getElementById(imgId + 'Status');
-        
-        // Loading göster
-        statusDiv.innerHTML = '<span style="color:#667eea;font-size:12px;font-weight:900;">⏳ Firebase\'e yükleniyor...</span>';
+        statusDiv.innerHTML = '<span style="color:#667eea;font-size:12px;font-weight:900;">⏳ Cloudinary\'ye yükleniyor...</span>';
         statusDiv.onclick = null;
         
-        // 🔥 FIREBASE STORAGE - Sınırsız ve güvenli
-        if (typeof firebase === 'undefined' || !firebase.storage) {
-            alert('Firebase Storage yüklenmedi! Sayfayı yenileyin.');
-            statusDiv.innerHTML = '<span style="color:#dc3545;font-size:12px;font-weight:900;">Görsel yüklenmedi</span>';
-            statusDiv.onclick = function() { document.getElementById(imgId).click(); };
-            return;
-        }
+        // 🔥 CLOUDINARY UPLOAD
+        const CLOUD_NAME = 'dgunmii6v';
+        const API_KEY = '223118883126139';
         
-        const storage = firebase.storage();
-        const storageRef = storage.ref();
-        const timestamp = Date.now();
-        const fileName = 'admin2_' + imgId + '_' + timestamp + '_' + file.name;
-        const imageRef = storageRef.child('product-images/' + fileName);
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('api_key', API_KEY);
+        formData.append('timestamp', Math.round(Date.now() / 1000));
+        formData.append('upload_preset', 'shop_unsigned');
         
-        // Firebase'e yükle
-        imageRef.put(file).then(function(snapshot) {
-            console.log('✅ Firebase Storage\'a yüklendi');
-            return snapshot.ref.getDownloadURL();
-        }).then(function(url) {
-            console.log('✅ URL alındı:', url);
+        fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Cloudinary yanıt:', data);
+            if (data.secure_url) {
+                const url = data.secure_url;
+                console.log('✅ Cloudinary URL:', url);
                 
-                // URL'i localStorage'a kaydet
                 localStorage.setItem(pageId + '_' + imgId + '_url', url);
                 localStorage.setItem(pageId + '_' + imgId, url);
                 
-                // Görseli göster
                 if (imgId === 'bottomImg1') {
                     document.getElementById('bottomImage').src = url;
                 } else if (imgId.startsWith('topImg')) {
@@ -1527,47 +1522,30 @@ function loadImage(event, imgId) {
                     document.getElementById('topImage' + imgNum).src = url;
                 }
                 
-                // Status güncelle
-                statusDiv.innerHTML = '<span style="color:#000;font-size:16px;font-weight:900;margin-right:8px;">✓</span><span style="color:#000;font-size:12px;font-weight:900;">Görsel yüklendi (Firebase)</span><span onclick="deleteImage(event, \'' + imgId + '\')" style="color:#dc3545;font-size:12px;font-weight:900;margin-left:8px;cursor:pointer;">Sil</span>';
+                statusDiv.innerHTML = '<span style="color:#000;font-size:16px;font-weight:900;margin-right:8px;">✓</span><span style="color:#000;font-size:12px;font-weight:900;">Görsel yüklendi</span><span onclick="deleteImage(event, \'' + imgId + '\')" style="color:#dc3545;font-size:12px;font-weight:900;margin-left:8px;cursor:pointer;">Sil</span>';
                 
-                // URL input'a da yaz
                 if (urlInput) {
                     urlInput.value = url;
                 }
                 
-                console.log('✅ Görsel kaydedildi: ' + imgId);
-                console.log('📦 Storage Key: ' + pageId + '_' + imgId + '_url');
-                console.log('🔗 URL: ' + url);
-                
-                // Firebase'e kaydet
                 if (typeof database !== 'undefined' && database) {
                     var gorselData = {};
                     gorselData[imgId] = url;
                     database.ref(SITE_ID + '/urunAyarlari/urun2/gorseller').update(gorselData).then(function() {
-                        console.log('✅ Görsel Firebase\'e kaydedildi: ' + imgId);
+                        console.log('✅ Firebase\'e kaydedildi: ' + imgId);
                     }).catch(function(error) {
-                        console.error('❌ Firebase kayıt hatası:', error);
-                    });
-                } else if (typeof onFirebaseReady === 'function') {
-                    var savedImgId = imgId;
-                    var savedUrl = url;
-                    onFirebaseReady(function(db) {
-                        var gorselData = {};
-                        gorselData[savedImgId] = savedUrl;
-                        db.ref(SITE_ID + '/urunAyarlari/urun2/gorseller').update(gorselData).then(function() {
-                            console.log('✅ Görsel Firebase\'e kaydedildi (gecikme): ' + savedImgId);
-                        });
+                        console.error('❌ Firebase hatası:', error);
                     });
                 }
             } else {
-                console.error('Firebase hatası: URL alınamadı');
-                throw new Error('Firebase Storage yükleme başarısız');
+                throw new Error('Cloudinary yanıt hatası: ' + JSON.stringify(data));
             }
-        }).catch(function(error) {
-            console.error('❌ Firebase Storage hatası:', error);
-            statusDiv.innerHTML = '<span style="color:#dc3545;font-size:12px;font-weight:900;">❌ Yükleme başarısız! Tekrar dene.</span>';
+        })
+        .catch(error => {
+            console.error('❌ Cloudinary hatası:', error);
+            statusDiv.innerHTML = '<span style="color:#dc3545;font-size:12px;font-weight:900;">❌ Yükleme başarısız!</span>';
             statusDiv.onclick = function() { document.getElementById(imgId).click(); };
-            alert('❌ HATA: Görsel Firebase\'e yüklenemedi!\n\n' + error.message);
+            alert('❌ HATA: Cloudinary yükleme başarısız!\n\n' + error.message);
         });
     }
 }
