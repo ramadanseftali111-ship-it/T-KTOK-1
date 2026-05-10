@@ -1491,26 +1491,29 @@ function loadImage(event, imgId) {
         const statusDiv = document.getElementById(imgId + 'Status');
         
         // Loading göster
-        statusDiv.innerHTML = '<span style="color:#667eea;font-size:12px;font-weight:900;">⏳ ImgBB\'ye yükleniyor...</span>';
+        statusDiv.innerHTML = '<span style="color:#667eea;font-size:12px;font-weight:900;">⏳ Cloudinary\'ye yükleniyor...</span>';
         statusDiv.onclick = null;
         
-        // ImgBB API Key (görsel yükleyiciden aldık)
-        const API_KEY = 'bc42466274af3c4778f12cc926c44aff';
+        // 🔥 CLOUDINARY - Unsigned Upload (Sınırsız)
+        const CLOUD_NAME = 'dgunmi6v';
+        const UPLOAD_PRESET = 'shop_unsigned';
         
         // FormData oluştur
         const formData = new FormData();
-        formData.append('image', file);
+        formData.append('file', file);
+        formData.append('upload_preset', UPLOAD_PRESET);
         
-        // ImgBB'ye yükle
-        fetch('https://api.imgbb.com/1/upload?key=' + API_KEY, {
+        // Cloudinary'ye yükle
+        fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload', {
             method: 'POST',
             body: formData
         })
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
-                const url = data.data.url;
-                console.log('✅ ImgBB\'ye yüklendi:', url);
+            console.log('Cloudinary yanıtı:', data);
+            if (data.secure_url) {
+                const url = data.secure_url;
+                console.log('✅ Cloudinary\'ye yüklendi:', url);
                 
                 // URL'i localStorage'a kaydet
                 localStorage.setItem(pageId + '_' + imgId + '_url', url);
@@ -1525,7 +1528,7 @@ function loadImage(event, imgId) {
                 }
                 
                 // Status güncelle
-                statusDiv.innerHTML = '<span style="color:#000;font-size:16px;font-weight:900;margin-right:8px;">✓</span><span style="color:#000;font-size:12px;font-weight:900;">Görsel yüklendi (ImgBB)</span><span onclick="deleteImage(event, \'' + imgId + '\')" style="color:#dc3545;font-size:12px;font-weight:900;margin-left:8px;cursor:pointer;">Sil</span>';
+                statusDiv.innerHTML = '<span style="color:#000;font-size:16px;font-weight:900;margin-right:8px;">✓</span><span style="color:#000;font-size:12px;font-weight:900;">Görsel yüklendi (Imgur)</span><span onclick="deleteImage(event, \'' + imgId + '\')" style="color:#dc3545;font-size:12px;font-weight:900;margin-left:8px;cursor:pointer;">Sil</span>';
                 
                 // URL input'a da yaz
                 if (urlInput) {
@@ -1557,14 +1560,14 @@ function loadImage(event, imgId) {
                     });
                 }
             } else {
-                throw new Error('ImgBB yükleme başarısız');
+                throw new Error('Imgur yükleme başarısız');
             }
         })
         .catch(error => {
-            console.error('❌ ImgBB hatası:', error);
+            console.error('❌ Imgur hatası:', error);
             statusDiv.innerHTML = '<span style="color:#dc3545;font-size:12px;font-weight:900;">❌ Yükleme başarısız! Tekrar dene.</span>';
             statusDiv.onclick = function() { document.getElementById(imgId).click(); };
-            alert('❌ HATA: Görsel ImgBB\'ye yüklenemedi!\n\nİnternet bağlantınızı kontrol edin ve tekrar deneyin.');
+            alert('❌ HATA: Görsel Imgur\'a yüklenemedi!\n\nİnternet bağlantınızı kontrol edin ve tekrar deneyin.');
         });
     }
 }
@@ -3427,7 +3430,7 @@ function updateSiparisSeridiFromText(type) {
 
 // Banner ayarlarını yükle
 function loadBannerSettings() {
-    // Renk ayarları
+    // Önce localStorage'dan hızlı yükle
     var bgColor = localStorage.getItem(getAdminKey('banner_bg_color')) || '#000000';
     var textColor = localStorage.getItem(getAdminKey('banner_text_color')) || '#ffffff';
     
@@ -3442,6 +3445,41 @@ function loadBannerSettings() {
         var input = document.getElementById('bannerText' + i);
         if (input) input.value = text;
     }
+    
+    // Sonra Firebase'den yükle ve senkronize et
+    onFirebaseReady(function(db) {
+        db.ref('kargonburada_online/admin8/bannerColors').once('value').then(function(snapshot) {
+            var data = snapshot.val();
+            if (data) {
+                bgColor = data.bgColor || '#000000';
+                textColor = data.textColor || '#ffffff';
+                
+                // localStorage'a kaydet
+                localStorage.setItem(getAdminKey('banner_bg_color'), bgColor);
+                localStorage.setItem(getAdminKey('banner_text_color'), textColor);
+                
+                // Input'ları güncelle
+                document.getElementById('bannerBgColor').value = bgColor;
+                document.getElementById('bannerBgColorText').value = bgColor;
+                document.getElementById('bannerTextColor').value = textColor;
+                document.getElementById('bannerTextColorText').value = textColor;
+                
+                // Banner'ı güncelle
+                var bannerStrip = document.getElementById('bannerStrip');
+                if (bannerStrip) {
+                    bannerStrip.style.background = bgColor;
+                }
+                var spans = document.querySelectorAll('#bannerContent span');
+                spans.forEach(function(span) {
+                    span.style.color = textColor;
+                });
+                
+                console.log('🔥 Firebase\'den banner renkleri yüklendi (Admin-8):', bgColor, textColor);
+            }
+        }).catch(function(error) {
+            console.error('❌ Firebase okuma hatası:', error);
+        });
+    });
 }
 
 // Renk seçiciden güncelle

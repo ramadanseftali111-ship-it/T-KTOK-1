@@ -520,28 +520,60 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Hızlı Sipariş Şeridi renklerini yükle
 function loadSiparisSeridiColors() {
-    var bgColor = localStorage.getItem('kargonburada_online_admin1_siparis_seridi_bg_color') || '#28a745';
-    var textColor = localStorage.getItem('kargonburada_online_admin1_siparis_seridi_text_color') || '#ffffff';
+    var bgColor = localStorage.getItem('kargonburada_online_admin1_siparis_seridi_bg_color') || '#ffffff';
+    var textColor = localStorage.getItem('kargonburada_online_admin1_siparis_seridi_text_color') || '#000000';
     
     var siparisSeridi = document.getElementById('siparisSeridi');
     var siparisSeridiText = document.getElementById('siparisSeridiText');
     
     if (siparisSeridi) {
-        siparisSeridi.style.background = bgColor;
+        siparisSeridi.style.setProperty('background', bgColor, 'important');
+        siparisSeridi.style.setProperty('background-color', bgColor, 'important');
     }
     if (siparisSeridiText) {
-        siparisSeridiText.style.color = textColor;
+        siparisSeridiText.style.setProperty('color', textColor, 'important');
     }
     
     console.log('✅ Hızlı Sipariş Şeridi renkleri güncellendi - BG:', bgColor, 'Text:', textColor);
+}
+
+// Firebase'den sürekli dinle
+function listenToSiparisSeridiColors() {
+    if (typeof firebase !== 'undefined' && firebase.database) {
+        var db = firebase.database();
+        db.ref('kargonburada_online/urun1/siparisSeridiColors').on('value', function(snapshot) {
+            var data = snapshot.val();
+            if (data) {
+                var bgColor = data.bgColor || '#ffffff';
+                var textColor = data.textColor || '#000000';
+                
+                // localStorage'a kaydet
+                localStorage.setItem('kargonburada_online_admin1_siparis_seridi_bg_color', bgColor);
+                localStorage.setItem('kargonburada_online_admin1_siparis_seridi_text_color', textColor);
+                
+                // Renkleri uygula
+                loadSiparisSeridiColors();
+                
+                console.log('🔥 Firebase\'den sipariş şeridi renkleri güncellendi:', bgColor, textColor);
+            }
+        });
+    }
 }
 </script>
 <div class="formWrapper" style="position:relative;">
 
 <!-- HIZLI SİPARİŞ FORMU ÇUBUĞU -->
-<div id="siparisSeridi" style="width:100%;background:#28a745;padding:10px 0;text-align:center;border-radius:8px 8px 0 0;margin-bottom:10px;">
-<span id="siparisSeridiText" style="color:#ffffff;font-size:20px;font-weight:900;letter-spacing:2px;display:inline-block;animation:buyukKucul 0.8s ease-in-out infinite;">📋 HIZLI SİPARİŞ FORMU</span>
+<div id="siparisSeridi" style="width:100%;background:#ffffff;padding:10px 0;text-align:center;border-radius:8px 8px 0 0;margin-bottom:10px;">
+<span id="siparisSeridiText" style="color:#000000;font-size:20px;font-weight:900;letter-spacing:2px;display:inline-block;animation:buyukKucul 0.8s ease-in-out infinite;">📋 HIZLI SİPARİŞ FORMU</span>
 </div>
+
+<script>
+// Sayfa yüklenince renkleri yükle
+document.addEventListener('DOMContentLoaded', function() {
+    loadSiparisSeridiColors();
+    listenToSiparisSeridiColors();
+});
+</script>
 
 <label class="formLabel" style="margin-top:0">Ödeme Yöntemi:</label>
 <div class="radioBox" style="border:2px solid #000 !important;">
@@ -1370,14 +1402,18 @@ function validateForm() {
         var bugun = new Date();
         var bugunStr = bugun.getDate().toString().padStart(2,'0') + '.' + (bugun.getMonth()+1).toString().padStart(2,'0') + '.' + bugun.getFullYear();
         
-        database.ref(SITE_ID + '/siparisler').orderByChild('telefon').equalTo(telefon).once('value', function(snapshot){
+        // Tüm forumlardan siparişleri kontrol et
+        database.ref(SITE_ID + '/siparisler').once('value', function(allForumsSnapshot){
             var bugunSiparisSayisi = 0;
             
-            snapshot.forEach(function(child){
-                var siparis = child.val();
-                if(siparis.tarih === bugunStr){
-                    bugunSiparisSayisi++;
-                }
+            // Her forumu kontrol et
+            allForumsSnapshot.forEach(function(forumSnapshot){
+                forumSnapshot.forEach(function(child){
+                    var siparis = child.val();
+                    if(siparis.telefon === telefon && siparis.tarih === bugunStr){
+                        bugunSiparisSayisi++;
+                    }
+                });
             });
             
             if(bugunSiparisSayisi >= 5){
@@ -1457,7 +1493,9 @@ function validateForm() {
                 timestamp: Date.now()
             };
             
-            database.ref(SITE_ID + '/siparisler').push(yeniSiparis);
+            database.ref(SITE_ID + '/siparisler/forum1').push(yeniSiparis);
+            console.log('✅ ÜRÜN-1: Sipariş Forum-1\'e kaydedildi:', yeniSiparis);
+            console.log('📍 Firebase yolu:', SITE_ID + '/siparisler/forum1');
             
             // Teşekkür kartını hemen göster (webhook'u bekleme)
             showSuccessModal();
@@ -2187,7 +2225,7 @@ window.addEventListener('DOMContentLoaded', function() {
     // Firebase hazır olunca toggle durumlarını çek
     if (typeof onFirebaseReady === 'function') {
         onFirebaseReady(function() {
-            database.ref(SITE_ID + '/urunAyarlari/admin1/toggleDurumlari').once('value', function(snapshot) {
+            database.ref(SITE_ID + '/urunAyarlari/urun1/toggleDurumlari').once('value', function(snapshot) {
                 var data = snapshot.val();
                 if (data) {
                     for (var key in data) {
@@ -2510,7 +2548,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function yukleUrunBilgileriCustomer() {
     // Önce Firebase'den oku, sonra localStorage'dan güncelle
     if (typeof database !== 'undefined' && database) {
-        database.ref(SITE_ID + '/urunAyarlari/admin1/urunBilgileri').once('value', function(snapshot) {
+        database.ref(SITE_ID + '/urunAyarlari/urun1/urunBilgileri').once('value', function(snapshot) {
             var data = snapshot.val();
             if (data) {
                 for (var key in data) {
@@ -2521,7 +2559,7 @@ function yukleUrunBilgileriCustomer() {
             urunBilgileriEkranaYaz();
         });
         // Genel ürün adını da Firebase'den çek
-        database.ref(SITE_ID + '/urunAyarlari/admin1/genel_urun_adi').once('value', function(snapshot) {
+        database.ref(SITE_ID + '/urunAyarlari/urun1/genel_urun_adi').once('value', function(snapshot) {
             var urunAdi = snapshot.val();
             if (urunAdi) {
                 localStorage.setItem(getAdminKey('genel_urun_adi'), urunAdi);
@@ -2534,7 +2572,7 @@ function yukleUrunBilgileriCustomer() {
         });
         
         // SEO açıklamasını da Firebase'den çek
-        database.ref(SITE_ID + '/urunAyarlari/admin1/seo_aciklamasi').once('value', function(snapshot) {
+        database.ref(SITE_ID + '/urunAyarlari/urun1/seo_aciklamasi').once('value', function(snapshot) {
             var seoAciklama = snapshot.val();
             if (seoAciklama) {
                 document.querySelector('meta[name="description"]').setAttribute('content', seoAciklama);
@@ -2583,7 +2621,7 @@ function urunBilgileriEkranaYaz() {
 function loadSiparisSeridiSettingsFromAdmin() {
     // 🔥 Firebase'den renkleri yükle (tüm cihazlarda aynı)
     onFirebaseReady(function(db) {
-        db.ref('kargonburada_online/siparisSeridiColors').on('value', function(snapshot) {
+        db.ref('kargonburada_online/urun1/siparisSeridiColors').on('value', function(snapshot) {
             var data = snapshot.val();
             var bgColor = '#000000';
             var textColor = '#ffffff';

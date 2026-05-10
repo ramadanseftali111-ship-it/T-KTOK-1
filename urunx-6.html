@@ -88,7 +88,7 @@ function fireInitiateCheckout(value) {
 function getAdminKey(key) {
     var SITE_ID = 'kargonburada_online';
     localStorage.setItem('__SITE_ID__', SITE_ID);
-    return SITE_ID + '_admin6_' + key; // ADMİN-6'DEN VERİ OKU
+    return SITE_ID + '_urun6_' + key;
 }
 
 // updateBorder fonksiyonu - hemen kullanılabilir olsun
@@ -200,7 +200,7 @@ var SITE_ID = 'kargonburada_online';
 function getAdminKey(key) {
     // Sabit SITE_ID kullan
     localStorage.setItem('__SITE_ID__', SITE_ID);
-    return SITE_ID + '_admin6_' + key; // ADMİN-6'DEN VERİ OKU
+    return SITE_ID + '_urun6_' + key;
 }
 
 (function(){
@@ -228,7 +228,7 @@ function getAdminKey(key) {
 (function() {
     function getAdminKey(key) { 
         var siteId = 'kargonburada_online';
-        return siteId + '_admin6_' + key; 
+        return siteId + '_urun6_' + key; 
     }
     
     // Banner'ı başlangıçta gizli yap - Firebase'den gelince görünür olacak
@@ -1345,14 +1345,18 @@ function validateForm() {
         var bugun = new Date();
         var bugunStr = bugun.getDate().toString().padStart(2,'0') + '.' + (bugun.getMonth()+1).toString().padStart(2,'0') + '.' + bugun.getFullYear();
         
-        database.ref(SITE_ID + '/siparisler').orderByChild('telefon').equalTo(telefon).once('value', function(snapshot){
+        // Tüm forumlardan siparişleri kontrol et
+        database.ref(SITE_ID + '/siparisler').once('value', function(allForumsSnapshot){
             var bugunSiparisSayisi = 0;
             
-            snapshot.forEach(function(child){
-                var siparis = child.val();
-                if(siparis.tarih === bugunStr){
-                    bugunSiparisSayisi++;
-                }
+            // Her forumu kontrol et
+            allForumsSnapshot.forEach(function(forumSnapshot){
+                forumSnapshot.forEach(function(child){
+                    var siparis = child.val();
+                    if(siparis.telefon === telefon && siparis.tarih === bugunStr){
+                        bugunSiparisSayisi++;
+                    }
+                });
             });
             
             if(bugunSiparisSayisi >= 5){
@@ -1416,7 +1420,7 @@ function validateForm() {
                 tarih: tarihStr,
                 musteri: ad,
                 telefon: telefon,
-                forum: 1,
+                forum: 6,
                 tutar: tutar,
                 il: document.getElementById('il-select').options[document.getElementById('il-select').selectedIndex].text,
                 ilce: ilce,
@@ -1432,7 +1436,9 @@ function validateForm() {
                 timestamp: Date.now()
             };
             
-            database.ref(SITE_ID + '/siparisler').push(yeniSiparis);
+            database.ref(SITE_ID + '/siparisler/forum6').push(yeniSiparis);
+            console.log('✅ ÜRÜN-6: Sipariş Forum-6\'ya kaydedildi:', yeniSiparis);
+            console.log('📍 Firebase yolu:', SITE_ID + '/siparisler/forum6');
             
             // Teşekkür kartını hemen göster (webhook'u bekleme)
             showSuccessModal();
@@ -2122,7 +2128,7 @@ window.addEventListener('DOMContentLoaded', function() {
     // Firebase hazır olunca toggle durumlarını çek
     if (typeof onFirebaseReady === 'function') {
         onFirebaseReady(function() {
-            database.ref(SITE_ID + '/urunAyarlari/admin6/toggleDurumlari').once('value', function(snapshot) {
+            database.ref(SITE_ID + '/urunAyarlari/urun6/toggleDurumlari').once('value', function(snapshot) {
                 var data = snapshot.val();
                 if (data) {
                     for (var key in data) {
@@ -2402,8 +2408,8 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             console.log('🔥 Firebase hazır - Admin-6 renk dinleyicisi başlatılıyor...');
             
-            // Renk verilerini dinle - ADMIN-6'DAN OKU
-            db.ref('kargonburada_online/admin6/siparisSeridiColors').on('value', function(snapshot) {
+            // Renk verilerini dinle - URUN-6'DAN OKU
+            db.ref('kargonburada_online/urun6/siparisSeridiColors').on('value', function(snapshot) {
                 var data = snapshot.val();
                 if (data && data.bgColor && data.textColor) {
                     console.log('🔥 Firebase\'den renk değişikliği geldi:', data);

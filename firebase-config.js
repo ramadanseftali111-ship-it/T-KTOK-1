@@ -48,9 +48,11 @@ var firebaseConfig = {
     projectId: "ramadan-seftali",
     storageBucket: "ramadan-seftali.firebasestorage.app",
     messagingSenderId: "187609765269",
-    appId: "1:187609765269:web:8a1233dbc8d80439ad129c",
+    appId: "1:187609765269:web:8d80439ad129c",
     measurementId: "G-LWEPJWQ8DT"
 };
+
+console.log('📦 Firebase bucket:', firebaseConfig.storageBucket);
 
 // Firebase değişkenleri
 var database = null;

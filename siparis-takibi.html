@@ -312,7 +312,7 @@ function siparisYukleFirebase(forumNo){
 var tbody = document.getElementById('forum'+forumNo+'Liste');
 tbody.innerHTML = '<tr><td colspan="18" style="text-align:center;padding:30px;color:#999;">Yükleniyor...</td></tr>';
 
-database.ref(SITE_ID + '/siparisler').orderByChild('forum').equalTo(forumNo).once('value', function(snapshot){
+database.ref(SITE_ID + '/siparisler/forum' + forumNo).once('value', function(snapshot){
 tbody.innerHTML = '';
 var siparisler = [];
 
@@ -556,7 +556,7 @@ return;
 }
 // Onay kaldırıldı - direkt sil
 
-database.ref(SITE_ID + '/siparisler/' + seciliSiparisKey).remove().then(function(){
+database.ref(SITE_ID + '/siparisler/forum' + aktifForum + '/' + seciliSiparisKey).remove().then(function(){
 if(typeof basariSesCal === 'function') basariSesCal();
 // alert kaldırıldı - ses sistemi yeterli
 console.log('✅ Sipariş silindi!');
@@ -576,7 +576,7 @@ alert('❌ Hata: ' + error.message);
 function siparisiSilDirekt(key){
 // Onay kaldırıldı - direkt sil
 
-database.ref(SITE_ID + '/siparisler/' + key).remove().then(function(){
+database.ref(SITE_ID + '/siparisler/forum' + aktifForum + '/' + key).remove().then(function(){
 if(typeof basariSesCal === 'function') basariSesCal();
 // alert kaldırıldı - ses sistemi yeterli
 console.log('✅ Sipariş silindi!');
@@ -608,7 +608,7 @@ alert('Hata: Sipariş bulunamadı!');
 return;
 }
 // Siparişi "kargoHazir" olarak işaretle
-database.ref(SITE_ID + '/siparisler/' + key).update({
+database.ref(SITE_ID + '/siparisler/forum' + aktifForum + '/' + key).update({
 kargoHazir: true,
 kargoHazirTarih: Date.now(),
 durum: 'Kargo Bekliyor'
@@ -649,10 +649,10 @@ document.getElementById('kargoyaVerBtn').disabled = false;
 function kargoyaVer(){
 if(!seciliSiparis || !seciliKargoFirma) return;
 
-// Firebase'de siparişi güncelle
-database.ref(SITE_ID + '/siparisler').orderByChild('siparisNo').equalTo(seciliSiparis.siparisNo).once('value', function(snapshot){
+// Firebase'de siparişi güncelle - forum bazlı yeni sistem
+database.ref(SITE_ID + '/siparisler/forum' + aktifForum).orderByChild('siparisNo').equalTo(seciliSiparis.siparisNo).once('value', function(snapshot){
 snapshot.forEach(function(child){
-database.ref(SITE_ID + '/siparisler/' + child.key).update({
+database.ref(SITE_ID + '/siparisler/forum' + aktifForum + '/' + child.key).update({
 durum: 'Kargoya Verildi',
 kargoFirma: seciliKargoFirma,
 kargoTarih: new Date().toLocaleDateString('tr-TR')
@@ -666,7 +666,7 @@ kargoCekmeceKapat();
 function kdvDegistir(select){
 var key = select.dataset.key;
 var deger = select.value;
-database.ref(SITE_ID + '/siparisler/' + key).update({
+database.ref(SITE_ID + '/siparisler/forum' + aktifForum + '/' + key).update({
 kdvOrani: deger
 }).then(function(){
 console.log('KDV güncellendi: %' + deger);
@@ -679,7 +679,7 @@ alert('❌ Hata: ' + error.message);
 function durumDegistir(select){
 var key = select.dataset.key;
 var yeniDurum = select.value;
-database.ref(SITE_ID + '/siparisler/' + key).update({
+database.ref(SITE_ID + '/siparisler/forum' + aktifForum + '/' + key).update({
 durum: yeniDurum
 }).then(function(){
 console.log('Durum guncellendi: ' + yeniDurum);
@@ -701,7 +701,7 @@ if(!key){
 alert('Hata: Sipariş bulunamadı!');
 return;
 }
-database.ref(SITE_ID + '/siparisler/' + key).update({
+database.ref(SITE_ID + '/siparisler/forum' + aktifForum + '/' + key).update({
 faturaHazir: true,
 faturaHazirTarih: Date.now()
 }).then(function(){
@@ -746,7 +746,7 @@ function secilenleriSil() {
     var silmePromises = [];
     secililer.forEach(function(cb) {
         var key = cb.getAttribute('data-key');
-        silmePromises.push(database.ref(SITE_ID + '/siparisler/' + key).remove());
+        silmePromises.push(database.ref(SITE_ID + '/siparisler/forum' + aktifForum + '/' + key).remove());
     });
     
     Promise.all(silmePromises).then(function() {

@@ -2562,30 +2562,50 @@ function urunBilgileriEkranaYaz() {
 // =============================================
 
 function loadSiparisSeridiSettingsFromAdmin() {
-    // 🔥 Firebase'den renkleri yükle (tüm cihazlarda aynı)
+    console.log('🚀 loadSiparisSeridiSettingsFromAdmin çağrıldı (index.html)');
+    
+    // Önce localStorage'dan hemen yükle (sayfa açılışında hızlı görünüm için)
+    var savedBgColor = localStorage.getItem('kargonburada_online_admin1_siparis_seridi_bg_color');
+    var savedTextColor = localStorage.getItem('kargonburada_online_admin1_siparis_seridi_text_color');
+    
+    console.log('💾 localStorage\'dan okunan değerler (index.html):', savedBgColor, savedTextColor);
+    
+    if (savedBgColor && savedTextColor) {
+        console.log('✅ localStorage\'dan hızlı yükleme yapılıyor...');
+        updateSiparisSeridiDisplayFromAdmin(savedBgColor, savedTextColor);
+    }
+    
+    // 🔥 Firebase'den renkleri yükle (tüm cihazlarda aynı) - SÜREKLİ DİNLE
     onFirebaseReady(function(db) {
-        db.ref('kargonburada_online/siparisSeridiColors').on('value', function(snapshot) {
+        console.log('🔥 Firebase bağlantısı hazır, sipariş şeridi dinleniyor...');
+        
+        db.ref('kargonburada_online/admin1/siparisSeridiColors').on('value', function(snapshot) {
             var data = snapshot.val();
-            var bgColor = '#000000';
-            var textColor = '#ffffff';
+            var bgColor = '#ffffff';
+            var textColor = '#000000';
             
             if (data) {
-                bgColor = data.bgColor || '#000000';
-                textColor = data.textColor || '#ffffff';
-                console.log('🔥 Firebase\'den yüklendi (urunx-1):', data);
+                bgColor = data.bgColor || '#ffffff';
+                textColor = data.textColor || '#000000';
+                console.log('🔥 Firebase\'den yüklendi (index.html):', data);
+                
+                // localStorage'a kaydet (sayfa yenilendiğinde hızlı yükleme için)
+                localStorage.setItem('kargonburada_online_admin1_siparis_seridi_bg_color', bgColor);
+                localStorage.setItem('kargonburada_online_admin1_siparis_seridi_text_color', textColor);
+                console.log('💾 localStorage\'a kaydedildi (index.html)');
             } else {
-                console.log('⚠️ Firebase\'de renk yok, varsayılan kullanılıyor');
+                console.log('⚠️ Firebase\'de renk yok, varsayılan kullanılıyor (index.html)');
             }
             
             // DEBUG: Konsola yazdır
-            console.log('🔍 DEBUG - Hızlı Sipariş Şeridi (urunx-1.html):');
+            console.log('🔍 DEBUG - Hızlı Sipariş Şeridi (index.html):');
             console.log('BG Color Value:', bgColor);
             console.log('Text Color Value:', textColor);
             
             // Hızlı sipariş şeridini güncelle
             updateSiparisSeridiDisplayFromAdmin(bgColor, textColor);
             
-            console.log('✅ Hızlı sipariş şeridi ayarları yüklendi (urunx-1.html)');
+            console.log('✅ Hızlı sipariş şeridi ayarları yüklendi (index.html)');
         });
     });
 }
@@ -2594,28 +2614,50 @@ function updateSiparisSeridiDisplayFromAdmin(bgColor, textColor) {
     var siparisSeridi = document.getElementById('siparisSeridi');
     var siparisSeridiText = document.getElementById('siparisSeridiText');
     
-    console.log('🎨 Şerit elementleri (urunx-1):', siparisSeridi, siparisSeridiText);
+    console.log('🎨 updateSiparisSeridiDisplayFromAdmin çağrıldı (index.html)');
+    console.log('🎨 Şerit elementleri:', siparisSeridi ? 'BULUNDU' : 'BULUNAMADI', siparisSeridiText ? 'BULUNDU' : 'BULUNAMADI');
+    console.log('🎨 Uygulanacak renkler - BG:', bgColor, 'Text:', textColor);
     
     if (siparisSeridi && siparisSeridiText) {
-        // Arkaplan rengini güncelle
-        siparisSeridi.style.background = bgColor;
-        siparisSeridi.style.backgroundColor = bgColor;
+        // Arkaplan rengini güncelle - !important ile zorla
+        siparisSeridi.style.setProperty('background', bgColor, 'important');
+        siparisSeridi.style.setProperty('background-color', bgColor, 'important');
         
-        // Yazı rengini güncelle
-        siparisSeridiText.style.color = textColor;
+        // Yazı rengini güncelle - !important ile zorla
+        siparisSeridiText.style.setProperty('color', textColor, 'important');
         
-        console.log('✅ Hızlı sipariş şeridi görünümü güncellendi (urunx-1):', bgColor, textColor);
+        console.log('✅ Hızlı sipariş şeridi görünümü güncellendi (index.html)');
+        console.log('   Şerit BG:', window.getComputedStyle(siparisSeridi).backgroundColor);
+        console.log('   Yazı Color:', window.getComputedStyle(siparisSeridiText).color);
     } else {
-        console.log('❌ Hızlı sipariş şeridi elementleri bulunamadı (urunx-1)!');
+        console.log('❌ Hızlı sipariş şeridi elementleri bulunamadı (index.html)!');
+        if (!siparisSeridi) console.log('   siparisSeridi elementi yok!');
+        if (!siparisSeridiText) console.log('   siparisSeridiText elementi yok!');
     }
 }
 
 // Sayfa yüklenince
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('📄 urunx-1.html yüklendi, hızlı sipariş şeridi kontrol ediliyor...');
+    console.log('📄 index.html yüklendi, hızlı sipariş şeridi kontrol ediliyor...');
     
-    // Firebase'den renkleri yükle
-    loadSiparisSeridiSettingsFromAdmin();
+    // Önce localStorage'dan hemen yükle
+    var savedBgColor = localStorage.getItem('kargonburada_online_admin1_siparis_seridi_bg_color');
+    var savedTextColor = localStorage.getItem('kargonburada_online_admin1_siparis_seridi_text_color');
+    
+    console.log('💾 DOMContentLoaded - localStorage değerleri:', savedBgColor, savedTextColor);
+    
+    if (savedBgColor && savedTextColor) {
+        console.log('💾 localStorage\'dan hızlı yükleme yapılıyor...');
+        updateSiparisSeridiDisplayFromAdmin(savedBgColor, savedTextColor);
+    } else {
+        console.log('⚠️ localStorage\'da kayıtlı renk yok, Firebase\'den yüklenecek');
+    }
+    
+    // Sonra Firebase'den gerçek zamanlı dinle
+    setTimeout(function() {
+        console.log('🔥 Firebase dinleme başlatılıyor...');
+        loadSiparisSeridiSettingsFromAdmin();
+    }, 500);
 });
 
 // Window focus olduğunda

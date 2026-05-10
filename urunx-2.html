@@ -1337,14 +1337,18 @@ function validateForm() {
         var bugun = new Date();
         var bugunStr = bugun.getDate().toString().padStart(2,'0') + '.' + (bugun.getMonth()+1).toString().padStart(2,'0') + '.' + bugun.getFullYear();
         
-        database.ref(SITE_ID + '/siparisler').orderByChild('telefon').equalTo(telefon).once('value', function(snapshot){
+        // Tüm forumlardan siparişleri kontrol et
+        database.ref(SITE_ID + '/siparisler').once('value', function(allForumsSnapshot){
             var bugunSiparisSayisi = 0;
             
-            snapshot.forEach(function(child){
-                var siparis = child.val();
-                if(siparis.tarih === bugunStr){
-                    bugunSiparisSayisi++;
-                }
+            // Her forumu kontrol et
+            allForumsSnapshot.forEach(function(forumSnapshot){
+                forumSnapshot.forEach(function(child){
+                    var siparis = child.val();
+                    if(siparis.telefon === telefon && siparis.tarih === bugunStr){
+                        bugunSiparisSayisi++;
+                    }
+                });
             });
             
             if(bugunSiparisSayisi >= 5){
@@ -1408,7 +1412,7 @@ function validateForm() {
                 tarih: tarihStr,
                 musteri: ad,
                 telefon: telefon,
-                forum: 1,
+                forum: 2,
                 tutar: tutar,
                 il: document.getElementById('il-select').options[document.getElementById('il-select').selectedIndex].text,
                 ilce: ilce,
@@ -1424,7 +1428,9 @@ function validateForm() {
                 timestamp: Date.now()
             };
             
-            database.ref(SITE_ID + '/siparisler').push(yeniSiparis);
+            database.ref(SITE_ID + '/siparisler/forum2').push(yeniSiparis);
+            console.log('✅ ÜRÜN-2: Sipariş Forum-2\'ye kaydedildi:', yeniSiparis);
+            console.log('📍 Firebase yolu:', SITE_ID + '/siparisler/forum2');
             
             // Teşekkür kartını hemen göster (webhook'u bekleme)
             showSuccessModal();
@@ -2135,7 +2141,7 @@ window.addEventListener('DOMContentLoaded', function() {
     // Firebase hazır olunca toggle durumlarını çek
     if (typeof onFirebaseReady === 'function') {
         onFirebaseReady(function() {
-            database.ref(SITE_ID + '/urunAyarlari/admin2/toggleDurumlari').once('value', function(snapshot) {
+            database.ref(SITE_ID + '/urunAyarlari/urun2/toggleDurumlari').once('value', function(snapshot) {
                 var data = snapshot.val();
                 if (data) {
                     for (var key in data) {
@@ -2415,8 +2421,8 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             console.log('🔥 Firebase hazır - Admin-2 renk dinleyicisi başlatılıyor...');
             
-            // Renk verilerini dinle - ADMIN-2'DEN OKU
-            db.ref('kargonburada_online/admin2/siparisSeridiColors').on('value', function(snapshot) {
+            // Renk verilerini dinle - URUN-2'DEN OKU
+            db.ref('kargonburada_online/urun2/siparisSeridiColors').on('value', function(snapshot) {
                 var data = snapshot.val();
                 if (data && data.bgColor && data.textColor) {
                     console.log('🔥 Firebase\'den renk değişikliği geldi:', data);

@@ -1310,14 +1310,18 @@ function validateForm() {
         var bugun = new Date();
         var bugunStr = bugun.getDate().toString().padStart(2,'0') + '.' + (bugun.getMonth()+1).toString().padStart(2,'0') + '.' + bugun.getFullYear();
         
-        database.ref(SITE_ID + '/siparisler').orderByChild('telefon').equalTo(telefon).once('value', function(snapshot){
+        // Tüm forumlardan siparişleri kontrol et
+        database.ref(SITE_ID + '/siparisler').once('value', function(allForumsSnapshot){
             var bugunSiparisSayisi = 0;
             
-            snapshot.forEach(function(child){
-                var siparis = child.val();
-                if(siparis.tarih === bugunStr){
-                    bugunSiparisSayisi++;
-                }
+            // Her forumu kontrol et
+            allForumsSnapshot.forEach(function(forumSnapshot){
+                forumSnapshot.forEach(function(child){
+                    var siparis = child.val();
+                    if(siparis.telefon === telefon && siparis.tarih === bugunStr){
+                        bugunSiparisSayisi++;
+                    }
+                });
             });
             
             if(bugunSiparisSayisi >= 5){
@@ -1381,7 +1385,7 @@ function validateForm() {
                 tarih: tarihStr,
                 musteri: ad,
                 telefon: telefon,
-                forum: 1,
+                forum: 10,
                 tutar: tutar,
                 il: document.getElementById('il-select').options[document.getElementById('il-select').selectedIndex].text,
                 ilce: ilce,
@@ -1397,7 +1401,9 @@ function validateForm() {
                 timestamp: Date.now()
             };
             
-            database.ref(SITE_ID + '/siparisler').push(yeniSiparis);
+            database.ref(SITE_ID + '/siparisler/forum10').push(yeniSiparis);
+            console.log('✅ ÜRÜN-10: Sipariş Forum-10\'a kaydedildi:', yeniSiparis);
+            console.log('📍 Firebase yolu:', SITE_ID + '/siparisler/forum10');
             
             // Teşekkür kartını hemen göster (webhook'u bekleme)
             showSuccessModal();
